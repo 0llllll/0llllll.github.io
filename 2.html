@@ -954,31 +954,66 @@ renderer.setClearColor(0x000000, 0); // 保证透明
   <div class="page-vertical">
     <section class="subpage" id="page1-1">
       <!-- 第 1 屏（原来的 profile-header / GIF 等） -->
-<div style="
-  height:100%;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  padding-top:20px;   /* 控制整体往下移动 */
-  font-style:italic;
-">
+<div id="rewardContainer" 
+     onclick="toggleReward()"
+     style="height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; padding-top:0px; font-style:italic; cursor: pointer; position: relative;">
 
-  <img src="https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/Neko.GIF"
-       alt="GIF动图"
-       style="max-width:99.5%; max-height:100%; border-radius:18px;">
+    <div style="position: relative; width: 100%; display: flex; justify-content: center; align-items: center;">
+        <img id="neko-gif" 
+             src="https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/Neko.GIF" 
+             alt="GIF动图" 
+             style="max-width:99.5%; max-height:100%; border-radius:18px; transition: opacity 0.5s ease; opacity: 1;">
+        
+        <img id="reward-qr" 
+             src="https://dogpan.com/f/QWgjco/IMG_5281.jpeg" 
+             alt="二维码" 
+             style="position: absolute; width: 340px; height: 340px; border-radius: 18px; transition: opacity 0.5s ease; opacity: 0; pointer-events: none;">
+    </div>
 
-  <p style="
-     color:#000000;
-     margin-top:21px;
-     font-size:23px;
-     text-align:center;
-     text-decoration: underline;
-  ">
-    猫爪一伸,请我喝杯咖啡吧☕️
-  </p>
+    <div style="position: relative; margin-top: 21px; display: flex; justify-content: center; align-items: center; width: 100%; height: 32px;">
+        <p id="text-original" 
+           style="position: absolute; color:#000000; font-size:24px; text-align:center; text-decoration: underline; margin: 0; transition: opacity 0.5s ease; opacity: 1; white-space: nowrap;">
+            猫爪一伸,请我喝杯咖啡吧☕️
+        </p>
 
+        <div id="text-new" 
+             style="position: absolute; opacity: 0; transition: opacity 0.5s ease; pointer-events: none; text-align: center;">
+            <a href="https://qr.alipay.com/fkx17581wtzihcanvisaz0e" target="_blank" style="color:#000000; font-size:24px; text-decoration: underline;" onclick="event.stopPropagation()">
+                点击这里也可以哦 🐾
+            </a>
+        </div>
+    </div>
 </div>
+
+<script>
+function toggleReward() {
+    const gif = document.getElementById('neko-gif');
+    const qr = document.getElementById('reward-qr');
+    const textOld = document.getElementById('text-original');
+    const textNew = document.getElementById('text-new');
+
+    // 如果当前是 GIF 在显示 (opacity 为 1 或为空)
+    if (gif.style.opacity !== '0') {
+        // 隐藏第一状态
+        gif.style.opacity = '0';
+        textOld.style.opacity = '0';
+        // 显示第二状态
+        qr.style.opacity = '1';
+        qr.style.pointerEvents = 'auto';
+        textNew.style.opacity = '1';
+        textNew.style.pointerEvents = 'auto';
+    } else {
+        // 隐藏第二状态
+        qr.style.opacity = '0';
+        qr.style.pointerEvents = 'none';
+        textNew.style.opacity = '0';
+        textNew.style.pointerEvents = 'none';
+        // 显示第一状态
+        gif.style.opacity = '1';
+        textOld.style.opacity = '1';
+    }
+}
+</script>
     </section>
 
 <section class="subpage" id="page1-2">
