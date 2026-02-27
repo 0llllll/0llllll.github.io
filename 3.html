@@ -2,7 +2,8 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#E5DEEC">
     <title>🌙🐈🌅</title>
     <style>
         :root {
@@ -30,20 +31,24 @@
             color: var(--fg);
         }
 
-body {
+      body {
     margin: 0;
-    /* 删除 background-color: #fff; */
-    background: url('ihttps://splattacks.neocities.org/images/bg.png') no-repeat center center fixed; /* 确保路径正确 */
+    /* 这里的 #E5DEEC 必须和你上面 meta 标签里的颜色一致 */
+    /* 图片放在颜色后面，如果图片加载失败或未铺满，背景色会生效 */
+    background: #E5DEEC url('https://splattacks.neocities.org/images/bg.png') no-repeat center center fixed; 
     background-size: cover;
     
-    /* 关键：确保 body 高度撑满，Safari 才能正确计算穿透效果 */
+    /* 必须强制高度，否则 Safari 抓取不到底层的颜色 */
     min-height: 100vh;
-    min-height: 100dvh; 
+    min-height: 100dvh;
+    
+    /* 移除任何可能冲突的背景限制 */
+    background-attachment: fixed;
 }
 
-/* 如果有包裹容器，也请设置为透明 */
-.container {
-    background: transparent;
+/* 检查并确保 html 标签也是透明或同色 */
+html {
+    background-color: #E5DEEC;
 }
 
 
@@ -497,11 +502,7 @@ body:not(.light) .crt::before {
   pointer-events: none;
 }     
       
-.container {
-    padding-bottom: env(safe-area-inset-bottom);
-    padding-top: env(safe-area-inset-top);
-}
-
+      
       /* 垂直吸附（Scroll Snap） - 添加到现有 CSS */
 #page1 { /* 保留外层 .page 设置不变；我们在内部加一个滚动容器 */
   padding: 0;
