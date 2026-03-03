@@ -34,16 +34,22 @@
             color: var(--fg);
         }
 
+html {
+    margin: 0;
+    padding: 0;
+    background: url('https://splattacks.neocities.org/images/bg.png') center/cover fixed no-repeat;
+    min-height: -webkit-fill-available;
+    min-height: 100vh;
+    min-height: 100dvh;
+}
+
 body {
     margin: 0;
     padding: 0;
-    /* 修改点：使用 min-height: 100dvh 替代 100vh */
-    min-height: 100dvh; 
-    
-    /* 修正 iOS Safari 下 background-attachment: fixed 可能导致的偏移或露白问题 */
-    background: url('https://splattacks.neocities.org/images/bg.png') center/cover;
-    background-attachment: scroll; 
-    
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    min-height: 100dvh;
+    background: transparent !important; /* 透传html的背景 */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -52,21 +58,20 @@ body {
     overflow: hidden;
 }
 
+body.light {
+    color: var(--fg);
+}
 
-
-        body.light {
-            background: url('https://splattacks.neocities.org/images/bg.png') center/cover fixed;
-            color: var(--fg);
-        }
-        
-        canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            z-index: -1;
-        }
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    height: 100dvw;
+    height: -webkit-fill-available;
+    z-index: -1;
+}
         
         .glowing-card {
             --pads: 20px;
