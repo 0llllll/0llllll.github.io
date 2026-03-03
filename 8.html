@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <!-- 关键点1：viewport-fit=cover 允许内容扩展到刘海区域 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    
+    <!-- 关键点2：theme-color 决定了 Safari 地址栏和状态栏的颜色 -->
+    <!-- 我们可以设置为背景的主色调，这里暂时设为深色以匹配背景 -->
+    <meta name="theme-color" content="#1a1a2e">
+    
+    <!-- 针对 iOS Safari 的全屏应用模式 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <title>沉浸式全屏展示</title>
+    
+    <style>
+        :root {
+            --glow-sens: 30;
+            --dark: hsl(260, 25%, 10%);
+            /* 适配安全区域的内边距，防止内容被刘海遮挡 */
+            --safe-top: env(safe-area-inset-top);
+            --safe-bottom: env(safe-area-inset-bottom);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            /* 关键点3：使用 dvh (Dynamic Viewport Height) 确保在移动端真正全屏 */
+            min-height: 100vh;
+            min-height: 100dvh;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            
+            /* 设置背景图 */
+            background-image: url('https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/111.JPG');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            
+            /* 确保 body 背景颜色作为回退 */
+            background-color: #1a1a2e;
+            
+            display: flex;
+            flex-direction: column;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* 顶部内容区域：增加安全区域的内边距 */
+        .header {
+            padding-top: calc(var(--safe-top) + 20px);
+            padding-left: 20px;
+            padding-right: 20px;
+            text-align: center;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.5), transparent);
+        }
+
+        .container {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            width: 90%;
+            max-width: 400px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        button {
+            background: #fff;
+            color: #000;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        /* 底部增加安全区域适配 */
+        .footer {
+            padding-bottom: calc(var(--safe-bottom) + 20px);
+            text-align: center;
+            font-size: 12px;
+            opacity: 0.7;
+        }
+
+        /* 壁纸切换器 */
+        .wallpaper-dots {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+            cursor: pointer;
+        }
+
+        .dot.active {
+            background: white;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>沉浸式全屏体验</h1>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <h2>@Elisa</h2>
+            <p style="margin: 15px 0;">已适配 iOS Safari 刘海屏与动态高度</p>
+            <button onclick="downloadVCard()">保存联系人</button>
+        </div>
+
+        <div class="wallpaper-dots">
+            <div class="dot active" onclick="changeBG('https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/111.JPG', this)"></div>
+            <div class="dot" onclick="changeBG('https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/222.JPG', this)"></div>
+            <div class="dot" onclick="changeBG('https://splattacks.neocities.org/images/bg.png', this)"></div>
+        </div>
+    </div>
+
+    <div class="footer">
+        Swipe up or scroll to see the magic
+    </div>
+
+    <script>
+        function changeBG(url, el) {
+            document.body.style.backgroundImage = `url('${url}')`;
+            document.querySelectorAll('.dot').forEach(d => d.classList.remove('active'));
+            el.classList.add('active');
+            
+            // 动态更新主题色以匹配壁纸（演示目的，实际可根据图片计算）
+            const themeColor = url.includes('bg.png') ? '#2d3436' : '#1a1a2e';
+            document.querySelector('meta[name="theme-color"]').setAttribute('content', themeColor);
+        }
+
+        function downloadVCard() {
+            // 这里保留你原来的 vCard 逻辑
+            const base64Photo = ''; 
+            const vcard = `BEGIN:VCARD
+VERSION:3.0
+N:Elisa;;;
+FN:@Elisa
+TEL;TYPE=cell:+15513223223
+END:VCARD`;
+            const blob = new Blob([vcard], { type: 'text/vcard' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'qxx.vcf';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>
