@@ -2,70 +2,15 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#000000">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-    <meta name="theme-color" content="#007AFF">
+<meta name="theme-color" content="#1a1426">
+  
     <title>🌙🐈🌅</title>
     <style>
-    
-    /* ---------- 全屏背景：覆盖刘海/状态栏（放在现有 CSS 的前面或最后，保证优先） ---------- */
-/* 1) 让 html 本身透明并满高 */
-html, body {
-  height: 100%;
-  min-height: 100dvh; /* 保证动态视口也能铺满 */
-  background: transparent; /* 让真正的背景由 html::before 承担 */
-  margin: 0;
-  padding: 0;
-}
-
-/* 2) 使用一个 fixed 的伪元素放在最底层，确保覆盖状态栏 / 刘海 */
-html::before {
-  content: "";
-  position: fixed;
-  inset: 0;                 /* top:0; right:0; bottom:0; left:0; */
-  z-index: -9999;           /* 在最底层（比 canvas 还低） */
-  background-image: url('https://splattacks.neocities.org/images/bg.png'); /* 你的壁纸地址 */
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;   /* cover 保证铺满并保持比例 */
-  background-attachment: fixed; /* 固定在视口，避免滚动时露白（可视情况删掉） */
-  -webkit-backface-visibility: hidden; /* iOS 渲染优化 */
-  will-change: transform;
-}
-
-/* 3) iOS 安全区域：如果你要让页面内容不被状态栏遮挡，可在 body 加内边距（可选） */
-body {
-  /* 如果你不想让内容被刘海遮挡，取消注释下面两行（会把所有内容往下推） */
-  /* padding-top: env(safe-area-inset-top); */
-  /* padding-bottom: env(safe-area-inset-bottom); */
-}
-
-/* 4) 确保没有其它固定或全屏元素覆盖了顶部并填成白色（示例修正） */
-/* 你页面里有 #shuicheCanvas 和一些 .crt::before/.crt::after，确保它们 z-index 不遮盖背景 */
-#shuicheCanvas {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100dvh; /* 保证占满动态视口 */
-  z-index: 2147483646; /* 比 html::before 高，但比页面元素低（你当前为 2147483647，可根据需要调）*/
-  pointer-events: none;
-}
-
-/* 如果页面中存在 .crt::before/.crt::after 且 z-index 很高，会遮挡背景 —— 把它们设为 pointer-events:none 并降低 z-index */
-body:not(.light) .crt::before,
-body:not(.light) .crt::after {
-  pointer-events: none;
-  z-index: 2; /* 确保不是覆盖整个窗口的白色块 */
-}
         :root {
             --glow-sens: 30;
             --dark: hsl(260, 25%, 10%);
@@ -91,31 +36,34 @@ body:not(.light) .crt::after {
             color: var(--fg);
         }
 
+html {
+    /* 确保 html 层也是深色，防止滚动到头露出白底 */
+    background-color: var(--dark);
+    height: 100%;
+}
+
 body {
     margin: 0;
     padding: 0;
-    /* 修改点：使用 min-height: 100dvh 替代 100vh */
-    min-height: 100dvh; 
-    
-    /* 修正 iOS Safari 下 background-attachment: fixed 可能导致的偏移或露白问题 */
-    background: url('https://splattacks.neocities.org/images/bg.png') center/cover;
+    min-height: 100dvh;
+    width: 100%;
+    /* 修正：取消 fixed 属性，使用这种组合在 Safari 最稳定 */
+    background: url('https://splattacks.neocities.org/images/bg.png') center center / cover no-repeat;
     background-attachment: scroll; 
     
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: 'Inter', sans-serif;
-    color: var(--fg);
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
+/* 确保 Canvas 背景层也覆盖到刘海 */
 canvas {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    /* 修改点：确保画布也占满动态视口高度 */
-    height: 100dvh; 
+    width: 100vw;
+    height: 100dvh;
     z-index: -1;
 }
 
@@ -182,17 +130,14 @@ canvas {
             box-shadow: none;
         }
 
-        .theme-toggle {
-            position: absolute;
-            top: 6px;
-            width: 24px;
-            height: 24px;
-            cursor: pointer;
-            z-index: 10;
-            opacity: 0.5;
-            transition: opacity 0.3s;
-            -webkit-tap-highlight-color: transparent;
-        }
+.theme-toggle {
+    position: absolute;
+    /* 修改点：使用 env() 函数自动避开刘海高度，同时保持背景铺满 */
+    top: calc(6px + env(safe-area-inset-top)); 
+    width: 24px;
+    height: 24px;
+    z-index: 10;
+}
 
         .theme-toggle:hover {
             opacity: 0.7;
@@ -1055,7 +1000,7 @@ renderer.setClearColor(0x000000, 0); // 保证透明
 
         <div id="text-new" 
              style="position: absolute; opacity: 0; transition: opacity 0.5s ease; pointer-events: none; text-align: center; margin-top: -40px;">
-            <a href="weixin//scanqrcode" target="_blank" style="color: var(--fg); font-size:24px; text-decoration: underline;" onclick="event.stopPropagation()">
+            <a href="weixin://scanqrcode" target="_blank" style="color: var(--fg); font-size:24px; text-decoration: underline;" onclick="event.stopPropagation()">
                 👉点击跳转微信扫一扫👈
             </a>
 
@@ -2534,7 +2479,7 @@ END:VCARD
 
     clipboard.on('success', function(e) {
         alert('👉微信号复制成功,即将前往微信！');
-        window.location.href = 'weixin://scanqrcode';
+        window.location.href = 'weixin://';
     });
 
     clipboard.on('error', function(e) {
