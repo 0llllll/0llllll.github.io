@@ -33,19 +33,23 @@
         }
 
 
-/* 放在最前面，覆盖原来的 body 背景定义 */
-html, body { height: 100%; min-height: 100%; }
-html {
-  background-image: url('https://splattacks.neocities.org/images/bg.png');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: scroll; /* 关键：不要 fixed（iOS Safari 会有问题） */
-  -webkit-background-size: cover;
+:root { 
+  --bg-url: url('https://splattacks.neocities.org/images/bg.png'); 
 }
-body {
-  background: transparent; /* 让 html 的背景可见（避免 body 覆盖） */
-  min-height: 100svh; /* 在现代浏览器上比 100vh 更稳（可选） */
+
+html::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: var(--bg-url) center/cover no-repeat;
+  z-index: -9999;
+  pointer-events: none;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+body { 
+  background: transparent; 
 }
         
         .glowing-card {
