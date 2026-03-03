@@ -32,24 +32,24 @@
             color: var(--fg);
         }
 
-
-:root { 
-  --bg-url: url('https://splattacks.neocities.org/images/bg.png'); 
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    /* 关键：确保高度覆盖整个视觉视口，包括刘海 */
+    min-height: 100vh; 
+    /* 使用你提供的图片作为全局背景 */
+    background-image: url('https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/111.JPG');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* 防止滚动时背景变白 */
+    background-repeat: no-repeat;
 }
 
-html::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: var(--bg-url) center/cover no-repeat;
-  z-index: -9999;
-  pointer-events: none;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-}
-
-body { 
-  background: transparent; 
+/* 如果有内容被刘海遮挡，可以使用 padding 避开，但背景依然会渗透过去 */
+.container {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
 }
         
         .glowing-card {
