@@ -2,9 +2,13 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <meta name="theme-color" content="#007AFF">
     <title>🌙🐈🌅</title>
     <style>
         :root {
@@ -32,25 +36,48 @@
             color: var(--fg);
         }
 
-html, body {
+body {
     margin: 0;
     padding: 0;
-    width: 100%;
-    /* 关键：确保高度覆盖整个视觉视口，包括刘海 */
-    min-height: 100vh; 
-    /* 使用你提供的图片作为全局背景 */
-    background-image: url('https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/111.JPG');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed; /* 防止滚动时背景变白 */
-    background-repeat: no-repeat;
+    /* 修改点：使用 min-height: 100dvh 替代 100vh */
+    min-height: 100dvh; 
+    
+    /* 修正 iOS Safari 下 background-attachment: fixed 可能导致的偏移或露白问题 */
+    background: url('https://splattacks.neocities.org/images/bg.png') center/cover;
+    background-attachment: scroll; 
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Inter', sans-serif;
+    color: var(--fg);
+    overflow: hidden;
 }
 
-/* 如果有内容被刘海遮挡，可以使用 padding 避开，但背景依然会渗透过去 */
-.container {
-    padding-top: env(safe-area-inset-top);
-    padding-bottom: env(safe-area-inset-bottom);
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    /* 修改点：确保画布也占满动态视口高度 */
+    height: 110dvh; 
+    z-index: -1;
 }
+
+
+        body.light {
+            background: url('https://splattacks.neocities.org/images/bg.png') center/cover fixed;
+            color: var(--fg);
+        }
+        
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: -1;
+        }
         
         .glowing-card {
             --pads: 20px;
