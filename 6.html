@@ -2,10 +2,8 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
     <title>🌙🐈🌅</title>
     <style>
@@ -33,64 +31,21 @@
             --fg: black;
             color: var(--fg);
         }
-        
-        .ios-bg-trick {
-    position: fixed;
-    inset: 0;
-    background: inherit;                 /* 或直接写你想要的背景图/颜色 */
-    background-image: url('你的背景图');
-    background-size: cover;
-    z-index: -999;
-    pointer-events: none;
-}
-.fullscreen-bg {
-    position: fixed;
-    inset: 0;
-    z-index: -2;
-    background: url('https://splattacks.neocities.org/images/bg.png') center / cover no-repeat;
-    background-attachment: fixed;
-    
-    /* 强制延伸到安全区外 */
-    margin: 
-        calc(-1 * env(safe-area-inset-top)) 
-        calc(-1 * env(safe-area-inset-right)) 
-        calc(-1 * env(safe-area-inset-bottom)) 
-        calc(-1 * env(safe-area-inset-left));
-    
-    /* 或更简单粗暴 */
-    /* width: 100vw; height: 100dvh; */
-}
-html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    width: 100%;
-    overflow: hidden;           /* 防止多余滚动条 */
-}
 
+
+/* 放在最前面，覆盖原来的 body 背景定义 */
+html, body { height: 100%; min-height: 100%; }
+html {
+  background-image: url('https://splattacks.neocities.org/images/bg.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: scroll; /* 关键：不要 fixed（iOS Safari 会有问题） */
+  -webkit-background-size: cover;
+}
 body {
-    /* 核心：让背景真正延伸到安全区外 */
-    background: 
-        linear-gradient(to bottom, transparent, transparent),  /* 占位，避免闪烁 */
-        url('https://splattacks.neocities.org/images/bg.png') center / cover no-repeat fixed;
-    
-    /* 强烈建议统一用 fixed + no-repeat */
-    background-attachment: fixed !important;
-    
-    /* 让内容从安全区开始，但背景从边缘开始 */
-    padding-top: env(safe-area-inset-top);
-    padding-bottom: env(safe-area-inset-bottom);
-    padding-left: env(safe-area-inset-left);
-    padding-right: env(safe-area-inset-right);
-    
-    min-height: 100dvh;         /* 比 100vh 更可靠 */
-    box-sizing: border-box;
-}
-
-/* 针对 light 模式也统一处理 */
-body.light {
-    background: 
-        url('https://splattacks.neocities.org/images/bg.png') center / cover no-repeat fixed !important;
+  background: transparent; /* 让 html 的背景可见（避免 body 覆盖） */
+  min-height: 100svh; /* 在现代浏览器上比 100vh 更稳（可选） */
 }
         
         .glowing-card {
@@ -853,7 +808,6 @@ body:not(.light) .crt::before {
     </style>
 </head>
 <body class="light">
-        <div class="fullscreen-bg"></div>
     <canvas id="shuicheCanvas"></canvas>
     
     <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
