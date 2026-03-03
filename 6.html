@@ -33,44 +33,64 @@
             --fg: black;
             color: var(--fg);
         }
-
-html {
+        
+        .ios-bg-trick {
+    position: fixed;
+    inset: 0;
+    background: inherit;                 /* 或直接写你想要的背景图/颜色 */
+    background-image: url('你的背景图');
+    background-size: cover;
+    z-index: -999;
+    pointer-events: none;
+}
+.fullscreen-bg {
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    background: url('https://splattacks.neocities.org/images/bg.png') center / cover no-repeat;
+    background-attachment: fixed;
+    
+    /* 强制延伸到安全区外 */
+    margin: 
+        calc(-1 * env(safe-area-inset-top)) 
+        calc(-1 * env(safe-area-inset-right)) 
+        calc(-1 * env(safe-area-inset-bottom)) 
+        calc(-1 * env(safe-area-inset-left));
+    
+    /* 或更简单粗暴 */
+    /* width: 100vw; height: 100dvh; */
+}
+html, body {
     margin: 0;
     padding: 0;
-    background: url('https://splattacks.neocities.org/images/bg.png') center/cover fixed no-repeat;
-    min-height: -webkit-fill-available;
-    min-height: 100vh;
-    min-height: 100dvh;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;           /* 防止多余滚动条 */
 }
 
 body {
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    min-height: -webkit-fill-available;
-    min-height: 100dvh;
-    background: transparent !important; /* 透传html的背景 */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: 'Inter', sans-serif;
-    color: var(--fg);
-    overflow: hidden;
+    /* 核心：让背景真正延伸到安全区外 */
+    background: 
+        linear-gradient(to bottom, transparent, transparent),  /* 占位，避免闪烁 */
+        url('https://splattacks.neocities.org/images/bg.png') center / cover no-repeat fixed;
+    
+    /* 强烈建议统一用 fixed + no-repeat */
+    background-attachment: fixed !important;
+    
+    /* 让内容从安全区开始，但背景从边缘开始 */
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    
+    min-height: 100dvh;         /* 比 100vh 更可靠 */
+    box-sizing: border-box;
 }
 
+/* 针对 light 模式也统一处理 */
 body.light {
-    color: var(--fg);
-}
-
-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    height: 100dvw;
-    height: -webkit-fill-available;
-    z-index: -1;
+    background: 
+        url('https://splattacks.neocities.org/images/bg.png') center / cover no-repeat fixed !important;
 }
         
         .glowing-card {
@@ -833,6 +853,7 @@ body:not(.light) .crt::before {
     </style>
 </head>
 <body class="light">
+        <div class="fullscreen-bg"></div>
     <canvas id="shuicheCanvas"></canvas>
     
     <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
