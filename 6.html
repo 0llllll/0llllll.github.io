@@ -1999,11 +1999,11 @@ END:VCARD
         });
         clipboard.on('success', function(e) {
             alert('👉微信号复制成功,即将前往微信！');
-            window.location.href = 'weixin://';
+            window.location.href = 'wechat://';
         });
         clipboard.on('error', function(e) {
             alert('复制失败,请手动输入 ' + wechatID);
-            window.location.href = 'weixin://dl/scan';
+            window.location.href = 'wechat://dl/scan';
         });
     </script>
 </body>
