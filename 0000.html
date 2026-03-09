@@ -2,7 +2,6 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -60,15 +59,6 @@
         body.light {
             background: url('https://splattacks.neocities.org/images/bg.png') center/cover fixed;
             color: var(--fg);
-        }
-
-        canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            z-index: -1;
         }
 
         .glowing-card {
@@ -400,6 +390,7 @@
             width: fit-content;
             font-style: italic;
             transition: transform 0.1s ease;
+            justify-content: flex-start;
         }
         .play-btn:hover {
             transform: scale(1.05);
@@ -423,11 +414,6 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-        }
-
-        .play-btn {
-            width: fit-content;
-            justify-content: flex-start;
         }
 
         #shuicheCanvas {
