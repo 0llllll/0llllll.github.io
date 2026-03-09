@@ -60,6 +60,7 @@
             background: url('https://splattacks.neocities.org/images/bg.png') center/cover fixed;
             color: var(--fg);
         }
+
         .glowing-card {
             --pads: 20px;
             --color-sens: calc(var(--glow-sens) + 20);
@@ -74,31 +75,37 @@
             isolation: isolate;
             transform: translate3d(0, 0, 0.01px);
             background: #fff2;
-            box-shadow: 0px 10px 15px rgba(0, 0, 0, 0), 0 0 56px #fff inset;
+            box-shadow:  0px 10px 15px rgba(0, 0, 0, 0), 0 0 56px #fff inset;
             overflow: hidden;
             text-align: center;
             box-sizing: border-box;
             border: none;
-            backdrop-filter: blur(5px);
+            backdrop-filter:blur(5px);
         }
+
         body:not(.light) .glowing-card {
             backdrop-filter: none;
             background: rgba(255,255,255,0.15);
             border: 1px solid rgb(255 255 255 / 25%);
         }
+
         body:not(.light) .link-card {
             background: rgba(255,255,255,0.07);
         }
+
         body:not(.light) .link-card:hover {
             background: rgba(255,255,255,0.2);
         }
+
         body:not(.light) .spotify-card {
             background: rgba(255,255,255,0.09);
         }
+
         body:not(.light) .music-player {
             background: rgba(255,255,255,0.15);
             box-shadow: none;
         }
+
         .theme-toggle {
             position: absolute;
             top: 6px;
@@ -110,9 +117,11 @@
             transition: opacity 0.3s;
             -webkit-tap-highlight-color: transparent;
         }
+
         .theme-toggle:hover {
             opacity: 0.7;
         }
+
         .sun-toggle {
             left: 6px;
             transition: transform 0.1s ease;
@@ -120,9 +129,11 @@
         .sun-toggle:hover {
             transform: scale(1.2);
         }
+
         .moon-toggle {
             right: 6px;
         }
+
         .day-toggle {
             position: absolute;
             bottom: 5px;
@@ -134,9 +145,11 @@
             transition: opacity 0.3s;
             -webkit-tap-highlight-color: transparent;
         }
+
         .day-toggle:hover {
             opacity: 0.7;
         }
+
         .day-toggle-left {
             left: 6px;
             transition: transform 0.1s ease;
@@ -144,19 +157,23 @@
         .day-toggle-left:hover {
             transform: scale(1.2);
         }
+
         .day-toggle-right {
             right: 6px;
         }
+
         .alist-widget-wrapper {
             padding: 20px;
             z-index: 1;
             height: 100%;
             box-sizing: border-box;
         }
+
         .profile-header {
             padding: 15px 2px 12px;
             position: relative;
         }
+
         .profile-pic {
             width: 200px;
             height: 200px;
@@ -178,18 +195,21 @@
             margin-top: -45px;
             margin-bottom: -45px;
         }
+
         .link-section {
             width: 100%;
             height: 100%;
             overflow: hidden;
             padding: 0;
         }
+
         .pages {
             display: flex;
             transition: transform 0.5s ease-in-out;
             height: 100%;
             transform: translateX(-100%);
         }
+
         .page {
             flex: 0 0 100%;
             height: var(--page-height);
@@ -200,11 +220,13 @@
             padding: 0 27px 26.2px;
             overflow: hidden;
         }
+
         #page3 {
             justify-content: center;
             align-items: center;
             padding: 0;
         }
+
         .link-card {
             display: flex;
             align-items: center;
@@ -228,32 +250,38 @@
             user-select: none;
             transition: all 0.2s ease;
         }
+
         .link-card:hover {
             background: rgba(255,255,255,0.3);
             color: #333;
         }
+
         .link-icon {
             width: 36px;
             height: 36px;
             margin-left: 16px;
             margin-right: 18px;
         }
+
         .link-title {
             text-align: center;
             width: 100%;
             font-size: 18px;
             color: var(--fg);
         }
+
         .link-scroll-container {
             overflow-y: scroll;
             position: relative;
             width: calc(284px + 10px);
             margin-right: -10px;
         }
+
         .link-scroll-container::-webkit-scrollbar {
             width: 0px;
             background: transparent;
         }
+
         .link-scroll-container::-webkit-scrollbar-track {
             background: transparent;
             border-right: 0px solid transparent;
@@ -265,9 +293,11 @@
             opacity: 0;
             transition: opacity 0.3s ease;
         }
+
         .link-scroll-container.scrolling::-webkit-scrollbar-thumb {
             opacity: 1;
         }
+
         .spotify-card {
             display: flex;
             justify-content: space-between;
@@ -289,6 +319,7 @@
             user-select: none;
             transition: all 0.2s ease;
         }
+
         .spotify-left {
             display: flex;
             flex-direction: column;
@@ -299,11 +330,13 @@
             padding-right: 8px;
             gap: 6px;
         }
+
         .spotify-meta {
             display: flex;
             align-items: center;
             gap: 6px;
         }
+
         .spotify-icon {
             width: 36px;
             height: 36px;
@@ -314,16 +347,19 @@
             justify-content: center;
             flex-shrink: 0;
         }
+
         .spotify-icon img {
             width: 22px;
             height: 22px;
         }
+
         .track-text {
             display: flex;
             flex-direction: column;
             text-align: left;
             gap: 1px;
         }
+
         .track-title {
             font-size: 16px;
             font-weight: bold;
@@ -331,11 +367,13 @@
             color: var(--fg);
             font-style: italic;
         }
+
         .track-artist {
             font-size: 11.7870px;
             color: var(--fg);
             font-style: italic;
         }
+
         .play-btn {
             background-color: #3fd97a;
             color: white;
@@ -343,7 +381,7 @@
             border-radius: 24px;
             padding: 6px 36px;
             font-size: 14px;
-            font-weight: bold;
+            font-weight:  bold;
             display: flex;
             align-items: center;
             gap: 6px;
@@ -352,14 +390,17 @@
             width: fit-content;
             font-style: italic;
             transition: transform 0.1s ease;
+            justify-content: flex-start;
         }
         .play-btn:hover {
             transform: scale(1.05);
         }
+
         .play-btn svg {
             width: 14px;
             height: 14px;
         }
+
         .spotify-cover {
             width: 75px;
             height: 75px;
@@ -368,15 +409,13 @@
             flex-shrink: 0;
             margin-left: 8px;
         }
+
         .spotify-cover img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-        .play-btn {
-            width: fit-content;
-            justify-content: flex-start;
-        }
+
         #shuicheCanvas {
             position: fixed;
             left: 0;
@@ -384,6 +423,7 @@
             z-index: 2147483647;
             pointer-events: none;
         }
+
         .pagination {
             display: flex;
             justify-content: center;
@@ -391,18 +431,18 @@
             margin-top: -8px;
             margin-bottom: 10px;
         }
+
         .bullet {
             width: 85px;
             height: 6px;
             background: var(--fg);
             opacity: 0.2;
-            border-radius: 10%;
+            border-radius:10%;
             cursor: pointer;
             transition: all 0.3s;
-        }
-        .bullet {
             position: relative;
         }
+
         .bullet::before {
             content: "";
             position: absolute;
@@ -413,7 +453,7 @@
             cursor: pointer;
         }
         .bullet.active {
-            border-radius: 10%;
+            border-radius:10%;
             opacity: 1;
             background: #c299ff;
             box-shadow: 0px 0px 20px rgba(194, 153, 255, 0);
@@ -431,6 +471,7 @@
             z-index: 2;
             pointer-events: none;
         }
+
         body:not(.light) .crt::before {
             content: " ";
             display: block;
@@ -439,15 +480,17 @@
             left: 0;
             bottom: 0;
             right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 100%),
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 100%), 
                         linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
             z-index: 2;
             background-size: 100% 2px, 3px 100%;
             pointer-events: none;
         }
+
         #page1 {
             padding: 0;
         }
+
         #page1 .page-vertical {
             height: 100%;
             overflow-y: auto;
@@ -457,13 +500,10 @@
             overscroll-behavior: contain;
             position: relative;
         }
-        #page1 .page-vertical::-webkit-scrollbar {
-            display: none;
-        }
-        #page1 .page-vertical {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
+
+        #page1 .page-vertical::-webkit-scrollbar { display: none; }
+        #page1 .page-vertical { -ms-overflow-style: none; scrollbar-width: none; }
+
         #page1 .subpage {
             scroll-snap-align: start;
             height: 100%;
@@ -474,22 +514,25 @@
             justify-content: center;
             align-items: center;
         }
-        #page1 .subpage {
-            scroll-snap-stop: always;
-        }
+
+        #page1 .subpage { scroll-snap-stop: always; }
+
         #page1,
         #page1 .page-vertical,
         #page1 .subpage {
             overflow-x: hidden !important;
         }
+
         #page1 img {
             display: block;
             height: auto;
             max-height: 100%;
         }
+
         #page1 .subpage > div {
             overflow: hidden;
         }
+
         @font-face {
             font-family: "icomoon";
             src: url("https://cdn.jsdelivr.net/gh/00000OO/music-player-widget@main/src/assets/icomoon/fonts/icomoon.eot?u8ckod");
@@ -501,6 +544,7 @@
             font-style: normal;
             font-display: block;
         }
+
         [class^="icon-"],
         [class*=" icon-"] {
             font-family: "icomoon" !important;
@@ -513,11 +557,13 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
+
         .icon-back:before { content: "\e900"; color: #827d7b; }
         .icon-next:before { content: "\e901"; color: #827d7b; }
         .icon-pause:before { content: "\e902"; color: #fff; }
         .icon-play:before { content: "\e903"; color: #fff; }
         .icon-playlist:before { content: "\e904"; color: #fff; }
+
         .img { width: 100%; flex-shrink: 0; display: block; object-fit: cover; }
         .list { margin: 0; padding: 0; list-style-type: none; }
         .text_trsf-cap { text-transform: capitalize; }
@@ -540,6 +586,7 @@
             text-overflow: ellipsis;
             margin-right: 60px;
         }
+
         .music-player {
             --color-white: #fff;
             --color-gray: #e5e7ea;
@@ -700,6 +747,7 @@
             font-size: 1em;
             margin-left: 1.2em;
         }
+
         .music-player__playlist-info b {
             display: block;
             margin-left: 0;
@@ -707,12 +755,14 @@
             text-align: left;
             width: calc(100% - 50px);
         }
+
         .flex-row._justify_space-btwn {
             display: flex;
             justify-content: space-between;
             align-items: center;
             width: 100%;
         }
+
         .music-player__playlist-info .music-player__subtitle {
             display: block;
             text-align: left;
@@ -720,6 +770,7 @@
             padding-left: 0;
             flex-grow: 1;
         }
+
         .music-player__song-duration {
             flex-shrink: 0;
             margin-left: 10px;
@@ -727,6 +778,7 @@
         .music-player__song-duration {
             font-weight: bold; font-size: 0.8em; color: var(--color-text-2);
         }
+
         .loading-spinner {
             display: inline-block;
             width: 40px;
@@ -736,9 +788,11 @@
             border-top-color: var(--fg);
             animation: spin 1s ease-in-out infinite;
         }
+
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+
         .loading-text {
             margin-top: 10px;
             font-size: 16px;
@@ -748,7 +802,7 @@
 </head>
 <body class="light">
     <canvas id="shuicheCanvas"></canvas>
-
+    
     <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
     <script>
@@ -757,21 +811,26 @@
         let mouseX = 0, mouseY = 0;
         let windowHalfX = window.innerWidth / 2;
         let windowHalfY = window.innerHeight / 2;
+
         let geometry = new THREE.BufferGeometry();
         geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(6 * count), 3));
         geometry.setAttribute('velocity', new THREE.BufferAttribute(new Float32Array(2 * count), 1));
+
         let position = geometry.getAttribute('position');
         let positionArray = position.array;
         let velocity = geometry.getAttribute('velocity');
         let velocityArray = velocity.array;
+
         function init() {
             scene = new THREE.Scene();
             camera = new THREE.PerspectiveCamera(80, window.innerWidth / window.innerHeight, 1, 500);
             camera.position.z = 200;
+            
             const canvas = document.getElementById('shuicheCanvas');
             renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
             renderer.setSize(window.innerWidth, window.innerHeight, false);
             renderer.setClearColor(0x000000, 0);
+            
             for (let index = 0, len = count; index < len; index++) {
                 const x = Math.random() * 800 - 400;
                 const y = Math.random() * 800 - 400;
@@ -779,22 +838,29 @@
                 const x2 = x;
                 const y2 = y;
                 const z2 = z;
+
                 positionArray[6 * index] = x;
                 positionArray[6 * index + 1] = y;
                 positionArray[6 * index + 2] = z;
+
                 positionArray[6 * index + 3] = x2;
                 positionArray[6 * index + 4] = y2;
                 positionArray[6 * index + 5] = z2;
+
                 velocityArray[2 * index] = 0;
                 velocityArray[2 * index + 1] = 0;
             }
+            
             let material = new THREE.LineBasicMaterial({ color: 0xffffff });
             let lines = new THREE.LineSegments(geometry, material);
             scene.add(lines);
+
             window.addEventListener('resize', resize, false);
             document.body.addEventListener('pointermove', onPointerMove);
+            
             anime();
         }
+        
         function resize() {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
@@ -802,12 +868,14 @@
             windowHalfX = window.innerWidth / 2;
             windowHalfY = window.innerHeight / 2;
         }
+
         function anime() {
             for (let index = 0, len = count; index < len; index++) {
                 velocityArray[2 * index] += 0.015;
                 velocityArray[2 * index + 1] += 0.015;
                 positionArray[6 * index + 2] += velocityArray[2 * index] + 0.03;
                 positionArray[6 * index + 5] += velocityArray[2 * index + 1];
+
                 if(positionArray[6 * index + 2] > 200) {
                     let z = Math.random() * 200 - 200;
                     positionArray[6 * index + 2] = z;
@@ -816,15 +884,18 @@
                     velocityArray[2 * index + 1] = 0;
                 }
             }
+
             position.needsUpdate = true;
             renderer.render(scene, camera);
             requestAnimationFrame(anime);
             render();
         }
+
         function onPointerMove(event) {
             mouseX = event.clientX - windowHalfX;
             mouseY = event.clientY - windowHalfY;
         }
+
         function render() {
             camera.position.x += (-mouseX * 0.1 - camera.position.x) * 0.02;
             camera.position.y += (-mouseY * 0.1 - camera.position.y) * 0.02;
@@ -842,36 +913,50 @@
                             <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
                         </g>
                     </svg>
+                    
                     <svg class="theme-toggle moon-toggle" viewBox="0 0 24 24" onclick="toggleTheme('dark')">
                         <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/>
                     </svg>
+                    
                     <svg class="day-toggle day-toggle-left" viewBox="0 0 24 24" onclick="switchBackground('https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/222.JPG')">
                         <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
                             <circle cx="12" cy="12" r="4"/>
                             <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
                         </g>
                     </svg>
+
                     <svg class="day-toggle day-toggle-right" viewBox="0 0 24 24" onclick="switchBackground('https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/111.JPG')">
                         <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
                             <circle cx="12" cy="12" r="4"/>
                             <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
                         </g>
                     </svg>
+                    
                     <div class="link-section">
                         <div class="pages">
                             <div id="page1" class="page">
                                 <div class="page-vertical">
                                     <section class="subpage" id="page1-1">
-                                        <div id="rewardContainer" onclick="toggleReward()" style="height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; padding-top:0px; font-style:italic; cursor: pointer; position: relative;">
+                                        <div id="rewardContainer" 
+                                             onclick="toggleReward()"
+                                             style="height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; padding-top:0px; font-style:italic; cursor: pointer; position: relative;">
                                             <div style="position: relative; width: 100%; display: flex; justify-content: center; align-items: center;">
-                                                <img id="neko-gif" src="https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/Neko.GIF" alt="GIF动图" style="max-width:99.5%; max-height:100%; border-radius:18px; transition: opacity 0.5s ease; opacity: 1;">
-                                                <img id="reward-qr" src="https://dogpan.com/f/R6jjc5/IMG_5312.jpeg" alt="二维码" style="position: absolute; width: 340px; height: 340px; border-radius: 18px; transition: opacity 0.5s ease; opacity: 0; pointer-events: none; top:0px;">
+                                                <img id="neko-gif" 
+                                                     src="https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/Neko.GIF" 
+                                                     alt="GIF动图" 
+                                                     style="max-width:99.5%; max-height:100%; border-radius:18px; transition: opacity 0.5s ease; opacity: 1;">
+                                                <img id="reward-qr" 
+                                                     src="https://dogpan.com/f/R6jjc5/IMG_5312.jpeg" 
+                                                     alt="二维码" 
+                                                     style="position: absolute; width: 340px; height: 340px; border-radius: 18px; transition: opacity 0.5s ease; opacity: 0; pointer-events: none; top:0px;">
                                             </div>
                                             <div style="position: relative; margin-top: 21px; display: flex; justify-content: center; align-items: center; width: 100%; height: 32px;">
-                                                <p id="text-original" style="position: absolute; color: var(--fg); font-size:24px; text-align:center; text-decoration: underline; margin: 0; transition: opacity 0.5s ease; opacity: 1; white-space: nowrap;">
+                                                <p id="text-original" 
+                                                   style="position: absolute; color: var(--fg); font-size:24px; text-align:center; text-decoration: underline; margin: 0; transition: opacity 0.5s ease; opacity: 1; white-space: nowrap;">
                                                     猫爪一伸,请我喝杯咖啡吧☕️
                                                 </p>
-                                                <div id="text-new" style="position: absolute; opacity: 0; transition: opacity 0.5s ease; pointer-events: none; text-align: center; margin-top: -40px;">
+                                                <div id="text-new" 
+                                                     style="position: absolute; opacity: 0; transition: opacity 0.5s ease; pointer-events: none; text-align: center; margin-top: -40px;">
                                                     <a href="weixin://scanqrcode" target="_blank" style="color: var(--fg); font-size:24px; text-decoration: underline;" onclick="event.stopPropagation()">
                                                         👉点击跳转微信扫一扫👈
                                                     </a>
@@ -908,12 +993,14 @@
                                     </section>
                                     <section class="subpage" id="page1-2">
                                         <div style="height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-                                            <img src="https://media.giphy.com/media/1rdJ9fr772ZyzBSVxK/giphy.gif?cid=ecf05e4743fdadc6822048c77a7a5b7a382eefb7e471232e&ep=v1_user_favorites&rid=giphy.gif&ct=g" style="max-width: 99.5%; max-height: 100%; border-radius: 15px; margin-top: 8px;">
+                                            <img src="https://media.giphy.com/media/1rdJ9fr772ZyzBSVxK/giphy.gif?cid=ecf05e4743fdadc6822048c77a7a5b7a382eefb7e471232e&ep=v1_user_favorites&rid=giphy.gif&ct=g"
+                                                 style="max-width: 99.5%; max-height: 100%; border-radius: 15px; margin-top: 8px;">
                                         </div>
                                     </section>
                                     <section class="subpage" id="page1-3">
                                         <div style="height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-                                            <img src="https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/J.PNG" style="max-width: 99.5%; max-height: 100%; border-radius: 15px;">
+                                            <img src="https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/J.PNG"
+                                                 style="max-width: 99.5%; max-height: 100%; border-radius: 15px;">
                                         </div>
                                     </section>
                                     <section class="subpage" id="page1-4">
@@ -923,7 +1010,10 @@
                             </div>
                             <div id="page2" class="page">
                                 <div class="profile-header">
-                                    <img src="https://media4.giphy.com/media/AlH6Won01J8wtufqpb/giphy.gif?cid=9b38fe91460a7462f4c8fc34b0384f3c796565aa75887dd9&ep=v1_user_favorites&rid=giphy.gif&ct=s" alt="头像" class="profile-pic" onclick="confetti({particleCount:150,spread:100}); avatarSound.play();" />
+                                    <img src="https://media4.giphy.com/media/AlH6Won01J8wtufqpb/giphy.gif?cid=9b38fe91460a7462f4c8fc34b0384f3c796565aa75887dd9&ep=v1_user_favorites&rid=giphy.gif&ct=s"
+                                         alt="头像"
+                                         class="profile-pic"
+                                         onclick="confetti({particleCount:150,spread:100}); avatarSound.play();" />
                                 </div>
                                 <div class="spotify-card" onclick="window.open('https://open.spotify.com/track/3UkRfA9F62DYYDzqOskoov?si=MXIJN0wrQx24IS-qmyCUjg', '_blank')">
                                     <div class="spotify-left">
@@ -957,11 +1047,11 @@
                                         <span class="link-title">Telegram</span>
                                     </a>
                                     <a href="https://www.tiktok.com/@ooooocco" class="link-card" target="_blank">
-                                        <img src="https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/TikTok.PNG" alt="TikTok" class="link-icon" />
+                                        <img src="https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/TikTok.PNG" alt="GitHub" class="link-icon" />
                                         <span class="link-title">TikTok</span>
                                     </a>
                                     <a href="https://🦋.blogspot.com" class="link-card" target="_blank">
-                                        <img src="https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/Emoji.PNG" alt="Blog" class="link-icon" />
+                                        <img src="https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/Emoji.PNG" alt="GitHub" class="link-icon" />
                                         <span class="link-title">Blog 🐈</span>
                                     </a>
                                     <a href="https://wa.me/message/SYDPTLQEHYE3P1?src=qr" class="link-card" target="_blank">
@@ -1008,15 +1098,19 @@
         let musicPlayerLoaded = false;
         const glowingCard = document.querySelector('.glowing-card');
         const originalBoxShadow = '0px 10px 15px rgba(0, 0, 0, 0), 0 0 56px #fff inset';
+
         function updateGlowingShadow() {
             if (currentPage !== 3) {
                 glowingCard.style.boxShadow = originalBoxShadow;
                 return;
             }
             const isLight = document.body.classList.contains('light');
-            const reducedBoxShadow = isLight ? '0px 10px 15px rgba(0, 0, 0, 0), 0 0 56px #fff inset' : '0px 10px 15px rgba(0, 0, 0, 0), 0 0 56px #fff inset';
+            const reducedBoxShadow = isLight 
+                ? '0px 10px 15px rgba(0, 0, 0, 0), 0 0 56px #fff inset' 
+                : '0px 10px 15px rgba(0, 0, 0, 0), 0 0 56px #fff inset';
             glowingCard.style.boxShadow = reducedBoxShadow;
         }
+
         window.onload = function() {
             init();
             preloadImages([
@@ -1027,49 +1121,67 @@
             loadMusicPlayer();
             switchPageTo(2);
         };
+
         function preloadImages(urls) {
             urls.forEach(url => {
                 const img = new Image();
                 img.src = url;
             });
         }
+
         function switchPageTo(page) {
             if (page < 1 || page > 3) return;
             currentPage = page;
+
             const pages = document.querySelector('.pages');
             pages.style.transform = `translateX(-${(page - 1) * 100}%)`;
+
             document.querySelectorAll('.bullet').forEach(b => b.classList.toggle('active', parseInt(b.dataset.page) === page));
+
             updateGlowingShadow();
         }
+
         let isPlaying = false;
         const audio = document.getElementById('audioPlayer');
+
         function togglePlay(button) {
             if (isPlaying) {
                 audio.pause();
                 button.classList.remove('playing');
-                button.innerHTML = `<svg viewBox="0 0 16 16" fill="white"><path d="M3 13.1231V2.87688C3 1.42024 4.55203 0.520516 5.77196 1.26995L14.1114 6.39307C15.2962 7.12093 15.2962 8.87907 14.1114 9.60693L5.77196 14.73C4.55203 15.4795 3 14.5798 3 13.1231Z"/></svg> Play`;
+                button.innerHTML = `
+                    <svg viewBox="0 0 16 16" fill="white">
+                        <path d="M3 13.1231V2.87688C3 1.42024 4.55203 0.520516 5.77196 1.26995L14.1114 6.39307C15.2962 7.12093 15.2962 8.87907 14.1114 9.60693L5.77196 14.73C4.55203 15.4795 3 14.5798 3 13.1231Z"/>
+                    </svg> Play`;
             } else {
                 audio.play();
                 button.classList.add('playing');
-                button.innerHTML = `<svg viewBox="0 0 16 16" fill="white"><path d="M4 2H6V14H4V2ZM10 2H12V14H10V2Z"/></svg> Pause`;
+                button.innerHTML = `
+                    <svg viewBox="0 0 16 16" fill="white">
+                        <path d="M4 2H6V14H4V2ZM10 2H12V14H10V2Z"/>
+                    </svg> Pause`;
             }
             isPlaying = !isPlaying;
         }
+
         audio.addEventListener('ended', () => {
             isPlaying = false;
             const btn = document.querySelector('.play-btn');
             if (btn) {
                 btn.classList.remove('playing');
-                btn.innerHTML = `<svg viewBox="0 0 16 16" fill="white"><path d="M3 13.1231V2.87688C3 1.42024 4.55203 0.520516 5.77196 1.26995L14.1114 6.39307C15.2962 7.12093 15.2962 8.87907 14.1114 9.60693L5.77196 14.73C4.55203 15.4795 3 14.5798 3 13.1231Z"/></svg> Play`;
+                btn.innerHTML = `
+                    <svg viewBox="0 0 16 16" fill="white">
+                        <path d="M3 13.1231V2.87688C3 1.42024 4.55203 0.520516 5.77196 1.26995L14.1114 6.39307C15.2962 7.12093 15.2962 8.87907 14.1114 9.60693L5.77196 14.73C4.55203 15.4795 3 14.5798 3 13.1231Z"/>
+                    </svg> Play`;
             }
         });
+
         function toggleTheme(theme) {
             const canvas = document.getElementById('shuicheCanvas');
             if (theme === 'light') {
                 document.body.classList.add('light');
                 renderer.setClearColor(0x000000, 0);
                 document.body.style.background = '';
-                document.documentElement.style.setProperty('--fg', 'black');
+                document.documentElement.style.setProperty('--fg', 'block');
                 canvas.style.display = 'block';
             } else {
                 document.body.classList.remove('light');
@@ -1082,6 +1194,7 @@
                 updateGlowingShadow();
             }
         }
+
         function switchBackground(url) {
             document.body.style.background = `url('${url}') center/cover fixed`;
             document.body.classList.add('light');
@@ -1092,6 +1205,7 @@
                 updateGlowingShadow();
             }
         }
+
         function loadMusicPlayer() {
             let indexSong = 0;
             let isLocked = false;
@@ -1108,30 +1222,42 @@
             let broadcastGuarantor_elmnt = null;
             const root = document.querySelector("#root");
             const mainAudio = document.getElementById('mainAudio');
+
             document.addEventListener('visibilitychange', () => {
                 if (document.visibilityState === 'hidden') {
                     savePlaybackState();
                 }
             });
+
             function savePlaybackState() {
                 if (!selectedSong) return;
+                
                 const playbackState = {
                     currentSongIndex: indexSong,
                     isPlaying: !selectedSong.paused,
                     volume: selectedSong.volume,
                     currentTime: selectedSong.currentTime
                 };
+                
                 localStorage.setItem('musicPlayerState', JSON.stringify(playbackState));
             }
+
             function restorePlaybackState() {
                 try {
                     const savedState = localStorage.getItem('musicPlayerState');
                     if (!savedState) return;
+                    
                     const playbackState = JSON.parse(savedState);
-                    if (playbackState.currentSongIndex !== undefined && playbackState.currentSongIndex >= 0 && playbackState.currentSongIndex <= songsLength) {
+                    
+                    if (playbackState.currentSongIndex !== undefined && 
+                        playbackState.currentSongIndex >= 0 && 
+                        playbackState.currentSongIndex <= songsLength) {
+                        
                         indexSong = playbackState.currentSongIndex;
+                        
                         mainAudio.src = songs[indexSong].files.song;
                         mainAudio.load();
+                        
                         mainAudio.addEventListener('loadedmetadata', () => {
                             if (playbackState.currentTime !== undefined) {
                                 mainAudio.currentTime = playbackState.currentTime;
@@ -1139,12 +1265,15 @@
                             if (playbackState.volume !== undefined) {
                                 mainAudio.volume = playbackState.volume;
                             }
+                            
                             mainAudio.pause();
                             broadcastGuarantor_elmnt.classList.remove("click");
                             songIsPlayed = false;
+                            
                             updateInfo(songName_elmnt, songs[indexSong].songName);
                             updateInfo(singerName_elmnt, songs[indexSong].artist);
                             setProperty(sliderImgs_elmnt, "--index", -indexSong);
+                            
                             if ('mediaSession' in navigator) {
                                 navigator.mediaSession.metadata = new MediaMetadata({
                                     title: songs[indexSong].songName,
@@ -1163,8 +1292,10 @@
                     console.error("Error restoring playback state:", e);
                 }
             }
+
             window.addEventListener('beforeunload', savePlaybackState);
             setInterval(savePlaybackState, 5000);
+
             function getArtwork(coverUrl) {
                 return [
                     { src: coverUrl, sizes: '96x96', type: 'image/jpeg' },
@@ -1175,6 +1306,7 @@
                     { src: coverUrl, sizes: '512x512', type: 'image/jpeg' }
                 ];
             }
+
             function handleChangeMusic({ isPrev = false, playListIndex = null }) {
                 if (isLocked) return;
                 let newIndex;
@@ -1186,19 +1318,23 @@
                 if (newIndex < 0) { newIndex = songsLength; }
                 else if (newIndex > songsLength) { newIndex = 0; }
                 if (newIndex === indexSong) return;
+
                 mainAudio.pause();
                 indexSong = newIndex;
                 mainAudio.src = songs[indexSong].files.song;
                 mainAudio.load();
+
                 mainAudio.addEventListener('loadedmetadata', () => {
                     if (songIsPlayed) {
                         mainAudio.play().catch(e => console.log("Play failed:", e));
                     }
                     savePlaybackState();
                 }, { once: true });
+
                 setProperty(sliderImgs_elmnt, "--index", -indexSong);
                 updateInfo(songName_elmnt, songs[indexSong].songName);
                 updateInfo(singerName_elmnt, songs[indexSong].artist);
+
                 if ('mediaSession' in navigator) {
                     navigator.mediaSession.metadata = new MediaMetadata({
                         title: songs[indexSong].songName,
@@ -1207,6 +1343,7 @@
                     });
                 }
             }
+
             function handleResizeSlider({ target }) {
                 if (isLocked) return;
                 else if (target.classList.contains("music-player__info")) {
@@ -1219,6 +1356,7 @@
                     return;
                 }
             }
+
             function handlePlayMusic() {
                 if (mainAudio.currentTime === mainAudio.duration) {
                     handleChangeMusic({});
@@ -1228,6 +1366,7 @@
                 mainAudio.paused ? mainAudio.play() : mainAudio.pause();
                 savePlaybackState();
             }
+
             function updateTheProgressBar() {
                 const duration = this.duration;
                 const currentTime = this.currentTime;
@@ -1241,11 +1380,13 @@
                     });
                 }
             }
+
             function handleSongEnded() {
                 if (songIsPlayed) {
                     handleChangeMusic({});
                 }
             }
+
             function handleScrub(e) {
                 e.preventDefault();
                 let clientX = e.clientX;
@@ -1258,6 +1399,7 @@
                 const currentTime = (clientX - progressOffsetLeft) / progressWidth;
                 selectedSong.currentTime = currentTime * duration;
             }
+
             const songs = [
                 {
                     "bg": "#c9bea28f",
@@ -1332,6 +1474,7 @@
                     }
                 }
             ];
+
             const musicPlayer = document.createElement("div");
             musicPlayer.className = "music-player flex-column";
             const slider = document.createElement("div");
