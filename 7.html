@@ -2,9 +2,10 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#007AFF">
     <title>🌙🐈🌅</title>
     <style>
         :root {
@@ -32,12 +33,12 @@
             color: var(--fg);
         }
 
-
         body {
             margin: 0;
             padding: 0;
-            min-height: 100vh;
-            background: url('https://splattacks.neocities.org/images/bg.png') center/cover fixed;
+            min-height: 100dvh;
+            background: url('https://splattacks.neocities.org/images/bg.png') center/cover;
+            background-attachment: scroll;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -46,35 +47,20 @@
             overflow: hidden;
         }
 
-        body.light {
-            background: url('https://splattacks.neocities.org/images/bg.png') center/cover fixed;
-            color: var(--fg);
-        }
-        
         canvas {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100vh;
+            height: 100dvh;
             z-index: -1;
         }
-
 
         body.light {
             background: url('https://splattacks.neocities.org/images/bg.png') center/cover fixed;
             color: var(--fg);
         }
-        
-        canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            z-index: -1;
-        }
-        
+
         .glowing-card {
             --pads: 20px;
             --color-sens: calc(var(--glow-sens) + 20);
@@ -100,22 +86,19 @@
         body:not(.light) .glowing-card {
             backdrop-filter: none;
             background: rgba(255,255,255,0.15);
-
             border: 1px solid rgb(255 255 255 / 25%);
         }
 
         body:not(.light) .link-card {
             background: rgba(255,255,255,0.07);
-
         }
-        
+
         body:not(.light) .link-card:hover {
-            background: rgba(255,255,255,0.2); 
+            background: rgba(255,255,255,0.2);
         }
 
         body:not(.light) .spotify-card {
             background: rgba(255,255,255,0.09);
-
         }
 
         body:not(.light) .music-player {
@@ -143,9 +126,9 @@
             left: 6px;
             transition: transform 0.1s ease;
         }
-      .sun-toggle:hover {
-    transform: scale(1.2);
-}
+        .sun-toggle:hover {
+            transform: scale(1.2);
+        }
 
         .moon-toggle {
             right: 6px;
@@ -172,8 +155,8 @@
             transition: transform 0.1s ease;
         }
         .day-toggle-left:hover {
-    transform: scale(1.2);
-}
+            transform: scale(1.2);
+        }
 
         .day-toggle-right {
             right: 6px;
@@ -191,28 +174,27 @@
             position: relative;
         }
 
-.profile-pic {
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin: 0 auto;
-    display: block;
-    filter: brightness(0.88);
-    object-position: center 10%; /* 垂直方向裁剪，减少上下透明部分 */
-    image-rendering: optimizeSpeed; /* 优化渲染性能 */
-    image-rendering: -moz-crisp-edges; /* Firefox */
-    image-rendering: -webkit-optimize-contrast; /* Safari */
-    image-rendering: optimize-contrast;
-    image-rendering: pixelated;
-    -ms-interpolation-mode: nearest-neighbor; /* IE */
-    backface-visibility: hidden; /* 防止渲染闪烁 */
-    transform: translateZ(0); /* 硬件加速 */
-    will-change: transform; /* 性能优化 */
-    /* 如果需要更激进的裁剪 */
-margin-top: -45px; /* 向上移动 */
-margin-bottom: -45px; /* 减少底部空间 */
-}
+        .profile-pic {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto;
+            display: block;
+            filter: brightness(0.88);
+            object-position: center 10%;
+            image-rendering: optimizeSpeed;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: optimize-contrast;
+            image-rendering: pixelated;
+            -ms-interpolation-mode: nearest-neighbor;
+            backface-visibility: hidden;
+            transform: translateZ(0);
+            will-change: transform;
+            margin-top: -45px;
+            margin-bottom: -45px;
+        }
 
         .link-section {
             width: 100%;
@@ -248,7 +230,7 @@ margin-bottom: -45px; /* 减少底部空间 */
         .link-card {
             display: flex;
             align-items: center;
-            justify-content: flex-start;              
+            justify-content: flex-start;
             width: 275px !important;
             min-width: 275px;
             max-width: 275px;
@@ -289,25 +271,25 @@ margin-bottom: -45px; /* 减少底部空间 */
         }
 
         .link-scroll-container {
-            overflow-y: scroll;  /* 修改为 scroll，确保滚动条始终可见（测试用，可改回 auto） */
-    position: relative;  /* 新增：相对定位，便于自定义滚动条位置 */
-    width: calc(284px + 10px);  /* 新增：容器宽度略宽于卡片（275px + 滚动条宽度），让滚动条“溢出”到右边外面 */
-    margin-right: -10px;  /* 新增：负 margin 补偿宽度，让容器不挤压页面布局 */
+            overflow-y: scroll;
+            position: relative;
+            width: calc(284px + 10px);
+            margin-right: -10px;
         }
 
         .link-scroll-container::-webkit-scrollbar {
             width: 0px;
             background: transparent;
         }
-      
-      .link-scroll-container::-webkit-scrollbar-track {
-    background: transparent;  /* 轨道完全透明，让它不占内部空间 */
-    border-right: 0px solid transparent;  /* 新增：右侧透明 border“推”thumb到外面，模拟边框外效果 */
-}
+
+        .link-scroll-container::-webkit-scrollbar-track {
+            background: transparent;
+            border-right: 0px solid transparent;
+        }
         .link-scroll-container::-webkit-scrollbar-thumb {
             background: rgba(200, 200, 200, 0.3);
             border-radius: 100px;
-            border: 1px solid rgba(255, 255, 255, 0.1);  /* 新增：thumb 边框，增强“外面”视觉 */
+            border: 1px solid rgba(255, 255, 255, 0.1);
             opacity: 0;
             transition: opacity 0.3s ease;
         }
@@ -408,6 +390,7 @@ margin-bottom: -45px; /* 减少底部空间 */
             width: fit-content;
             font-style: italic;
             transition: transform 0.1s ease;
+            justify-content: flex-start;
         }
         .play-btn:hover {
             transform: scale(1.05);
@@ -431,11 +414,6 @@ margin-bottom: -45px; /* 减少底部空间 */
             width: 100%;
             height: 100%;
             object-fit: cover;
-        }
-            
-        .play-btn {
-            width: fit-content;
-            justify-content: flex-start;
         }
 
         #shuicheCanvas {
@@ -462,111 +440,99 @@ margin-bottom: -45px; /* 减少底部空间 */
             border-radius:10%;
             cursor: pointer;
             transition: all 0.3s;
+            position: relative;
         }
-.bullet {
-    position: relative;
-}
 
-.bullet::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: -20px;      /* ↑ 扩大触控区域 */
-    bottom: -20px;   /* ↓ 扩大触控区域 */
-    cursor: pointer;
-}
+        .bullet::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: -20px;
+            bottom: -20px;
+            cursor: pointer;
+        }
         .bullet.active {
             border-radius:10%;
             opacity: 1;
             background: #c299ff;
             box-shadow: 0px 0px 20px rgba(194, 153, 255, 0);
         }
- body:not(.light) .crt::after {
-  content: " ";
-  display: block;
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background: rgba(18, 16, 16, 0);
-  opacity: 0%;
-  z-index: 2;
-  pointer-events: none;
-}
+        body:not(.light) .crt::after {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: rgba(18, 16, 16, 0);
+            opacity: 0%;
+            z-index: 2;
+            pointer-events: none;
+        }
 
-body:not(.light) .crt::before {
-  content: " ";
-  display: block;
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 100%), 
-              linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-  z-index: 2;
-  background-size: 100% 2px, 3px 100%;
-  pointer-events: none;
-}     
-      
-      
-      /* 垂直吸附（Scroll Snap） - 添加到现有 CSS */
-#page1 { /* 保留外层 .page 设置不变；我们在内部加一个滚动容器 */
-  padding: 0;
-}
+        body:not(.light) .crt::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 100%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 2;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
 
-#page1 .page-vertical {
-  height: 100%;                         /* 占满 page 的高度（var(--page-height)） */
-  overflow-y: auto;                     /* 允许垂直滚动 */
-  -webkit-overflow-scrolling: touch;    /* iOS 平滑滚动 */
-  scroll-snap-type: y mandatory;        /* 垂直吸附，强制 snap */
-  scroll-behavior: smooth;              /* 平滑滚动（鼠标/锚点） */
-  overscroll-behavior: contain;         /* 阻止父级滚动链 */
-  position: relative;
-}
+        #page1 {
+            padding: 0;
+        }
 
-/* 隐藏滚动条（视觉上没有滚动条） */
-#page1 .page-vertical::-webkit-scrollbar { display: none; }
-#page1 .page-vertical { -ms-overflow-style: none; scrollbar-width: none; }
+        #page1 .page-vertical {
+            height: 100%;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+            overscroll-behavior: contain;
+            position: relative;
+        }
 
-/* 每个“子页面”占满一屏并启用吸附对齐 */
-#page1 .subpage {
-  scroll-snap-align: start;             /* 吸附时对齐顶部 */
-  height: 100%;                         /* 占满容器高度 */
-  min-height: var(--page-height);       /* 保险：确保至少是定义的页面高度 */
-  box-sizing: border-box;
-  display: flex;                        /* 便于垂直/水平布局内容 */
-  flex-direction: column;
-  justify-content: center;              /* 视需要调整 */
-  align-items: center;
+        #page1 .page-vertical::-webkit-scrollbar { display: none; }
+        #page1 .page-vertical { -ms-overflow-style: none; scrollbar-width: none; }
 
-}
+        #page1 .subpage {
+            scroll-snap-align: start;
+            height: 100%;
+            min-height: var(--page-height);
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
 
-/* 可选：强制每次滚动都停在一屏（Chrome 支持） */
-#page1 .subpage { scroll-snap-stop: always; }
-      
-/* ① 禁止 page1 和子页面产生水平滚动 */
-#page1,
-#page1 .page-vertical,
-#page1 .subpage {
-    overflow-x: hidden !important;
-}
+        #page1 .subpage { scroll-snap-stop: always; }
 
-/* ② 防止 GIF 放大后把页面撑出（横向溢出隐藏）*/
-#page1 img {
-    display: block;
-    height: auto;
-    /* 保留你原有的 max-width:107%、150% */
-    /* 横向溢出的部分自动隐藏 */
-    max-height: 100%;
-}
+        #page1,
+        #page1 .page-vertical,
+        #page1 .subpage {
+            overflow-x: hidden !important;
+        }
 
-#page1 .subpage > div {
-    overflow: hidden; /* 关键：容器裁剪超出的 GIF */
-} 
-      
+        #page1 img {
+            display: block;
+            height: auto;
+            max-height: 100%;
+        }
+
+        #page1 .subpage > div {
+            overflow: hidden;
+        }
+
         @font-face {
             font-family: "icomoon";
             src: url("https://cdn.jsdelivr.net/gh/00000OO/music-player-widget@main/src/assets/icomoon/fonts/icomoon.eot?u8ckod");
@@ -838,33 +804,28 @@ body:not(.light) .crt::before {
     <canvas id="shuicheCanvas"></canvas>
     
     <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
     <script>
         const count = 5000;
         let scene, camera, renderer;
         let mouseX = 0, mouseY = 0;
         let windowHalfX = window.innerWidth / 2;
         let windowHalfY = window.innerHeight / 2;
-
         let geometry = new THREE.BufferGeometry();
         geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(6 * count), 3));
         geometry.setAttribute('velocity', new THREE.BufferAttribute(new Float32Array(2 * count), 1));
-
         let position = geometry.getAttribute('position');
         let positionArray = position.array;
         let velocity = geometry.getAttribute('velocity');
         let velocityArray = velocity.array;
-
         function init() {
             scene = new THREE.Scene();
             camera = new THREE.PerspectiveCamera(80, window.innerWidth / window.innerHeight, 1, 500);
             camera.position.z = 200;
-            
-const canvas = document.getElementById('shuicheCanvas');
-renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
-renderer.setSize(window.innerWidth, window.innerHeight, false); // false 避免自动更改样式宽高
-renderer.setClearColor(0x000000, 0); // 保证透明
-            
+            const canvas = document.getElementById('shuicheCanvas');
+            renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight, false);
+            renderer.setClearColor(0x000000, 0);
             for (let index = 0, len = count; index < len; index++) {
                 const x = Math.random() * 800 - 400;
                 const y = Math.random() * 800 - 400;
@@ -872,29 +833,22 @@ renderer.setClearColor(0x000000, 0); // 保证透明
                 const x2 = x;
                 const y2 = y;
                 const z2 = z;
-
                 positionArray[6 * index] = x;
                 positionArray[6 * index + 1] = y;
                 positionArray[6 * index + 2] = z;
-
                 positionArray[6 * index + 3] = x2;
                 positionArray[6 * index + 4] = y2;
                 positionArray[6 * index + 5] = z2;
-
                 velocityArray[2 * index] = 0;
                 velocityArray[2 * index + 1] = 0;
             }
-            
             let material = new THREE.LineBasicMaterial({ color: 0xffffff });
             let lines = new THREE.LineSegments(geometry, material);
             scene.add(lines);
-
             window.addEventListener('resize', resize, false);
             document.body.addEventListener('pointermove', onPointerMove);
-            
             anime();
         }
-        
         function resize() {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
@@ -902,14 +856,12 @@ renderer.setClearColor(0x000000, 0); // 保证透明
             windowHalfX = window.innerWidth / 2;
             windowHalfY = window.innerHeight / 2;
         }
-
         function anime() {
             for (let index = 0, len = count; index < len; index++) {
                 velocityArray[2 * index] += 0.015;
                 velocityArray[2 * index + 1] += 0.015;
                 positionArray[6 * index + 2] += velocityArray[2 * index] + 0.03;
                 positionArray[6 * index + 5] += velocityArray[2 * index + 1];
-
                 if(positionArray[6 * index + 2] > 200) {
                     let z = Math.random() * 200 - 200;
                     positionArray[6 * index + 2] = z;
@@ -918,18 +870,15 @@ renderer.setClearColor(0x000000, 0); // 保证透明
                     velocityArray[2 * index + 1] = 0;
                 }
             }
-
             position.needsUpdate = true;
             renderer.render(scene, camera);
             requestAnimationFrame(anime);
             render();
         }
-
         function onPointerMove(event) {
             mouseX = event.clientX - windowHalfX;
             mouseY = event.clientY - windowHalfY;
         }
-
         function render() {
             camera.position.x += (-mouseX * 0.1 - camera.position.x) * 0.02;
             camera.position.y += (-mouseY * 0.1 - camera.position.y) * 0.02;
@@ -938,248 +887,190 @@ renderer.setClearColor(0x000000, 0); // 保证透明
         }
     </script>
     <div class="crt">
-    <div class="alist-widget-wrapper">
-        <div class="glowing-card">
-            <div class="inner">
-                <svg class="theme-toggle sun-toggle" viewBox="0 0 24 24" onclick="toggleTheme('light')">
-                    <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                        <circle cx="12" cy="12" r="4"/>
-                        <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
-                    </g>
-                </svg>
-                
-               <svg class="theme-toggle moon-toggle" viewBox="0 0 24 24" onclick="toggleTheme('dark')">
-                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/>
-                </svg>
-                
-                <svg class="day-toggle day-toggle-left" viewBox="0 0 24 24" onclick="switchBackground('https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/222.JPG')">
-                    <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                        <circle cx="12" cy="12" r="4"/>
-                        <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
-                    </g>
-                </svg>
-
-                <svg class="day-toggle day-toggle-right" viewBox="0 0 24 24" onclick="switchBackground('https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/111.JPG')">
-                    <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                        <circle cx="12" cy="12" r="4"/>
-                        <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
-                    </g>
-                </svg>
-                
-                <div class="link-section">
-                    <div class="pages">
-<div id="page1" class="page">
-  <div class="page-vertical">
-    <section class="subpage" id="page1-1">
-      <!-- 第 1 屏（原来的 profile-header / GIF 等） -->
-<div id="rewardContainer" 
-     onclick="toggleReward()"
-     style="height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; padding-top:0px; font-style:italic; cursor: pointer; position: relative;">
-
-    <div style="position: relative; width: 100%; display: flex; justify-content: center; align-items: center;">
-        <img id="neko-gif" 
-             src="https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/Neko.GIF" 
-             alt="GIF动图" 
-             style="max-width:99.5%; max-height:100%; border-radius:18px; transition: opacity 0.5s ease; opacity: 1;">
-        
-        <img id="reward-qr" 
-             src="https://dogpan.com/f/R6jjc5/IMG_5312.jpeg" 
-             alt="二维码" 
-             style="position: absolute; width: 340px; height: 340px; border-radius: 18px; transition: opacity 0.5s ease; opacity: 0; pointer-events: none; top:0px;">
-    </div>
-
-    <div style="position: relative; margin-top: 21px; display: flex; justify-content: center; align-items: center; width: 100%; height: 32px;">
-        <p id="text-original" 
-           style="position: absolute; color: var(--fg); font-size:24px; text-align:center; text-decoration: underline; margin: 0; transition: opacity 0.5s ease; opacity: 1; white-space: nowrap;">
-            猫爪一伸,请我喝杯咖啡吧☕️
-        </p>
-
-        <div id="text-new" 
-             style="position: absolute; opacity: 0; transition: opacity 0.5s ease; pointer-events: none; text-align: center; margin-top: -40px;">
-            <a href="weixin://scanqrcode" target="_blank" style="color: var(--fg); font-size:24px; text-decoration: underline;" onclick="event.stopPropagation()">
-                👉点击跳转微信扫一扫👈
-            </a>
-
-            <br>
-            <a href="https://qr.alipay.com/fkx17581wtzihcanvisaz0e" target="_blank" style="color: var(--fg); font-size:24px; text-decoration: underline;" onclick="event.stopPropagation()">
-                👉点击跳转支付宝付款👈
-            </a>
-        </div>
-    </div>
-</div>
-
-<script>
-function toggleReward() {
-    const gif = document.getElementById('neko-gif');
-    const qr = document.getElementById('reward-qr');
-    const textOld = document.getElementById('text-original');
-    const textNew = document.getElementById('text-new');
-
-    // 如果当前是 GIF 在显示 (opacity 为 1 或为空)
-    if (gif.style.opacity !== '0') {
-        // 隐藏第一状态
-        gif.style.opacity = '0';
-        textOld.style.opacity = '0';
-        // 显示第二状态
-        qr.style.opacity = '1';
-        qr.style.pointerEvents = 'auto';
-        textNew.style.opacity = '1';
-        textNew.style.pointerEvents = 'auto';
-    } else {
-        // 隐藏第二状态
-        qr.style.opacity = '0';
-        qr.style.pointerEvents = 'none';
-        textNew.style.opacity = '0';
-        textNew.style.pointerEvents = 'none';
-        // 显示第一状态
-        gif.style.opacity = '1';
-        textOld.style.opacity = '1';
-    }
-}
-</script>
-    </section>
-
-<section class="subpage" id="page1-2">
-
-    <div style="height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-        
-
-        <img src="https://media.giphy.com/media/1rdJ9fr772ZyzBSVxK/giphy.gif?cid=ecf05e4743fdadc6822048c77a7a5b7a382eefb7e471232e&ep=v1_user_favorites&rid=giphy.gif&ct=g"
-             style="max-width: 99.5%; max-height: 100%; border-radius: 15px; margin-top: 8px;">
-    </div>
-
-</section>
-
-    <section class="subpage" id="page1-3">
-    <div style="height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-        
-
-        <img src="https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/J.PNG"
-             style="max-width: 99.5%; max-height: 100%; border-radius: 15px;">
-    </div>
-
-    </section>
-
-
-    <section class="subpage" id="page1-4">
-      <div>第4屏内容示例</div>
-    </section>
-  </div>
-</div>
-
-                        <div id="page2" class="page">
-                            <div class="profile-header">
-<img src="https://media4.giphy.com/media/AlH6Won01J8wtufqpb/giphy.gif?cid=9b38fe91460a7462f4c8fc34b0384f3c796565aa75887dd9&ep=v1_user_favorites&rid=giphy.gif&ct=s"
-     alt="头像"
-     class="profile-pic"
-     onclick="confetti({particleCount:150,spread:100}); avatarSound.play();" />
+        <div class="alist-widget-wrapper">
+            <div class="glowing-card">
+                <div class="inner">
+                    <svg class="theme-toggle sun-toggle" viewBox="0 0 24 24" onclick="toggleTheme('light')">
+                        <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                            <circle cx="12" cy="12" r="4"/>
+                            <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+                        </g>
+                    </svg>
+                    <svg class="theme-toggle moon-toggle" viewBox="0 0 24 24" onclick="toggleTheme('dark')">
+                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/>
+                    </svg>
+                    <svg class="day-toggle day-toggle-left" viewBox="0 0 24 24" onclick="switchBackground('https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/222.JPG')">
+                        <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                            <circle cx="12" cy="12" r="4"/>
+                            <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+                        </g>
+                    </svg>
+                    <svg class="day-toggle day-toggle-right" viewBox="0 0 24 24" onclick="switchBackground('https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/111.JPG')">
+                        <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                            <circle cx="12" cy="12" r="4"/>
+                            <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+                        </g>
+                    </svg>
+                    <div class="link-section">
+                        <div class="pages">
+                            <div id="page1" class="page">
+                                <div class="page-vertical">
+                                    <section class="subpage" id="page1-1">
+                                        <div id="rewardContainer" onclick="toggleReward()" style="height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; padding-top:0px; font-style:italic; cursor: pointer; position: relative;">
+                                            <div style="position: relative; width: 100%; display: flex; justify-content: center; align-items: center;">
+                                                <img id="neko-gif" src="https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/Neko.GIF" alt="GIF动图" style="max-width:99.5%; max-height:100%; border-radius:18px; transition: opacity 0.5s ease; opacity: 1;">
+                                                <img id="reward-qr" src="https://dogpan.com/f/R6jjc5/IMG_5312.jpeg" alt="二维码" style="position: absolute; width: 340px; height: 340px; border-radius: 18px; transition: opacity 0.5s ease; opacity: 0; pointer-events: none; top:0px;">
+                                            </div>
+                                            <div style="position: relative; margin-top: 21px; display: flex; justify-content: center; align-items: center; width: 100%; height: 32px;">
+                                                <p id="text-original" style="position: absolute; color: var(--fg); font-size:24px; text-align:center; text-decoration: underline; margin: 0; transition: opacity 0.5s ease; opacity: 1; white-space: nowrap;">
+                                                    猫爪一伸,请我喝杯咖啡吧☕️
+                                                </p>
+                                                <div id="text-new" style="position: absolute; opacity: 0; transition: opacity 0.5s ease; pointer-events: none; text-align: center; margin-top: -40px;">
+                                                    <a href="weixin://scanqrcode" target="_blank" style="color: var(--fg); font-size:24px; text-decoration: underline;" onclick="event.stopPropagation()">
+                                                        👉点击跳转微信扫一扫👈
+                                                    </a>
+                                                    <br>
+                                                    <a href="https://qr.alipay.com/fkx17581wtzihcanvisaz0e" target="_blank" style="color: var(--fg); font-size:24px; text-decoration: underline;" onclick="event.stopPropagation()">
+                                                        👉点击跳转支付宝付款👈
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <script>
+                                            function toggleReward() {
+                                                const gif = document.getElementById('neko-gif');
+                                                const qr = document.getElementById('reward-qr');
+                                                const textOld = document.getElementById('text-original');
+                                                const textNew = document.getElementById('text-new');
+                                                if (gif.style.opacity !== '0') {
+                                                    gif.style.opacity = '0';
+                                                    textOld.style.opacity = '0';
+                                                    qr.style.opacity = '1';
+                                                    qr.style.pointerEvents = 'auto';
+                                                    textNew.style.opacity = '1';
+                                                    textNew.style.pointerEvents = 'auto';
+                                                } else {
+                                                    qr.style.opacity = '0';
+                                                    qr.style.pointerEvents = 'none';
+                                                    textNew.style.opacity = '0';
+                                                    textNew.style.pointerEvents = 'none';
+                                                    gif.style.opacity = '1';
+                                                    textOld.style.opacity = '1';
+                                                }
+                                            }
+                                        </script>
+                                    </section>
+                                    <section class="subpage" id="page1-2">
+                                        <div style="height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                                            <img src="https://media.giphy.com/media/1rdJ9fr772ZyzBSVxK/giphy.gif?cid=ecf05e4743fdadc6822048c77a7a5b7a382eefb7e471232e&ep=v1_user_favorites&rid=giphy.gif&ct=g" style="max-width: 99.5%; max-height: 100%; border-radius: 15px; margin-top: 8px;">
+                                        </div>
+                                    </section>
+                                    <section class="subpage" id="page1-3">
+                                        <div style="height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                                            <img src="https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/J.PNG" style="max-width: 99.5%; max-height: 100%; border-radius: 15px;">
+                                        </div>
+                                    </section>
+                                    <section class="subpage" id="page1-4">
+                                        <div>第4屏内容示例</div>
+                                    </section>
+                                </div>
                             </div>
-                            <div class="spotify-card" onclick="window.open('https://open.spotify.com/track/3UkRfA9F62DYYDzqOskoov?si=MXIJN0wrQx24IS-qmyCUjg', '_blank')">
-                                <div class="spotify-left">
-                                    <div class="spotify-meta">
-                                        <div class="spotify-icon">
-                                            <img src="https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/Spotify.svg" alt="Spotify" />
+                            <div id="page2" class="page">
+                                <div class="profile-header">
+                                    <img src="https://media4.giphy.com/media/AlH6Won01J8wtufqpb/giphy.gif?cid=9b38fe91460a7462f4c8fc34b0384f3c796565aa75887dd9&ep=v1_user_favorites&rid=giphy.gif&ct=s" alt="头像" class="profile-pic" onclick="confetti({particleCount:150,spread:100}); avatarSound.play();" />
+                                </div>
+                                <div class="spotify-card" onclick="window.open('https://open.spotify.com/track/3UkRfA9F62DYYDzqOskoov?si=MXIJN0wrQx24IS-qmyCUjg', '_blank')">
+                                    <div class="spotify-left">
+                                        <div class="spotify-meta">
+                                            <div class="spotify-icon">
+                                                <img src="https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/Spotify.svg" alt="Spotify" />
+                                            </div>
+                                            <div class="track-text">
+                                                <div class="track-title">Signals</div>
+                                                <div class="track-artist">Lazer Boomerang</div>
+                                            </div>
                                         </div>
-                                        <div class="track-text">
-                                            <div class="track-title">Signals</div>
-                                            <div class="track-artist">Lazer Boomerang</div>
-                                        </div>
+                                        <button class="play-btn" onclick="event.stopPropagation(); togglePlay(this)">
+                                            <svg viewBox="0 0 16 16" fill="white">
+                                                <path d="M3 13.1231V2.87688C3 1.42024 4.55203 0.520516 5.77196 1.26995L14.1114 6.39307C15.2962 7.12093 15.2962 8.87907 14.1114 9.60693L5.77196 14.73C4.55203 15.4795 3 14.5798 3 13.1231Z"/>
+                                            </svg> Play
+                                        </button>
                                     </div>
-                                    <button class="play-btn" onclick="event.stopPropagation(); togglePlay(this)">
-                                        <svg viewBox="0 0 16 16" fill="white">
-                                            <path d="M3 13.1231V2.87688C3 1.42024 4.55203 0.520516 5.77196 1.26995L14.1114 6.39307C15.2962 7.12093 15.2962 8.87907 14.1114 9.60693L5.77196 14.73C4.55203 15.4795 3 14.5798 3 13.1231Z"/>
-                                        </svg> Play
-                                    </button>
+                                    <div class="spotify-cover">
+                                        <img src="https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/Signals.jpg" alt="封面" />
+                                    </div>
+                                    <audio id="audioPlayer" src="https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/Signals.mp3"></audio>
                                 </div>
-                                <div class="spotify-cover">
-                                    <img src="https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/Signals.jpg" alt="封面" />
+                                <div class="link-scroll-container">
+                                    <a href="javascript:void(0);" class="link-card" onclick="downloadVCard()">
+                                        <img src="https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/Instagram.svg" alt="vCard" class="link-icon" />
+                                        <span class="link-title">vCard</span>
+                                    </a>
+                                    <a href="https://t.me/OOl23456" class="link-card" target="_blank">
+                                        <img src="https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/Telegram.svg" alt="Telegram" class="link-icon" />
+                                        <span class="link-title">Telegram</span>
+                                    </a>
+                                    <a href="https://www.tiktok.com/@ooooocco" class="link-card" target="_blank">
+                                        <img src="https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/TikTok.PNG" alt="TikTok" class="link-icon" />
+                                        <span class="link-title">TikTok</span>
+                                    </a>
+                                    <a href="https://🦋.blogspot.com" class="link-card" target="_blank">
+                                        <img src="https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/Emoji.PNG" alt="Blog" class="link-icon" />
+                                        <span class="link-title">Blog 🐈</span>
+                                    </a>
+                                    <a href="https://wa.me/message/SYDPTLQEHYE3P1?src=qr" class="link-card" target="_blank">
+                                        <img src="https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/WhatsApp.png" alt="WhatsApp" class="link-icon" />
+                                        <span class="link-title">WhatsApp</span>
+                                    </a>
+                                    <a href="https://x.com/vwwvvvvvvv" class="link-card" target="_blank">
+                                        <img src="https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/X.PNG" alt="X" class="link-icon" />
+                                        <span class="link-title">X</span>
+                                    </a>
+                                    <a href="https://pin.it/5TgH8TZkp" class="link-card" target="_blank">
+                                        <img src="https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/Pinterest.png" alt="Pinterest" class="link-icon" />
+                                        <span class="link-title">Pinterest</span>
+                                    </a>
+                                    <a href="javascript:void(0);" class="link-card" id="wechatBtn">
+                                        <img src="https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/WeChat.png" alt="WeChat" class="link-icon" />
+                                        <span class="link-title">WeChat</span>
+                                    </a>
                                 </div>
-                                <audio id="audioPlayer" src="https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/Signals.mp3"></audio>
                             </div>
-
-                            <div class="link-scroll-container">
-                      <a href="javascript:void(0);" class="link-card" onclick="downloadVCard()">
-    <img src="https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/Instagram.svg" alt="vCard" class="link-icon" />
-    <span class="link-title">vCard</span>
-</a>
-
-                                <a href="https://t.me/OOl23456" class="link-card" target="_blank">
-                                    <img src="https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/Telegram.svg" alt="Telegram" class="link-icon" />
-                                    <span class="link-title">Telegram</span>
-                                </a>
-
-                                <a href="https://www.tiktok.com/@ooooocco" class="link-card" target="_blank">
-                                    <img src="https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/TikTok.PNG" alt="GitHub" class="link-icon" />
-                                    <span class="link-title">TikTok</span>
-                                </a>
-
-                                <a href="https://🦋.blogspot.com" class="link-card" target="_blank">
-                                    <img src="https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/Emoji.PNG" alt="GitHub" class="link-icon" />
-                                    <span class="link-title">Blog 🐈</span>
-                                </a>
-
-                                <a href="https://wa.me/message/SYDPTLQEHYE3P1?src=qr" class="link-card" target="_blank">
-                                    <img src="https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/WhatsApp.png" alt="WhatsApp" class="link-icon" />
-                                    <span class="link-title">WhatsApp</span>
-                                </a>
-
-                                <a href="https://x.com/vwwvvvvvvv" class="link-card" target="_blank">
-                                    <img src="https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/X.PNG" alt="X" class="link-icon" />
-                                    <span class="link-title">X</span>
-                                </a>
-
-                                <a href="https://pin.it/5TgH8TZkp" class="link-card" target="_blank">
-                                    <img src="https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/Pinterest.png" alt="Pinterest" class="link-icon" />
-                                    <span class="link-title">Pinterest</span>
-                                </a>
-
-                                <a href="javascript:void(0);" class="link-card" id="wechatBtn">
-                                    <img src="https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/WeChat.png" alt="WeChat" class="link-icon" />
-                                    <span class="link-title">WeChat</span>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div id="page3" class="page">
-                            <div class="profile-header"></div>
-                            <audio id="mainAudio" preload="auto"></audio>
-                            <div id="root">
-                                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
-                                    <div class="loading-spinner"></div>
-                                    <div class="loading-text">加载音乐播放器...</div>
+                            <div id="page3" class="page">
+                                <div class="profile-header"></div>
+                                <audio id="mainAudio" preload="auto"></audio>
+                                <div id="root">
+                                    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
+                                        <div class="loading-spinner"></div>
+                                        <div class="loading-text">加载音乐播放器...</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="pagination">
-                        <div class="bullet" data-page="1" onclick="switchPageTo(1)"></div>
-                        <div class="bullet active" data-page="2" onclick="switchPageTo(2)"></div>
-                        <div class="bullet" data-page="3" onclick="switchPageTo(3)"></div>
+                        <div class="pagination">
+                            <div class="bullet" data-page="1" onclick="switchPageTo(1)"></div>
+                            <div class="bullet active" data-page="2" onclick="switchPageTo(2)"></div>
+                            <div class="bullet" data-page="3" onclick="switchPageTo(3)"></div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
     <script>
         let currentPage = 2;
         let musicPlayerLoaded = false;
         const glowingCard = document.querySelector('.glowing-card');
         const originalBoxShadow = '0px 10px 15px rgba(0, 0, 0, 0), 0 0 56px #fff inset';
-
         function updateGlowingShadow() {
             if (currentPage !== 3) {
                 glowingCard.style.boxShadow = originalBoxShadow;
                 return;
             }
             const isLight = document.body.classList.contains('light');
-            const reducedBoxShadow = isLight 
-                ? '0px 10px 15px rgba(0, 0, 0, 0), 0 0 56px #fff inset' 
-                : '0px 10px 15px rgba(0, 0, 0, 0), 0 0 56px #fff inset';
+            const reducedBoxShadow = isLight ? '0px 10px 15px rgba(0, 0, 0, 0), 0 0 56px #fff inset' : '0px 10px 15px rgba(0, 0, 0, 0), 0 0 56px #fff inset';
             glowingCard.style.boxShadow = reducedBoxShadow;
         }
-
         window.onload = function() {
             init();
             preloadImages([
@@ -1190,67 +1081,49 @@ function toggleReward() {
             loadMusicPlayer();
             switchPageTo(2);
         };
-
         function preloadImages(urls) {
             urls.forEach(url => {
                 const img = new Image();
                 img.src = url;
             });
         }
-
         function switchPageTo(page) {
             if (page < 1 || page > 3) return;
             currentPage = page;
-
             const pages = document.querySelector('.pages');
             pages.style.transform = `translateX(-${(page - 1) * 100}%)`;
-
             document.querySelectorAll('.bullet').forEach(b => b.classList.toggle('active', parseInt(b.dataset.page) === page));
-
             updateGlowingShadow();
         }
-
         let isPlaying = false;
         const audio = document.getElementById('audioPlayer');
-
         function togglePlay(button) {
             if (isPlaying) {
                 audio.pause();
                 button.classList.remove('playing');
-                button.innerHTML = `
-                    <svg viewBox="0 0 16 16" fill="white">
-                        <path d="M3 13.1231V2.87688C3 1.42024 4.55203 0.520516 5.77196 1.26995L14.1114 6.39307C15.2962 7.12093 15.2962 8.87907 14.1114 9.60693L5.77196 14.73C4.55203 15.4795 3 14.5798 3 13.1231Z"/>
-                    </svg> Play`;
+                button.innerHTML = `<svg viewBox="0 0 16 16" fill="white"><path d="M3 13.1231V2.87688C3 1.42024 4.55203 0.520516 5.77196 1.26995L14.1114 6.39307C15.2962 7.12093 15.2962 8.87907 14.1114 9.60693L5.77196 14.73C4.55203 15.4795 3 14.5798 3 13.1231Z"/></svg> Play`;
             } else {
                 audio.play();
                 button.classList.add('playing');
-                button.innerHTML = `
-                    <svg viewBox="0 0 16 16" fill="white">
-                        <path d="M4 2H6V14H4V2ZM10 2H12V14H10V2Z"/>
-                    </svg> Pause`;
+                button.innerHTML = `<svg viewBox="0 0 16 16" fill="white"><path d="M4 2H6V14H4V2ZM10 2H12V14H10V2Z"/></svg> Pause`;
             }
             isPlaying = !isPlaying;
         }
-
         audio.addEventListener('ended', () => {
             isPlaying = false;
             const btn = document.querySelector('.play-btn');
             if (btn) {
                 btn.classList.remove('playing');
-                btn.innerHTML = `
-                    <svg viewBox="0 0 16 16" fill="white">
-                        <path d="M3 13.1231V2.87688C3 1.42024 4.55203 0.520516 5.77196 1.26995L14.1114 6.39307C15.2962 7.12093 15.2962 8.87907 14.1114 9.60693L5.77196 14.73C4.55203 15.4795 3 14.5798 3 13.1231Z"/>
-                    </svg> Play`;
+                btn.innerHTML = `<svg viewBox="0 0 16 16" fill="white"><path d="M3 13.1231V2.87688C3 1.42024 4.55203 0.520516 5.77196 1.26995L14.1114 6.39307C15.2962 7.12093 15.2962 8.87907 14.1114 9.60693L5.77196 14.73C4.55203 15.4795 3 14.5798 3 13.1231Z"/></svg> Play`;
             }
         });
-
         function toggleTheme(theme) {
             const canvas = document.getElementById('shuicheCanvas');
             if (theme === 'light') {
                 document.body.classList.add('light');
                 renderer.setClearColor(0x000000, 0);
                 document.body.style.background = '';
-                document.documentElement.style.setProperty('--fg', 'block');
+                document.documentElement.style.setProperty('--fg', 'black');
                 canvas.style.display = 'block';
             } else {
                 document.body.classList.remove('light');
@@ -1263,7 +1136,6 @@ function toggleReward() {
                 updateGlowingShadow();
             }
         }
-
         function switchBackground(url) {
             document.body.style.background = `url('${url}') center/cover fixed`;
             document.body.classList.add('light');
@@ -1274,7 +1146,6 @@ function toggleReward() {
                 updateGlowingShadow();
             }
         }
-
         function loadMusicPlayer() {
             let indexSong = 0;
             let isLocked = false;
@@ -1291,42 +1162,30 @@ function toggleReward() {
             let broadcastGuarantor_elmnt = null;
             const root = document.querySelector("#root");
             const mainAudio = document.getElementById('mainAudio');
-
             document.addEventListener('visibilitychange', () => {
                 if (document.visibilityState === 'hidden') {
                     savePlaybackState();
                 }
             });
-
             function savePlaybackState() {
                 if (!selectedSong) return;
-                
                 const playbackState = {
                     currentSongIndex: indexSong,
                     isPlaying: !selectedSong.paused,
                     volume: selectedSong.volume,
                     currentTime: selectedSong.currentTime
                 };
-                
                 localStorage.setItem('musicPlayerState', JSON.stringify(playbackState));
             }
-
             function restorePlaybackState() {
                 try {
                     const savedState = localStorage.getItem('musicPlayerState');
                     if (!savedState) return;
-                    
                     const playbackState = JSON.parse(savedState);
-                    
-                    if (playbackState.currentSongIndex !== undefined && 
-                        playbackState.currentSongIndex >= 0 && 
-                        playbackState.currentSongIndex <= songsLength) {
-                        
+                    if (playbackState.currentSongIndex !== undefined && playbackState.currentSongIndex >= 0 && playbackState.currentSongIndex <= songsLength) {
                         indexSong = playbackState.currentSongIndex;
-                        
                         mainAudio.src = songs[indexSong].files.song;
                         mainAudio.load();
-                        
                         mainAudio.addEventListener('loadedmetadata', () => {
                             if (playbackState.currentTime !== undefined) {
                                 mainAudio.currentTime = playbackState.currentTime;
@@ -1334,16 +1193,12 @@ function toggleReward() {
                             if (playbackState.volume !== undefined) {
                                 mainAudio.volume = playbackState.volume;
                             }
-                            
-                            // 强制设置为未播放状态
                             mainAudio.pause();
                             broadcastGuarantor_elmnt.classList.remove("click");
                             songIsPlayed = false;
-                            
                             updateInfo(songName_elmnt, songs[indexSong].songName);
                             updateInfo(singerName_elmnt, songs[indexSong].artist);
                             setProperty(sliderImgs_elmnt, "--index", -indexSong);
-                            
                             if ('mediaSession' in navigator) {
                                 navigator.mediaSession.metadata = new MediaMetadata({
                                     title: songs[indexSong].songName,
@@ -1362,10 +1217,8 @@ function toggleReward() {
                     console.error("Error restoring playback state:", e);
                 }
             }
-
             window.addEventListener('beforeunload', savePlaybackState);
             setInterval(savePlaybackState, 5000);
-
             function getArtwork(coverUrl) {
                 return [
                     { src: coverUrl, sizes: '96x96', type: 'image/jpeg' },
@@ -1376,7 +1229,6 @@ function toggleReward() {
                     { src: coverUrl, sizes: '512x512', type: 'image/jpeg' }
                 ];
             }
-
             function handleChangeMusic({ isPrev = false, playListIndex = null }) {
                 if (isLocked) return;
                 let newIndex;
@@ -1388,23 +1240,19 @@ function toggleReward() {
                 if (newIndex < 0) { newIndex = songsLength; }
                 else if (newIndex > songsLength) { newIndex = 0; }
                 if (newIndex === indexSong) return;
-
                 mainAudio.pause();
                 indexSong = newIndex;
                 mainAudio.src = songs[indexSong].files.song;
                 mainAudio.load();
-
                 mainAudio.addEventListener('loadedmetadata', () => {
                     if (songIsPlayed) {
                         mainAudio.play().catch(e => console.log("Play failed:", e));
                     }
                     savePlaybackState();
                 }, { once: true });
-
                 setProperty(sliderImgs_elmnt, "--index", -indexSong);
                 updateInfo(songName_elmnt, songs[indexSong].songName);
                 updateInfo(singerName_elmnt, songs[indexSong].artist);
-
                 if ('mediaSession' in navigator) {
                     navigator.mediaSession.metadata = new MediaMetadata({
                         title: songs[indexSong].songName,
@@ -1413,7 +1261,6 @@ function toggleReward() {
                     });
                 }
             }
-
             function handleResizeSlider({ target }) {
                 if (isLocked) return;
                 else if (target.classList.contains("music-player__info")) {
@@ -1426,7 +1273,6 @@ function toggleReward() {
                     return;
                 }
             }
-
             function handlePlayMusic() {
                 if (mainAudio.currentTime === mainAudio.duration) {
                     handleChangeMusic({});
@@ -1436,7 +1282,6 @@ function toggleReward() {
                 mainAudio.paused ? mainAudio.play() : mainAudio.pause();
                 savePlaybackState();
             }
-
             function updateTheProgressBar() {
                 const duration = this.duration;
                 const currentTime = this.currentTime;
@@ -1450,13 +1295,11 @@ function toggleReward() {
                     });
                 }
             }
-
             function handleSongEnded() {
                 if (songIsPlayed) {
                     handleChangeMusic({});
                 }
             }
-
             function handleScrub(e) {
                 e.preventDefault();
                 let clientX = e.clientX;
@@ -1469,7 +1312,6 @@ function toggleReward() {
                 const currentTime = (clientX - progressOffsetLeft) / progressWidth;
                 selectedSong.currentTime = currentTime * duration;
             }
-
             const songs = [
                 {
                     "bg": "#c9bea28f",
@@ -1544,23 +1386,18 @@ function toggleReward() {
                     }
                 }
             ];
-
             const musicPlayer = document.createElement("div");
             musicPlayer.className = "music-player flex-column";
-            
             const slider = document.createElement("div");
             slider.className = "slider center";
             slider.onclick = handleResizeSlider;
-            
             const sliderContent = document.createElement("div");
             sliderContent.className = "slider__content center";
-            
             const playlistButton = document.createElement("button");
             playlistButton.className = "music-player__playlist-button center button";
             const playlistIcon = document.createElement("i");
             playlistIcon.className = "icon-playlist";
             playlistButton.appendChild(playlistIcon);
-            
             const broadcastGuarantor = document.createElement("button");
             broadcastGuarantor.className = "music-player__broadcast-guarantor center button";
             broadcastGuarantor.onclick = handlePlayMusic;
@@ -1570,7 +1407,6 @@ function toggleReward() {
             pauseIcon.className = "icon-pause";
             broadcastGuarantor.appendChild(playIcon);
             broadcastGuarantor.appendChild(pauseIcon);
-            
             const sliderImgs = document.createElement("div");
             sliderImgs.className = "slider__imgs flex-row";
             songs.forEach(({ files: { cover }, songName }) => {
@@ -1580,123 +1416,92 @@ function toggleReward() {
                 img.alt = songName;
                 sliderImgs.appendChild(img);
             });
-            
             sliderContent.appendChild(playlistButton);
             sliderContent.appendChild(broadcastGuarantor);
             sliderContent.appendChild(sliderImgs);
-            
             const sliderControls = document.createElement("div");
             sliderControls.className = "slider__controls center";
-            
             const prevButton = document.createElement("button");
             prevButton.className = "slider__switch-button flex-row button";
             prevButton.onclick = () => handleChangeMusic({ isPrev: true });
             const prevIcon = document.createElement("i");
             prevIcon.className = "icon-back";
             prevButton.appendChild(prevIcon);
-            
             const musicInfo = document.createElement("div");
             musicInfo.className = "music-player__info text_trsf-cap";
-            
             const songNameDiv = document.createElement("div");
             const singerNameDiv = document.createElement("div");
             singerNameDiv.className = "music-player__singer-name";
             singerNameDiv.innerHTML = `<div>${songs[0].songName}</div>`;
-            
             const subtitleDiv = document.createElement("div");
             const subtitle = document.createElement("div");
             subtitle.className = "music-player__subtitle";
             subtitle.innerHTML = `<div>${songs[0].artist}</div>`;
             subtitleDiv.appendChild(subtitle);
-            
             songNameDiv.appendChild(singerNameDiv);
             musicInfo.appendChild(songNameDiv);
             musicInfo.appendChild(subtitleDiv);
-            
             const nextButton = document.createElement("button");
             nextButton.className = "slider__switch-button flex-row button";
             nextButton.onclick = () => handleChangeMusic({ isPrev: false });
             const nextIcon = document.createElement("i");
             nextIcon.className = "icon-next";
             nextButton.appendChild(nextIcon);
-            
             const progress = document.createElement("div");
             progress.className = "progress center";
-            progress.onpointerdown = (e) => { 
-                e.preventDefault(); 
-                handleScrub(e); 
-                progressBarIsUpdating = true; 
+            progress.onpointerdown = (e) => {
+                e.preventDefault();
+                handleScrub(e);
+                progressBarIsUpdating = true;
             };
-            
             const progressWrapper = document.createElement("div");
             progressWrapper.className = "progress__wrapper";
-            
             const progressBar = document.createElement("div");
             progressBar.className = "progress__bar center";
-            
             progressWrapper.appendChild(progressBar);
             progress.appendChild(progressWrapper);
-            
             sliderControls.appendChild(prevButton);
             sliderControls.appendChild(musicInfo);
             sliderControls.appendChild(nextButton);
             sliderControls.appendChild(progress);
-            
             slider.appendChild(sliderContent);
             slider.appendChild(sliderControls);
-            
             const playlist = document.createElement("ul");
             playlist.className = "music-player__playlist list";
-            
             songs.forEach(({ songName, artist, files: { cover } }, index) => {
                 const listItem = document.createElement("li");
                 listItem.className = "music-player__song";
                 listItem.onclick = () => handleChangeMusic({ playListIndex: index });
-                
                 const flexRow = document.createElement("div");
                 flexRow.className = "flex-row _align_center";
-                
                 const songImg = document.createElement("img");
                 songImg.src = cover;
                 songImg.className = "img music-player__song-img";
-                
                 const playlistInfo = document.createElement("div");
                 playlistInfo.className = "music-player__playlist-info text_trsf-cap";
-                
                 const songTitle = document.createElement("b");
                 songTitle.className = "text_overflow";
                 songTitle.textContent = songName;
-                
                 const flexRowInfo = document.createElement("div");
                 flexRowInfo.className = "flex-row _justify_space-btwn";
-                
                 const artistName = document.createElement("span");
                 artistName.className = "music-player__subtitle";
                 artistName.textContent = artist;
-                
                 const songDuration = document.createElement("span");
                 songDuration.className = "music-player__song-duration";
-                
                 flexRowInfo.appendChild(artistName);
                 flexRowInfo.appendChild(songDuration);
-                
                 playlistInfo.appendChild(songTitle);
                 playlistInfo.appendChild(flexRowInfo);
-                
                 flexRow.appendChild(songImg);
                 flexRow.appendChild(playlistInfo);
-                
                 listItem.appendChild(flexRow);
-                
                 playlist.appendChild(listItem);
             });
-            
             musicPlayer.appendChild(slider);
             musicPlayer.appendChild(playlist);
-            
             root.innerHTML = '';
             root.appendChild(musicPlayer);
-            
             songsLength = songs.length - 1;
             progress_elmnt = document.querySelector(".progress");
             sliderImgs_elmnt = document.querySelector(".slider__imgs");
@@ -1706,8 +1511,6 @@ function toggleReward() {
             progressBar_elmnt = document.querySelector(".progress__bar");
             broadcastGuarantor_elmnt = document.querySelector(".music-player__broadcast-guarantor");
             selectedSong = mainAudio;
-
-            // 预加载所有歌曲的duration
             const durationElements = document.querySelectorAll(".music-player__song-duration");
             songs.forEach((song, i) => {
                 const tempAudio = new Audio(song.files.song);
@@ -1719,27 +1522,19 @@ function toggleReward() {
                 });
                 tempAudio.load();
             });
-
-            // 绑定事件到mainAudio
             mainAudio.addEventListener('timeupdate', updateTheProgressBar);
             mainAudio.addEventListener('ended', handleSongEnded);
-
             controlSubtitleAnimation(musicPlayerInfo_elmnt, songName_elmnt);
             controlSubtitleAnimation(musicPlayerInfo_elmnt, singerName_elmnt);
-
-            // 初始化主音频
             mainAudio.src = songs[0].files.song;
             mainAudio.load();
-
             setTimeout(restorePlaybackState, 100);
-
             if ('mediaSession' in navigator) {
                 navigator.mediaSession.metadata = new MediaMetadata({
                     title: songs[0].songName,
                     artist: songs[0].artist,
                     artwork: getArtwork(songs[0].files.cover)
                 });
-
                 navigator.mediaSession.setActionHandler('previoustrack', () => handleChangeMusic({ isPrev: true }));
                 navigator.mediaSession.setActionHandler('nexttrack', () => handleChangeMusic({ isPrev: false }));
                 navigator.mediaSession.setActionHandler('play', () => {
@@ -1766,8 +1561,6 @@ function toggleReward() {
                     }
                 });
             }
-
-            // 为音乐播放器滚动条添加显示/隐藏效果
             const playlistScrollContainer = document.querySelector('.music-player__playlist');
             let scrollTimeout2;
             if (playlistScrollContainer) {
@@ -1779,7 +1572,6 @@ function toggleReward() {
                     }, 1500);
                 }, { passive: true });
             }
-
             function controlSubtitleAnimation(parent, child) {
                 if (child.classList.contains("animate")) return;
                 const element = child.firstChild;
@@ -1789,11 +1581,9 @@ function toggleReward() {
                 }
                 setProperty(child.parentElement, "width", `${element.clientWidth}px`);
             }
-            
-            function setProperty(target, prop, value = "") { 
-                target.style.setProperty(prop, value); 
+            function setProperty(target, prop, value = "") {
+                target.style.setProperty(prop, value);
             }
-            
             function updateInfo(target, value) {
                 while (target.firstChild) { target.removeChild(target.firstChild); }
                 const targetChild_elmnt = document.createElement("div");
@@ -1802,12 +1592,10 @@ function toggleReward() {
                 target.classList.remove("animate");
                 controlSubtitleAnimation(musicPlayerInfo_elmnt, target);
             }
-
             function handleResize() {
                 const vH = window.innerHeight * 0.01;
                 setProperty(document.documentElement, "--vH", `${vH}px`);
             }
-
             handleResize();
             window.addEventListener("resize", handleResize);
             window.addEventListener("orientationchange", handleResize);
@@ -1855,7 +1643,6 @@ function toggleReward() {
                 }
             });
         }
-
         const scrollContainer = document.querySelector('.link-scroll-container');
         let scrollTimeout;
         if (scrollContainer) {
@@ -1867,568 +1654,367 @@ function toggleReward() {
                 }, 1500);
             });
         }
-      
-      
-      
-// 添加日间和夜间模式按钮的鼠标事件监听
-document.querySelectorAll('.theme-toggle').forEach(button => {
-    button.addEventListener('mouseenter', function() {
-        this.style.transform = 'scale(1.2)';
-    });
-    
-    button.addEventListener('mouseleave', function() {
-        this.style.transform = 'scale(1)';
-    });
-    
-    // 添加点击事件处理 - 1秒后自动恢复大小
-    button.addEventListener('click', function() {
-        setTimeout(() => {
-            this.style.transform = 'scale(1)';
-        }, 350);
-    });
-});
-      
-      
-      
-      
-// 添加日间和夜间模式按钮的鼠标事件监听
-document.querySelectorAll('.day-toggle').forEach(button => {
-    button.addEventListener('mouseenter', function() {
-        this.style.transform = 'scale(1.2)';
-    });
-    
-    button.addEventListener('mouseleave', function() {
-        this.style.transform = 'scale(1)';
-    });
-    
-    // 添加点击事件处理 - 1秒后自动恢复大小
-    button.addEventListener('click', function() {
-        setTimeout(() => {
-            this.style.transform = 'scale(1)';
-        }, 350);
-    });
-});
-
-      
-      
-      // oneko.js: https://github.com/adryd325/oneko.js
-
-(async function oneko() {
-  const nekoEl = document.createElement("div");
-  let nekoPosX = 32,
-    nekoPosY = 32,
-    mousePosX = 0,
-    mousePosY = 0,
-    frameCount = 0,
-    idleTime = 0,
-    idleAnimation = null,
-    idleAnimationFrame = 0,
-    forceSleep = false,
-    grabbing = false,
-    grabStop = true,
-    nudge = false,
-    kuroNeko = false,
-    variant = "classic";
-
-  function parseLocalStorage(key, fallback) {
-    try {
-      const value = JSON.parse(localStorage.getItem(`oneko:${key}`));
-      return typeof value === typeof fallback ? value : fallback;
-    } catch (e) {
-      console.error(e);
-      return fallback;
-    }
-  }
-
-  const nekoSpeed = 10,
-    variants = [
-      ["classic", "Classic"],
-      ["dog", "Dog"],
-      ["tora", "Tora"],
-      ["maia", "Maia (maia.crimew.gay)"],
-      ["vaporwave", "Vaporwave (nya.rest)"],
-    ],
-    spriteSets = {
-      idle: [[-3, -3]],
-      alert: [[-7, -3]],
-      scratchSelf: [
-        [-5, 0],
-        [-6, 0],
-        [-7, 0],
-      ],
-      scratchWallN: [
-        [0, 0],
-        [0, -1],
-      ],
-      scratchWallS: [
-        [-7, -1],
-        [-6, -2],
-      ],
-      scratchWallE: [
-        [-2, -2],
-        [-2, -3],
-      ],
-      scratchWallW: [
-        [-4, 0],
-        [-4, -1],
-      ],
-      tired: [[-3, -2]],
-      sleeping: [
-        [-2, 0],
-        [-2, -1],
-      ],
-      N: [
-        [-1, -2],
-        [-1, -3],
-      ],
-      NE: [
-        [0, -2],
-        [0, -3],
-      ],
-      E: [
-        [-3, 0],
-        [-3, -1],
-      ],
-      SE: [
-        [-5, -1],
-        [-5, -2],
-      ],
-      S: [
-        [-6, -3],
-        [-7, -2],
-      ],
-      SW: [
-        [-5, -3],
-        [-6, -1],
-      ],
-      W: [
-        [-4, -2],
-        [-4, -3],
-      ],
-      NW: [
-        [-1, 0],
-        [-1, -1],
-      ],
-    }, // Get keys with 2 or more sprites
-    keys = Object.keys(spriteSets).filter((key) => spriteSets[key].length > 1),
-    usedKeys = new Set();
-
-  function sleep() {
-    forceSleep = !forceSleep;
-    nudge = false;
-    localStorage.setItem("oneko:forceSleep", forceSleep);
-    if (!forceSleep) {
-      resetIdleAnimation();
-      return;
-    }
-
-    // If Full App Display is on, sleep on its progress bar instead
-    const fullAppDisplay = document.getElementById("fad-progress");
-    if (fullAppDisplay) {
-      mousePosX = fullAppDisplay.getBoundingClientRect().right - 16;
-      mousePosY = fullAppDisplay.getBoundingClientRect().top - 12;
-      return;
-    }
-
-    // Get the far right and top of the progress bar
-    const progressBar = document.querySelector(".main-nowPlayingBar-center .playback-progressbar");
-    const progressBarRight = progressBar.getBoundingClientRect().right;
-    const progressBarTop = progressBar.getBoundingClientRect().top;
-    const progressBarBottom = progressBar.getBoundingClientRect().bottom;
-
-    // Make the cat sleep on the progress bar
-    mousePosX = progressBarRight - 16;
-    mousePosY = progressBarTop - 8;
-
-    // Get the position of the remaining time
-    const remainingTime = document.querySelector(".main-playbackBarRemainingTime-container");
-    const remainingTimeLeft = remainingTime.getBoundingClientRect().left;
-    const remainingTimeBottom = remainingTime.getBoundingClientRect().bottom;
-    const remainingTimeTop = remainingTime.getBoundingClientRect().top;
-
-    // Get the position of elapsed time
-    const elapsedTime = document.querySelector(".playback-bar__progress-time-elapsed");
-    const elapsedTimeRight = elapsedTime.getBoundingClientRect().right;
-    const elapsedTimeLeft = elapsedTime.getBoundingClientRect().left;
-
-    // If the remaining time is on top right of the progress bar, make the cat sleep to the a little bit to the left of the remaining time
-    // Theme compatibility
-    if (remainingTimeLeft < progressBarRight && remainingTimeTop < progressBarBottom && progressBarTop - remainingTimeBottom < 32) {
-      mousePosX = remainingTimeLeft - 16;
-
-      // Comfy special case
-      if (Spicetify.Config.current_theme === "Comfy") {
-        mousePosY = progressBarTop - 14;
-      }
-
-      
-      
-      
-      // Move the cat to the left of elapsed time if it is too close to the remaining time (Nord theme)
-      if (remainingTimeLeft - elapsedTimeRight < 32) {
-        mousePosX = elapsedTimeLeft - 16;
-      }
-    }
-  }
-
-  function create() {
-    variant = parseLocalStorage("variant", "classic");
-    kuroNeko = parseLocalStorage("kuroneko", false);
-
-    if (!variants.some((v) => v[0] === variant)) {
-      variant = "classic";
-    }
-
-    nekoEl.id = "oneko";
-    nekoEl.style.width = "32px";
-    nekoEl.style.height = "32px";
-    nekoEl.style.position = "fixed";
-    // nekoEl.style.pointerEvents = "none";
-    nekoEl.style.backgroundImage = `url('https://raw.githubusercontent.com/kyrie25/spicetify-oneko/main/assets/oneko/oneko-${variant}.gif')`;
-    nekoEl.style.imageRendering = "pixelated";
-    nekoEl.style.left = `${nekoPosX - 16}px`;
-    nekoEl.style.top = `${nekoPosY - 16}px`;
-    nekoEl.style.filter = kuroNeko ? "invert(100%)" : "none";
-    // Render Oneko below Spicetify's Popup Modal
-    nekoEl.style.zIndex = "99";
-
-    document.body.appendChild(nekoEl);
-
-    window.addEventListener("mousemove", (e) => {
-      if (forceSleep) return;
-
-      mousePosX = e.clientX;
-      mousePosY = e.clientY;
-    });
-
-    window.addEventListener("resize", () => {
-      if (forceSleep) {
-        forceSleep = false;
-        sleep();
-      }
-    });
-
-    // Handle dragging of the cat
-    nekoEl.addEventListener("mousedown", (e) => {
-      if (e.button !== 0) return;
-      grabbing = true;
-      let startX = e.clientX;
-      let startY = e.clientY;
-      let startNekoX = nekoPosX;
-      let startNekoY = nekoPosY;
-      let grabInterval;
-
-      const mousemove = (e) => {
-        const deltaX = e.clientX - startX;
-        const deltaY = e.clientY - startY;
-        const absDeltaX = Math.abs(deltaX);
-        const absDeltaY = Math.abs(deltaY);
-
-        // Scratch in the opposite direction of the drag
-        if (absDeltaX > absDeltaY && absDeltaX > 10) {
-          setSprite(deltaX > 0 ? "scratchWallW" : "scratchWallE", frameCount);
-        } else if (absDeltaY > absDeltaX && absDeltaY > 10) {
-          setSprite(deltaY > 0 ? "scratchWallN" : "scratchWallS", frameCount);
-        }
-
-        if (grabStop || absDeltaX > 10 || absDeltaY > 10 || Math.sqrt(deltaX ** 2 + deltaY ** 2) > 10) {
-          grabStop = false;
-          clearTimeout(grabInterval);
-          grabInterval = setTimeout(() => {
-            grabStop = true;
-            nudge = false;
-            startX = e.clientX;
-            startY = e.clientY;
-            startNekoX = nekoPosX;
-            startNekoY = nekoPosY;
-          }, 150);
-        }
-
-        nekoPosX = startNekoX + e.clientX - startX;
-        nekoPosY = startNekoY + e.clientY - startY;
-        nekoEl.style.left = `${nekoPosX - 16}px`;
-        nekoEl.style.top = `${nekoPosY - 16}px`;
-      };
-
-      const mouseup = () => {
-        grabbing = false;
-        nudge = true;
-        resetIdleAnimation();
-        window.removeEventListener("mousemove", mousemove);
-        window.removeEventListener("mouseup", mouseup);
-      };
-
-      window.addEventListener("mousemove", mousemove);
-      window.addEventListener("mouseup", mouseup);
-    });
-
-    nekoEl.addEventListener("contextmenu", (e) => {
-      e.preventDefault();
-      kuroNeko = !kuroNeko;
-      localStorage.setItem("oneko:kuroneko", kuroNeko);
-      nekoEl.style.filter = kuroNeko ? "invert(100%)" : "none";
-    });
-
-    nekoEl.addEventListener("dblclick", sleep);
-
-    window.onekoInterval = setInterval(frame, 100);
-  }
-
-  function getSprite(name, frame) {
-    return spriteSets[name][frame % spriteSets[name].length];
-  }
-
-  function setSprite(name, frame) {
-    const sprite = getSprite(name, frame);
-    nekoEl.style.backgroundPosition = `${sprite[0] * 32}px ${sprite[1] * 32}px`;
-  }
-
-  function resetIdleAnimation() {
-    idleAnimation = null;
-    idleAnimationFrame = 0;
-  }
-
-  function idle() {
-    idleTime += 1;
-
-    // every ~ 20 seconds
-    if (idleTime > 10 && Math.floor(Math.random() * 200) == 0 && idleAnimation == null) {
-      let avalibleIdleAnimations = ["sleeping", "scratchSelf"];
-      if (nekoPosX < 32) {
-        avalibleIdleAnimations.push("scratchWallW");
-      }
-      if (nekoPosY < 32) {
-        avalibleIdleAnimations.push("scratchWallN");
-      }
-      if (nekoPosX > window.innerWidth - 32) {
-        avalibleIdleAnimations.push("scratchWallE");
-      }
-      if (nekoPosY > window.innerHeight - 32) {
-        avalibleIdleAnimations.push("scratchWallS");
-      }
-      idleAnimation = avalibleIdleAnimations[Math.floor(Math.random() * avalibleIdleAnimations.length)];
-    }
-
-    if (forceSleep) {
-      avalibleIdleAnimations = ["sleeping"];
-      idleAnimation = "sleeping";
-    }
-
-    switch (idleAnimation) {
-      case "sleeping":
-        if (idleAnimationFrame < 8 && nudge && forceSleep) {
-          setSprite("idle", 0);
-          break;
-        } else if (nudge) {
-          nudge = false;
-          resetIdleAnimation();
-        }
-        if (idleAnimationFrame < 8) {
-          setSprite("tired", 0);
-          break;
-        }
-        setSprite("sleeping", Math.floor(idleAnimationFrame / 4));
-        if (idleAnimationFrame > 192 && !forceSleep) {
-          resetIdleAnimation();
-        }
-        break;
-      case "scratchWallN":
-      case "scratchWallS":
-      case "scratchWallE":
-      case "scratchWallW":
-      case "scratchSelf":
-        setSprite(idleAnimation, idleAnimationFrame);
-        if (idleAnimationFrame > 9) {
-          resetIdleAnimation();
-        }
-        break;
-      default:
-        setSprite("idle", 0);
-        return;
-    }
-    idleAnimationFrame += 1;
-  }
-
-  function frame() {
-    frameCount += 1;
-
-    if (grabbing) {
-      grabStop && setSprite("alert", 0);
-      return;
-    }
-
-    const diffX = nekoPosX - mousePosX;
-    const diffY = nekoPosY - mousePosY;
-    const distance = Math.sqrt(diffX ** 2 + diffY ** 2);
-
-    // Cat has to sleep on top of the progress bar
-    if (forceSleep && Math.abs(diffY) < nekoSpeed && Math.abs(diffX) < nekoSpeed) {
-      // Make the cat sleep exactly on the top of the progress bar
-      nekoPosX = mousePosX;
-      nekoPosY = mousePosY;
-      nekoEl.style.left = `${nekoPosX - 16}px`;
-      nekoEl.style.top = `${nekoPosY - 16}px`;
-
-      idle();
-      return;
-    }
-
-    if ((distance < nekoSpeed || distance < 48) && !forceSleep) {
-      idle();
-      return;
-    }
-
-    idleAnimation = null;
-    idleAnimationFrame = 0;
-
-    if (idleTime > 1) {
-      setSprite("alert", 0);
-      // count down after being alerted before moving
-      idleTime = Math.min(idleTime, 7);
-      idleTime -= 1;
-      return;
-    }
-
-    direction = diffY / distance > 0.5 ? "N" : "";
-    direction += diffY / distance < -0.5 ? "S" : "";
-    direction += diffX / distance > 0.5 ? "W" : "";
-    direction += diffX / distance < -0.5 ? "E" : "";
-    setSprite(direction, frameCount);
-
-    nekoPosX -= (diffX / distance) * nekoSpeed;
-    nekoPosY -= (diffY / distance) * nekoSpeed;
-
-    nekoPosX = Math.min(Math.max(16, nekoPosX), window.innerWidth - 16);
-    nekoPosY = Math.min(Math.max(16, nekoPosY), window.innerHeight - 16);
-
-    nekoEl.style.left = `${nekoPosX - 16}px`;
-    nekoEl.style.top = `${nekoPosY - 16}px`;
-  }
-
-  create();
-
-  function getRandomSprite() {
-    let unusedKeys = keys.filter((key) => !usedKeys.has(key));
-    if (unusedKeys.length === 0) {
-      usedKeys.clear();
-      unusedKeys = keys;
-    }
-    const index = Math.floor(Math.random() * unusedKeys.length);
-    const key = unusedKeys[index];
-    usedKeys.add(key);
-    return [getSprite(key, 0), getSprite(key, 1)];
-  }
-
-  function setVariant(arr) {
-    console.log(arr);
-
-    variant = arr[0];
-    localStorage.setItem("oneko:variant", `"${variant}"`);
-    nekoEl.style.backgroundImage = `url('https://maia.crimew.gay/img/maia_oneko.gif')`;
-  }
-
-  // Popup modal to choose variant
-  function pickerModal() {
-    const container = document.createElement("div");
-    container.className = "oneko-variant-container";
-
-    const style = document.createElement("style");
-    // Each variant is a 64x64 sprite
-    style.innerHTML = `
-      .oneko-variant-container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        align-items: center;
-      }
-      .oneko-variant-button {
-        width: 64px;
-        height: 64px;
-        margin: 8px;
-        cursor: pointer;
-        background-size: 800%;
-        border-radius: 25%;
-        transition: background-color 0.2s ease-in-out;
-        background-position: var(--idle-x) var(--idle-y);
-        image-rendering: pixelated;
-      }
-      .oneko-variant-button:hover, .oneko-variant-button-selected {
-        background-color: var(--spice-main-elevated);
-      }
-      .oneko-variant-button:hover {
-        background-position: var(--active-x) var(--active-y);
-      }
-    `;
-    container.appendChild(style);
-
-    const [idle, active] = getRandomSprite();
-
-    function variantButton(variantEnum) {
-      const div = document.createElement("div");
-
-      div.className = "oneko-variant-button";
-      div.id = variantEnum[0];
-      div.style.backgroundImage = `url('https://raw.githubusercontent.com/kyrie25/spicetify-oneko/main/assets/oneko/oneko-${variantEnum[0]}.gif')`;
-      div.style.setProperty("--idle-x", `${idle[0] * 64}px`);
-      div.style.setProperty("--idle-y", `${idle[1] * 64}px`);
-      div.style.setProperty("--active-x", `${active[0] * 64}px`);
-      div.style.setProperty("--active-y", `${active[1] * 64}px`);
-
-      div.onclick = () => {
-        setVariant(variantEnum);
-        document.querySelector(".oneko-variant-button-selected")?.classList.remove("oneko-variant-button-selected");
-        div.classList.add("oneko-variant-button-selected");
-      };
-
-      if (variantEnum[0] === variant) {
-        div.classList.add("oneko-variant-button-selected");
-      }
-
-      Spicetify.Tippy(div, {
-        ...Spicetify.TippyProps,
-        content: variantEnum[1],
-      });
-
-      return div;
-    }
-
-    for (const variant of variants) {
-      container.appendChild(variantButton(variant));
-    }
-
-    return container;
-  }
-
-  (async () => {
-    while (!Spicetify.Mousetrap) {
-      await new Promise((r) => setTimeout(r, 100));
-    }
-    Spicetify.Mousetrap.bind("o n e k o", () => {
-      Spicetify.PopupModal.display({
-        title: "Choose your neko",
-        // Render the modal new every time it is opened
-        content: pickerModal(),
-      });
-    });
-  })();
-
-  if (parseLocalStorage("forceSleep", false)) {
-    while (!document.querySelector(".main-nowPlayingBar-center .playback-progressbar")) {
-      await new Promise((r) => setTimeout(r, 100));
-    }
-    sleep();
-  }
-})();
-      
-
-const avatarSound = new Audio("https://files.catbox.moe/6he0qc.wav");
-avatarSound.volume = 0.35;
-
-      
-      function downloadVCard() {
-    const base64Photo = ''; // 可以替换为你的Base64图片数据，如果要添加头像的话
-    
-    const vcard = `
+        document.querySelectorAll('.theme-toggle').forEach(button => {
+            button.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.2)';
+            });
+            button.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+            });
+            button.addEventListener('click', function() {
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 350);
+            });
+        });
+        document.querySelectorAll('.day-toggle').forEach(button => {
+            button.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.2)';
+            });
+            button.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+            });
+            button.addEventListener('click', function() {
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 350);
+            });
+        });
+        (async function oneko() {
+            const nekoEl = document.createElement("div");
+            let nekoPosX = 32, nekoPosY = 32, mousePosX = 0, mousePosY = 0, frameCount = 0, idleTime = 0, idleAnimation = null, idleAnimationFrame = 0, forceSleep = false, grabbing = false, grabStop = true, nudge = false, kuroNeko = false, variant = "classic";
+            function parseLocalStorage(key, fallback) {
+                try {
+                    const value = JSON.parse(localStorage.getItem(`oneko:${key}`));
+                    return typeof value === typeof fallback ? value : fallback;
+                } catch (e) {
+                    console.error(e);
+                    return fallback;
+                }
+            }
+            const nekoSpeed = 10, variants = [["classic", "Classic"],["dog", "Dog"],["tora", "Tora"],["maia", "Maia (maia.crimew.gay)"],["vaporwave", "Vaporwave (nya.rest)"]], spriteSets = { idle: [[-3, -3]], alert: [[-7, -3]], scratchSelf: [[-5, 0],[-6, 0],[-7, 0]], scratchWallN: [[0, 0],[0, -1]], scratchWallS: [[-7, -1],[-6, -2]], scratchWallE: [[-2, -2],[-2, -3]], scratchWallW: [[-4, 0],[-4, -1]], tired: [[-3, -2]], sleeping: [[-2, 0],[-2, -1]], N: [[-1, -2],[-1, -3]], NE: [[0, -2],[0, -3]], E: [[-3, 0],[-3, -1]], SE: [[-5, -1],[-5, -2]], S: [[-6, -3],[-7, -2]], SW: [[-5, -3],[-6, -1]], W: [[-4, -2],[-4, -3]], NW: [[-1, 0],[-1, -1]] }, keys = Object.keys(spriteSets).filter((key) => spriteSets[key].length > 1), usedKeys = new Set();
+            function sleep() {
+                forceSleep = !forceSleep;
+                nudge = false;
+                localStorage.setItem("oneko:forceSleep", forceSleep);
+                if (!forceSleep) {
+                    resetIdleAnimation();
+                    return;
+                }
+                const fullAppDisplay = document.getElementById("fad-progress");
+                if (fullAppDisplay) {
+                    mousePosX = fullAppDisplay.getBoundingClientRect().right - 16;
+                    mousePosY = fullAppDisplay.getBoundingClientRect().top - 12;
+                    return;
+                }
+                const progressBar = document.querySelector(".main-nowPlayingBar-center .playback-progressbar");
+                const progressBarRight = progressBar.getBoundingClientRect().right;
+                const progressBarTop = progressBar.getBoundingClientRect().top;
+                const progressBarBottom = progressBar.getBoundingClientRect().bottom;
+                mousePosX = progressBarRight - 16;
+                mousePosY = progressBarTop - 8;
+                const remainingTime = document.querySelector(".main-playbackBarRemainingTime-container");
+                const remainingTimeLeft = remainingTime.getBoundingClientRect().left;
+                const remainingTimeBottom = remainingTime.getBoundingClientRect().bottom;
+                const remainingTimeTop = remainingTime.getBoundingClientRect().top;
+                const elapsedTime = document.querySelector(".playback-bar__progress-time-elapsed");
+                const elapsedTimeRight = elapsedTime.getBoundingClientRect().right;
+                const elapsedTimeLeft = elapsedTime.getBoundingClientRect().left;
+                if (remainingTimeLeft < progressBarRight && remainingTimeTop < progressBarBottom && progressBarTop - remainingTimeBottom < 32) {
+                    mousePosX = remainingTimeLeft - 16;
+                    if (Spicetify.Config.current_theme === "Comfy") {
+                        mousePosY = progressBarTop - 14;
+                    }
+                    if (remainingTimeLeft - elapsedTimeRight < 32) {
+                        mousePosX = elapsedTimeLeft - 16;
+                    }
+                }
+            }
+            function create() {
+                variant = parseLocalStorage("variant", "classic");
+                kuroNeko = parseLocalStorage("kuroneko", false);
+                if (!variants.some((v) => v[0] === variant)) {
+                    variant = "classic";
+                }
+                nekoEl.id = "oneko";
+                nekoEl.style.width = "32px";
+                nekoEl.style.height = "32px";
+                nekoEl.style.position = "fixed";
+                nekoEl.style.backgroundImage = `url('https://raw.githubusercontent.com/kyrie25/spicetify-oneko/main/assets/oneko/oneko-${variant}.gif')`;
+                nekoEl.style.imageRendering = "pixelated";
+                nekoEl.style.left = `${nekoPosX - 16}px`;
+                nekoEl.style.top = `${nekoPosY - 16}px`;
+                nekoEl.style.filter = kuroNeko ? "invert(100%)" : "none";
+                nekoEl.style.zIndex = "99";
+                document.body.appendChild(nekoEl);
+                window.addEventListener("mousemove", (e) => {
+                    if (forceSleep) return;
+                    mousePosX = e.clientX;
+                    mousePosY = e.clientY;
+                });
+                window.addEventListener("resize", () => {
+                    if (forceSleep) {
+                        forceSleep = false;
+                        sleep();
+                    }
+                });
+                nekoEl.addEventListener("mousedown", (e) => {
+                    if (e.button !== 0) return;
+                    grabbing = true;
+                    let startX = e.clientX;
+                    let startY = e.clientY;
+                    let startNekoX = nekoPosX;
+                    let startNekoY = nekoPosY;
+                    let grabInterval;
+                    const mousemove = (e) => {
+                        const deltaX = e.clientX - startX;
+                        const deltaY = e.clientY - startY;
+                        const absDeltaX = Math.abs(deltaX);
+                        const absDeltaY = Math.abs(deltaY);
+                        if (absDeltaX > absDeltaY && absDeltaX > 10) {
+                            setSprite(deltaX > 0 ? "scratchWallW" : "scratchWallE", frameCount);
+                        } else if (absDeltaY > absDeltaX && absDeltaY > 10) {
+                            setSprite(deltaY > 0 ? "scratchWallN" : "scratchWallS", frameCount);
+                        }
+                        if (grabStop || absDeltaX > 10 || absDeltaY > 10 || Math.sqrt(deltaX ** 2 + deltaY ** 2) > 10) {
+                            grabStop = false;
+                            clearTimeout(grabInterval);
+                            grabInterval = setTimeout(() => {
+                                grabStop = true;
+                                nudge = false;
+                                startX = e.clientX;
+                                startY = e.clientY;
+                                startNekoX = nekoPosX;
+                                startNekoY = nekoPosY;
+                            }, 150);
+                        }
+                        nekoPosX = startNekoX + e.clientX - startX;
+                        nekoPosY = startNekoY + e.clientY - startY;
+                        nekoEl.style.left = `${nekoPosX - 16}px`;
+                        nekoEl.style.top = `${nekoPosY - 16}px`;
+                    };
+                    const mouseup = () => {
+                        grabbing = false;
+                        nudge = true;
+                        resetIdleAnimation();
+                        window.removeEventListener("mousemove", mousemove);
+                        window.removeEventListener("mouseup", mouseup);
+                    };
+                    window.addEventListener("mousemove", mousemove);
+                    window.addEventListener("mouseup", mouseup);
+                });
+                nekoEl.addEventListener("contextmenu", (e) => {
+                    e.preventDefault();
+                    kuroNeko = !kuroNeko;
+                    localStorage.setItem("oneko:kuroneko", kuroNeko);
+                    nekoEl.style.filter = kuroNeko ? "invert(100%)" : "none";
+                });
+                nekoEl.addEventListener("dblclick", sleep);
+                window.onekoInterval = setInterval(frame, 100);
+            }
+            function getSprite(name, frame) {
+                return spriteSets[name][frame % spriteSets[name].length];
+            }
+            function setSprite(name, frame) {
+                const sprite = getSprite(name, frame);
+                nekoEl.style.backgroundPosition = `${sprite[0] * 32}px ${sprite[1] * 32}px`;
+            }
+            function resetIdleAnimation() {
+                idleAnimation = null;
+                idleAnimationFrame = 0;
+            }
+            function idle() {
+                idleTime += 1;
+                if (idleTime > 10 && Math.floor(Math.random() * 200) == 0 && idleAnimation == null) {
+                    let avalibleIdleAnimations = ["sleeping", "scratchSelf"];
+                    if (nekoPosX < 32) {
+                        avalibleIdleAnimations.push("scratchWallW");
+                    }
+                    if (nekoPosY < 32) {
+                        avalibleIdleAnimations.push("scratchWallN");
+                    }
+                    if (nekoPosX > window.innerWidth - 32) {
+                        avalibleIdleAnimations.push("scratchWallE");
+                    }
+                    if (nekoPosY > window.innerHeight - 32) {
+                        avalibleIdleAnimations.push("scratchWallS");
+                    }
+                    idleAnimation = avalibleIdleAnimations[Math.floor(Math.random() * avalibleIdleAnimations.length)];
+                }
+                if (forceSleep) {
+                    avalibleIdleAnimations = ["sleeping"];
+                    idleAnimation = "sleeping";
+                }
+                switch (idleAnimation) {
+                    case "sleeping":
+                        if (idleAnimationFrame < 8 && nudge && forceSleep) {
+                            setSprite("idle", 0);
+                            break;
+                        } else if (nudge) {
+                            nudge = false;
+                            resetIdleAnimation();
+                        }
+                        if (idleAnimationFrame < 8) {
+                            setSprite("tired", 0);
+                            break;
+                        }
+                        setSprite("sleeping", Math.floor(idleAnimationFrame / 4));
+                        if (idleAnimationFrame > 192 && !forceSleep) {
+                            resetIdleAnimation();
+                        }
+                        break;
+                    case "scratchWallN":
+                    case "scratchWallS":
+                    case "scratchWallE":
+                    case "scratchWallW":
+                    case "scratchSelf":
+                        setSprite(idleAnimation, idleAnimationFrame);
+                        if (idleAnimationFrame > 9) {
+                            resetIdleAnimation();
+                        }
+                        break;
+                    default:
+                        setSprite("idle", 0);
+                        return;
+                }
+                idleAnimationFrame += 1;
+            }
+            function frame() {
+                frameCount += 1;
+                if (grabbing) {
+                    grabStop && setSprite("alert", 0);
+                    return;
+                }
+                const diffX = nekoPosX - mousePosX;
+                const diffY = nekoPosY - mousePosY;
+                const distance = Math.sqrt(diffX ** 2 + diffY ** 2);
+                if (forceSleep && Math.abs(diffY) < nekoSpeed && Math.abs(diffX) < nekoSpeed) {
+                    nekoPosX = mousePosX;
+                    nekoPosY = mousePosY;
+                    nekoEl.style.left = `${nekoPosX - 16}px`;
+                    nekoEl.style.top = `${nekoPosY - 16}px`;
+                    idle();
+                    return;
+                }
+                if ((distance < nekoSpeed || distance < 48) && !forceSleep) {
+                    idle();
+                    return;
+                }
+                idleAnimation = null;
+                idleAnimationFrame = 0;
+                if (idleTime > 1) {
+                    setSprite("alert", 0);
+                    idleTime = Math.min(idleTime, 7);
+                    idleTime -= 1;
+                    return;
+                }
+                direction = diffY / distance > 0.5 ? "N" : "";
+                direction += diffY / distance < -0.5 ? "S" : "";
+                direction += diffX / distance > 0.5 ? "W" : "";
+                direction += diffX / distance < -0.5 ? "E" : "";
+                setSprite(direction, frameCount);
+                nekoPosX -= (diffX / distance) * nekoSpeed;
+                nekoPosY -= (diffY / distance) * nekoSpeed;
+                nekoPosX = Math.min(Math.max(16, nekoPosX), window.innerWidth - 16);
+                nekoPosY = Math.min(Math.max(16, nekoPosY), window.innerHeight - 16);
+                nekoEl.style.left = `${nekoPosX - 16}px`;
+                nekoEl.style.top = `${nekoPosY - 16}px`;
+            }
+            create();
+            function getRandomSprite() {
+                let unusedKeys = keys.filter((key) => !usedKeys.has(key));
+                if (unusedKeys.length === 0) {
+                    usedKeys.clear();
+                    unusedKeys = keys;
+                }
+                const index = Math.floor(Math.random() * unusedKeys.length);
+                const key = unusedKeys[index];
+                usedKeys.add(key);
+                return [getSprite(key, 0), getSprite(key, 1)];
+            }
+            function setVariant(arr) {
+                variant = arr[0];
+                localStorage.setItem("oneko:variant", `"${variant}"`);
+                nekoEl.style.backgroundImage = `url('https://maia.crimew.gay/img/maia_oneko.gif')`;
+            }
+            function pickerModal() {
+                const container = document.createElement("div");
+                container.className = "oneko-variant-container";
+                const style = document.createElement("style");
+                style.innerHTML = `
+                    .oneko-variant-container {
+                        display: flex;
+                        flex-wrap: wrap;
+                        justify-content: center;
+                        align-items: center;
+                    }
+                    .oneko-variant-button {
+                        width: 64px;
+                        height: 64px;
+                        margin: 8px;
+                        cursor: pointer;
+                        background-size: 800%;
+                        border-radius: 25%;
+                        transition: background-color 0.2s ease-in-out;
+                        background-position: var(--idle-x) var(--idle-y);
+                        image-rendering: pixelated;
+                    }
+                    .oneko-variant-button:hover, .oneko-variant-button-selected {
+                        background-color: var(--spice-main-elevated);
+                    }
+                    .oneko-variant-button:hover {
+                        background-position: var(--active-x) var(--active-y);
+                    }
+                `;
+                container.appendChild(style);
+                const [idle, active] = getRandomSprite();
+                function variantButton(variantEnum) {
+                    const div = document.createElement("div");
+                    div.className = "oneko-variant-button";
+                    div.id = variantEnum[0];
+                    div.style.backgroundImage = `url('https://raw.githubusercontent.com/kyrie25/spicetify-oneko/main/assets/oneko/oneko-${variantEnum[0]}.gif')`;
+                    div.style.setProperty("--idle-x", `${idle[0] * 64}px`);
+                    div.style.setProperty("--idle-y", `${idle[1] * 64}px`);
+                    div.style.setProperty("--active-x", `${active[0] * 64}px`);
+                    div.style.setProperty("--active-y", `${active[1] * 64}px`);
+                    div.onclick = () => {
+                        setVariant(variantEnum);
+                        document.querySelector(".oneko-variant-button-selected")?.classList.remove("oneko-variant-button-selected");
+                        div.classList.add("oneko-variant-button-selected");
+                    };
+                    if (variantEnum[0] === variant) {
+                        div.classList.add("oneko-variant-button-selected");
+                    }
+                    return div;
+                }
+                for (const variant of variants) {
+                    container.appendChild(variantButton(variant));
+                }
+                return container;
+            }
+            (async () => {
+                while (!Spicetify.Mousetrap) {
+                    await new Promise((r) => setTimeout(r, 100));
+                }
+                Spicetify.Mousetrap.bind("o n e k o", () => {
+                    Spicetify.PopupModal.display({
+                        title: "Choose your neko",
+                        content: pickerModal(),
+                    });
+                });
+            })();
+            if (parseLocalStorage("forceSleep", false)) {
+                while (!document.querySelector(".main-nowPlayingBar-center .playback-progressbar")) {
+                    await new Promise((r) => setTimeout(r, 100));
+                }
+                sleep();
+            }
+        })();
+        const avatarSound = new Audio("https://files.catbox.moe/6he0qc.wav");
+        avatarSound.volume = 0.35;
+        function downloadVCard() {
+            const base64Photo = '';
+            const vcard = `
 BEGIN:VCARD
 VERSION:3.0
 N:Elisa;;;
@@ -2445,44 +2031,33 @@ X-SOCIALPROFILE;Click to redirect to Alipay to buy a cup of coffee for my cat:ht
 PHOTO;ENCODING=b;TYPE=JPEG:${base64Photo}
 END:VCARD
 `;
-
-    const blob = new Blob([vcard], { type: 'text/vcard' });
-    const url = URL.createObjectURL(blob);
-    
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'qxx.vcf';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    
-    URL.revokeObjectURL(url);
-    
-
-}
-      
-      
-    </script>
-<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
-<script>
-    const wechatID = "lllIIllIIlIII"; 
-
-    var clipboard = new ClipboardJS('#wechatBtn', {
-        text: function() {
-            return wechatID;
+            const blob = new Blob([vcard], { type: 'text/vcard' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'qxx.vcf';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
         }
-    });
-
-    clipboard.on('success', function(e) {
-        alert('👉微信号复制成功,即将前往微信！');
-        window.location.href = 'weixin://';
-    });
-
-    clipboard.on('error', function(e) {
-        alert('复制失败,请手动输入 ' + wechatID);
-        window.location.href = 'weixin://dl/scan';
-    });
-</script>
-
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+    <script>
+        const wechatID = "lllIIllIIlIII";
+        var clipboard = new ClipboardJS('#wechatBtn', {
+            text: function() {
+                return wechatID;
+            }
+        });
+        clipboard.on('success', function(e) {
+            alert('👉微信号复制成功,即将前往微信！');
+            window.location.href = 'weixin://';
+        });
+        clipboard.on('error', function(e) {
+            alert('复制失败,请手动输入 ' + wechatID);
+            window.location.href = 'weixin://dl/scan';
+        });
+    </script>
 </body>
 </html>
