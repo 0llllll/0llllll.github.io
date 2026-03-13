@@ -6,7 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#007AFF">
-    <title>🌙🐈🌅</title>
+    <title>🐈个人主页</title>
     <style>
         :root {
             --glow-sens: 30;
@@ -23,7 +23,6 @@
             --page-height: 498px;
             --accent: hsl(260, 100%, 80%);
         }
-
         .light {
             --card-bg: linear-gradient(8deg, color-mix(in hsl, hsl(260, 25%, 95%), var(--dark) 2.5%) 75%, hsl(260, 25%, 95%) 75.5%);
             --blend: darken;
@@ -32,7 +31,6 @@
             --fg: black;
             color: var(--fg);
         }
-
         body {
             margin: 0;
             padding: 0;
@@ -46,7 +44,6 @@
             color: var(--fg);
             overflow: hidden;
         }
-
         canvas {
             position: fixed;
             top: 0;
@@ -55,12 +52,18 @@
             height: 100dvh;
             z-index: -1;
         }
-
         body.light {
             background: url('https://splattacks.neocities.org/images/bg.png') center/cover fixed;
             color: var(--fg);
         }
-
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: -1;
+        }
         .glowing-card {
             --pads: 20px;
             --color-sens: calc(var(--glow-sens) + 20);
@@ -75,37 +78,31 @@
             isolation: isolate;
             transform: translate3d(0, 0, 0.01px);
             background: #fff2;
-            box-shadow:  0px 10px 15px rgba(0, 0, 0, 0), 0 0 56px #fff inset;
+            box-shadow: 0px 10px 15px rgba(0, 0, 0, 0), 0 0 56px #fff inset;
             overflow: hidden;
             text-align: center;
             box-sizing: border-box;
             border: none;
-            backdrop-filter:blur(5px);
+            backdrop-filter: blur(5px);
         }
-
         body:not(.light) .glowing-card {
             backdrop-filter: none;
             background: rgba(255,255,255,0.15);
-            border: 1px solid rgb(255 255 255 / 25%);
+            border: 1px solid rgb(255 255 255 / 80%);
         }
-
         body:not(.light) .link-card {
             background: rgba(255,255,255,0.07);
         }
-
         body:not(.light) .link-card:hover {
             background: rgba(255,255,255,0.2);
         }
-
         body:not(.light) .spotify-card {
             background: rgba(255,255,255,0.09);
         }
-
         body:not(.light) .music-player {
             background: rgba(255,255,255,0.15);
             box-shadow: none;
         }
-
         .theme-toggle {
             position: absolute;
             top: 6px;
@@ -117,11 +114,9 @@
             transition: opacity 0.3s;
             -webkit-tap-highlight-color: transparent;
         }
-
         .theme-toggle:hover {
             opacity: 0.7;
         }
-
         .sun-toggle {
             left: 6px;
             transition: transform 0.1s ease;
@@ -129,11 +124,9 @@
         .sun-toggle:hover {
             transform: scale(1.2);
         }
-
         .moon-toggle {
             right: 6px;
         }
-
         .day-toggle {
             position: absolute;
             bottom: 5px;
@@ -145,11 +138,9 @@
             transition: opacity 0.3s;
             -webkit-tap-highlight-color: transparent;
         }
-
         .day-toggle:hover {
             opacity: 0.7;
         }
-
         .day-toggle-left {
             left: 6px;
             transition: transform 0.1s ease;
@@ -157,23 +148,19 @@
         .day-toggle-left:hover {
             transform: scale(1.2);
         }
-
         .day-toggle-right {
             right: 6px;
         }
-
         .alist-widget-wrapper {
             padding: 20px;
             z-index: 1;
             height: 100%;
             box-sizing: border-box;
         }
-
         .profile-header {
             padding: 15px 2px 12px;
             position: relative;
         }
-
         .profile-pic {
             width: 200px;
             height: 200px;
@@ -195,21 +182,18 @@
             margin-top: -45px;
             margin-bottom: -45px;
         }
-
         .link-section {
             width: 100%;
             height: 100%;
             overflow: hidden;
             padding: 0;
         }
-
         .pages {
             display: flex;
             transition: transform 0.5s ease-in-out;
             height: 100%;
             transform: translateX(-100%);
         }
-
         .page {
             flex: 0 0 100%;
             height: var(--page-height);
@@ -220,13 +204,11 @@
             padding: 0 27px 26.2px;
             overflow: hidden;
         }
-
         #page3 {
             justify-content: center;
             align-items: center;
             padding: 0;
         }
-
         .link-card {
             display: flex;
             align-items: center;
@@ -250,38 +232,32 @@
             user-select: none;
             transition: all 0.2s ease;
         }
-
         .link-card:hover {
             background: rgba(255,255,255,0.3);
             color: #333;
         }
-
         .link-icon {
             width: 36px;
             height: 36px;
             margin-left: 16px;
-            margin-right: 18px;
+            margin-right: 0px;
         }
-
         .link-title {
             text-align: center;
             width: 100%;
             font-size: 18px;
             color: var(--fg);
         }
-
         .link-scroll-container {
             overflow-y: scroll;
             position: relative;
             width: calc(284px + 10px);
             margin-right: -10px;
         }
-
         .link-scroll-container::-webkit-scrollbar {
             width: 0px;
             background: transparent;
         }
-
         .link-scroll-container::-webkit-scrollbar-track {
             background: transparent;
             border-right: 0px solid transparent;
@@ -293,11 +269,9 @@
             opacity: 0;
             transition: opacity 0.3s ease;
         }
-
         .link-scroll-container.scrolling::-webkit-scrollbar-thumb {
             opacity: 1;
         }
-
         .spotify-card {
             display: flex;
             justify-content: space-between;
@@ -319,7 +293,6 @@
             user-select: none;
             transition: all 0.2s ease;
         }
-
         .spotify-left {
             display: flex;
             flex-direction: column;
@@ -330,13 +303,11 @@
             padding-right: 8px;
             gap: 6px;
         }
-
         .spotify-meta {
             display: flex;
             align-items: center;
             gap: 6px;
         }
-
         .spotify-icon {
             width: 36px;
             height: 36px;
@@ -347,19 +318,16 @@
             justify-content: center;
             flex-shrink: 0;
         }
-
         .spotify-icon img {
             width: 22px;
             height: 22px;
         }
-
         .track-text {
             display: flex;
             flex-direction: column;
             text-align: left;
             gap: 1px;
         }
-
         .track-title {
             font-size: 16px;
             font-weight: bold;
@@ -367,13 +335,11 @@
             color: var(--fg);
             font-style: italic;
         }
-
         .track-artist {
             font-size: 11.7870px;
             color: var(--fg);
             font-style: italic;
         }
-
         .play-btn {
             background-color: #3fd97a;
             color: white;
@@ -381,7 +347,7 @@
             border-radius: 24px;
             padding: 6px 36px;
             font-size: 14px;
-            font-weight:  bold;
+            font-weight: bold;
             display: flex;
             align-items: center;
             gap: 6px;
@@ -395,12 +361,10 @@
         .play-btn:hover {
             transform: scale(1.05);
         }
-
         .play-btn svg {
             width: 14px;
             height: 14px;
         }
-
         .spotify-cover {
             width: 75px;
             height: 75px;
@@ -409,13 +373,11 @@
             flex-shrink: 0;
             margin-left: 8px;
         }
-
         .spotify-cover img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-
         #shuicheCanvas {
             position: fixed;
             left: 0;
@@ -423,7 +385,6 @@
             z-index: 2147483647;
             pointer-events: none;
         }
-
         .pagination {
             display: flex;
             justify-content: center;
@@ -431,18 +392,18 @@
             margin-top: -8px;
             margin-bottom: 10px;
         }
-
         .bullet {
             width: 85px;
             height: 6px;
             background: var(--fg);
             opacity: 0.2;
-            border-radius:10%;
+            border-radius: 10%;
             cursor: pointer;
             transition: all 0.3s;
+        }
+        .bullet {
             position: relative;
         }
-
         .bullet::before {
             content: "";
             position: absolute;
@@ -453,7 +414,7 @@
             cursor: pointer;
         }
         .bullet.active {
-            border-radius:10%;
+            border-radius: 10%;
             opacity: 1;
             background: #c299ff;
             box-shadow: 0px 0px 20px rgba(194, 153, 255, 0);
@@ -471,7 +432,6 @@
             z-index: 2;
             pointer-events: none;
         }
-
         body:not(.light) .crt::before {
             content: " ";
             display: block;
@@ -480,17 +440,15 @@
             left: 0;
             bottom: 0;
             right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 100%), 
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 100%),
                         linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
             z-index: 2;
             background-size: 100% 2px, 3px 100%;
             pointer-events: none;
         }
-
         #page1 {
             padding: 0;
         }
-
         #page1 .page-vertical {
             height: 100%;
             overflow-y: auto;
@@ -500,10 +458,13 @@
             overscroll-behavior: contain;
             position: relative;
         }
-
-        #page1 .page-vertical::-webkit-scrollbar { display: none; }
-        #page1 .page-vertical { -ms-overflow-style: none; scrollbar-width: none; }
-
+        #page1 .page-vertical::-webkit-scrollbar {
+            display: none;
+        }
+        #page1 .page-vertical {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
         #page1 .subpage {
             scroll-snap-align: start;
             height: 100%;
@@ -514,25 +475,22 @@
             justify-content: center;
             align-items: center;
         }
-
-        #page1 .subpage { scroll-snap-stop: always; }
-
+        #page1 .subpage {
+            scroll-snap-stop: always;
+        }
         #page1,
         #page1 .page-vertical,
         #page1 .subpage {
             overflow-x: hidden !important;
         }
-
         #page1 img {
             display: block;
             height: auto;
             max-height: 100%;
         }
-
         #page1 .subpage > div {
             overflow: hidden;
         }
-
         @font-face {
             font-family: "icomoon";
             src: url("https://cdn.jsdelivr.net/gh/00000OO/music-player-widget@main/src/assets/icomoon/fonts/icomoon.eot?u8ckod");
@@ -544,7 +502,6 @@
             font-style: normal;
             font-display: block;
         }
-
         [class^="icon-"],
         [class*=" icon-"] {
             font-family: "icomoon" !important;
@@ -557,13 +514,11 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
-
         .icon-back:before { content: "\e900"; color: #827d7b; }
         .icon-next:before { content: "\e901"; color: #827d7b; }
         .icon-pause:before { content: "\e902"; color: #fff; }
         .icon-play:before { content: "\e903"; color: #fff; }
         .icon-playlist:before { content: "\e904"; color: #fff; }
-
         .img { width: 100%; flex-shrink: 0; display: block; object-fit: cover; }
         .list { margin: 0; padding: 0; list-style-type: none; }
         .text_trsf-cap { text-transform: capitalize; }
@@ -586,7 +541,6 @@
             text-overflow: ellipsis;
             margin-right: 60px;
         }
-
         .music-player {
             --color-white: #fff;
             --color-gray: #e5e7ea;
@@ -747,7 +701,6 @@
             font-size: 1em;
             margin-left: 1.2em;
         }
-
         .music-player__playlist-info b {
             display: block;
             margin-left: 0;
@@ -755,14 +708,12 @@
             text-align: left;
             width: calc(100% - 50px);
         }
-
         .flex-row._justify_space-btwn {
             display: flex;
             justify-content: space-between;
             align-items: center;
             width: 100%;
         }
-
         .music-player__playlist-info .music-player__subtitle {
             display: block;
             text-align: left;
@@ -770,7 +721,6 @@
             padding-left: 0;
             flex-grow: 1;
         }
-
         .music-player__song-duration {
             flex-shrink: 0;
             margin-left: 10px;
@@ -778,7 +728,6 @@
         .music-player__song-duration {
             font-weight: bold; font-size: 0.8em; color: var(--color-text-2);
         }
-
         .loading-spinner {
             display: inline-block;
             width: 40px;
@@ -788,22 +737,126 @@
             border-top-color: var(--fg);
             animation: spin 1s ease-in-out infinite;
         }
-
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
-
         .loading-text {
             margin-top: 10px;
             font-size: 16px;
             color: var(--fg);
         }
+      .wall{
+  background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/18515/PIA09959-1280x800_copy.jpg);
+  background-size: cover;
+}
+
+html, body{
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+body{
+  background: #000;
+  text-align: center;
+}
+
+body:before{
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+}
+
+.scene{
+  display: inline-block;
+  vertical-align: middle;
+  perspective: 5px;
+  perspective-origin: 50% 50%;
+  position: relative;
+}
+
+.wrap{
+  position: absolute;
+  width: 1000px;
+  height: 1000px;
+  left: -500px;
+  top: -500px;
+  transform-style: preserve-3d;
+  animation: move 12s infinite linear;
+  animation-fill-mode: forwards;
+  
+}
+
+.wrap:nth-child(2){
+  animation: move 12s infinite linear;
+  animation-delay: 6s;
+}
+
+.wall {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  opacity: 0;
+  animation: fade 12s infinite linear;
+  animation-delay: 0;
+}
+
+.wrap:nth-child(2) .wall {
+  animation-delay: 6s;
+}
+
+.wall-right {
+  transform: rotateY(90deg) translateZ(500px);
+}
+
+.wall-left {
+  transform: rotateY(-90deg) translateZ(500px);
+}
+
+.wall-top {
+  transform: rotateX(90deg) translateZ(500px);
+}
+
+.wall-bottom {
+  transform: rotateX(-90deg) translateZ(500px);
+}
+
+.wall-back {
+  transform: rotateX(180deg) translateZ(500px);
+}
+
+@keyframes move {
+  0%{
+    transform: translateZ(-500px) rotate(0deg);
+  }
+  100%{
+    transform: translateZ(500px) rotate(0deg);
+  }
+}
+
+@keyframes fade {
+  0%{
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 1;
+  }
+  100%{
+    opacity: 0;
+  }
+}
+
+
     </style>
 </head>
 <body class="light">
     <canvas id="shuicheCanvas"></canvas>
-    
-    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
+
+
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
     <script>
         const count = 5000;
@@ -886,6 +939,23 @@
             renderer.render(scene, camera);
         }
     </script>
+  <div class="scene">
+  <div class="wrap">
+      <div class="wall wall-right"></div>
+      <div class="wall wall-left"></div>   
+      <div class="wall wall-top"></div>
+      <div class="wall wall-bottom"></div> 
+      <div class="wall wall-back"></div>    
+  </div>
+  <div class="wrap">
+      <div class="wall wall-right"></div>
+      <div class="wall wall-left"></div>   
+      <div class="wall wall-top"></div>
+      <div class="wall wall-bottom"></div>   
+      <div class="wall wall-back"></div>    
+  </div>
+</div>
+
     <div class="crt">
         <div class="alist-widget-wrapper">
             <div class="glowing-card">
@@ -2052,11 +2122,11 @@ END:VCARD
         });
         clipboard.on('success', function(e) {
             alert('👉微信号复制成功,即将前往微信！');
-            window.location.href = 'weixin://';
+            window.location.href = 'wechat://';
         });
         clipboard.on('error', function(e) {
             alert('复制失败,请手动输入 ' + wechatID);
-            window.location.href = 'weixin://dl/scan';
+            window.location.href = 'wechat://dl/scan';
         });
     </script>
 </body>
