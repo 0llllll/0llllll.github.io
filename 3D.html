@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>3D轮廓效果生成器 - 动态线条艺术</title>
+    <style>
+        body { 
+            margin: 0; 
+            overflow: hidden; 
+            background-color: #0a0a0a; 
+            font-family: 'Segoe UI', 'Poppins', 'Inter', system-ui, -apple-system, sans-serif;
+        }
+        canvas { 
+            display: block; 
+        }
+        #file-upload { 
+            display: none; 
+        }
+        #loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 1.3rem;
+            background: rgba(0,0,0,0.7);
+            padding: 12px 24px;
+            border-radius: 40px;
+            backdrop-filter: blur(8px);
+            letter-spacing: 1px;
+            display: none;
+            pointer-events: none;
+            z-index: 100;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        /* 简单提示UI */
+        .info-tip {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: rgba(255,255,255,0.6);
+            background: rgba(0,0,0,0.5);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-family: monospace;
+            pointer-events: none;
+            z-index: 10;
+            backdrop-filter: blur(4px);
+        }
+        @media (max-width: 600px) {
+            .info-tip { display: none; }
+            .dg.ac { z-index: 200 !important; }
+        }
+    </style>
+</head>
+<body>
+    <input type="file" id="file-upload" accept="image/jpeg,image/png,image/webp,image/bmp" />
+    <div id="loading">✨ 处理图像中... ✨</div>
+    <div class="info-tip">🎨 拖拽视角 | 上传图片 | 调节参数实时生成轮廓线</div>
+
+    <!-- 引入资源: es-module-shims 和 importmap -->
+    <script async src="https://unpkg.com/es-module-shims@1.8.0/dist/es-module-shims.js"></script>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/",
+                "lil-gui": "https://unpkg.com/lil-gui@0.19.1/dist/lil-gui.esm.min.js"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import GUI from 'lil-gui';
+
+        // --- 场景初始化 ---
+        const scene = new THREE.Scene();
+        // 雾效增强景深
+        scene.fog = new THREE.FogExp2(0x0a0a0a, 0.018);
+        
+        const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(3, 2, 18);
+        camera.lookAt(0, 0, 0);
+        
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, preserveDrawingBuffer: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setClearColor('#0a0a0a', 1);
+        document.body.appendChild(renderer.domElement);
+        
+        // 轨道控制，允许用户交互
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.06;
+        controls.rotateSpeed = 1.2;
+        controls.zoomSpeed = 1.2;
+        controls.panSpeed = 0.8;
+        controls.target.set(0, 0.2, 0);
+        
+        // --- 全局组 ---
+        let wobbleGroup = new THREE.Group();   // 用于整体旋转动画
+        scene.add(wobbleGroup);
+        
+        let linesGroup = new THREE.Group();     // 存放所有线条
+        wobbleGroup.add(linesGroup);
+        
+        // 辅助元素: 极简的微光背景点 (可选，增强视觉)
+        const starGeometry = new THREE.BufferGeometry();
+        const starCount = 800;
+        const starPositions = new Float32Array(starCount * 3);
+        for (let i = 0; i < starCount; i++) {
+            starPositions[i*3] = (Math.random() - 0.5) * 200;
+            starPositions[i*3+1] = (Math.random() - 0.5) * 100;
+            starPositions[i*3+2] = (Math.random() - 0.5) * 80 - 40;
+        }
+        starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
+        const starMaterial = new THREE.PointsMaterial({ color: 0x88aaff, size: 0.08, transparent: true, opacity: 0.4 });
+        const stars = new THREE.Points(starGeometry, starMaterial);
+        scene.add(stars);
+        
+        // 图像处理相关变量
+        const imageCanvas = document.createElement('canvas');
+        const imageCtx = imageCanvas.getContext('2d', { willReadFrequently: true });
+        let currentImage = new Image();
+        // 默认图片 (高质量且支持跨域)
+        currentImage.crossOrigin = "Anonymous";
+        
+        // --- GUI 参数配置 ---
+        const params = {
+            linesCount: 210,          // 线条数量 (行)
+            resolution: 380,          // 每条线的采样点数
+            displacementY: 0.28,      // 亮度向上位移幅度
+            displacementZ: 0.85,      // 深度Z轴挤出幅度
+            lineWidth: 1.0,           // 保留兼容，LineBasicMaterial线宽在WebGL中有限制，仅视觉效果
+            opacity: 0.92,
+            colorMultipler: 1.25,
+            lineAngle: 24,            // 线条倾斜角度
+            autoRotateX: 12,          // X轴摇摆幅度(度)
+            autoRotateY: 16,          // Y轴摇摆幅度
+            autoRotateSpeed: 0.9,
+            contrast: 1.15,
+            saturation: 1.1,
+            inverseColors: false,
+            blackAndWhite: false,
+            backgroundColor: '#0a0a0a',
+            uploadImage: () => document.getElementById('file-upload').click(),
+            saveImage: () => {
+                renderer.render(scene, camera);
+                const link = document.createElement('a');
+                link.download = '3d_contour_art.png';
+                link.href = renderer.domElement.toDataURL('image/png');
+                link.click();
+            },
+            resetCamera: () => {
+                camera.position.set(3, 2, 18);
+                controls.target.set(0, 0.2, 0);
+                controls.update();
+            },
+            // 额外效果：显示网格参考 (可选)
+            showGridHelper: false
+        };
+        
+        // 辅助网格 (可选)
+        let gridHelper = null;
+        function toggleGridHelper(show) {
+            if (show && !gridHelper) {
+                gridHelper = new THREE.GridHelper(22, 20, 0x88aaff, 0x335588);
+                gridHelper.position.y = -2.2;
+                gridHelper.material.transparent = true;
+                gridHelper.material.opacity = 0.2;
+                scene.add(gridHelper);
+            } else if (!show && gridHelper) {
+                scene.remove(gridHelper);
+                gridHelper = null;
+            }
+        }
+        
+        // --- 构建GUI界面 ---
+        const gui = new GUI({ title: '⚡ 轮廓参数控制', width: 260 });
+        gui.add(params, 'uploadImage').name('📁 上传图片');
+        gui.add(params, 'saveImage').name('💾 保存截图');
+        gui.addColor(params, 'backgroundColor').name('🎨 背景色').onChange(color => {
+            renderer.setClearColor(color, 1);
+            scene.fog.color.set(color);
+            document.body.style.backgroundColor = color;
+        });
+        
+        const linesFolder = gui.addFolder('📐 线条结构');
+        linesFolder.add(params, 'linesCount', 40, 550, 1).name('线条数量 (行数)').onChange(generateEffect);
+        linesFolder.add(params, 'resolution', 60, 650, 1).name('每线点数 (精度)').onChange(generateEffect);
+        linesFolder.add(params, 'opacity', 0.2, 1.0, 0.01).name('线条不透明度').onChange(updateMaterials);
+        linesFolder.add(params, 'lineAngle', -75, 75, 1).name('线条旋转角度 (°)').onChange(generateEffect);
+        linesFolder.open();
+        
+        const depthFolder = gui.addFolder('🌀 3D 深度映射');
+        depthFolder.add(params, 'displacementY', 0, 2.8, 0.01).name('亮度 → Y轴隆起').onChange(generateEffect);
+        depthFolder.add(params, 'displacementZ', 0, 2.5, 0.01).name('亮度 → Z轴景深').onChange(generateEffect);
+        depthFolder.add(params, 'colorMultipler', 0.6, 2.8, 0.01).name('色彩饱和度增益').onChange(generateEffect);
+        depthFolder.open();
+        
+        const filterFolder = gui.addFolder('🎭 图像滤镜');
+        filterFolder.add(params, 'contrast', 0.3, 2.8, 0.01).name('对比度').onChange(generateEffect);
+        filterFolder.add(params, 'saturation', 0.0, 2.5, 0.01).name('色彩饱和度').onChange(generateEffect);
+        filterFolder.add(params, 'inverseColors').name('反相色彩').onChange(generateEffect);
+        filterFolder.add(params, 'blackAndWhite').name('黑白模式').onChange(generateEffect);
+        filterFolder.open();
+        
+        const animFolder = gui.addFolder('✨ 动态摇摆');
+        animFolder.add(params, 'autoRotateX', 0, 28, 0.5).name('X轴摆动幅度(°)');
+        animFolder.add(params, 'autoRotateY', 0, 32, 0.5).name('Y轴摆动幅度(°)');
+        animFolder.add(params, 'autoRotateSpeed', 0.2, 2.2, 0.02).name('摆动速度');
+        animFolder.open();
+        
+        gui.add(params, 'resetCamera').name('🔄 重置相机视角');
+        gui.add(params, 'showGridHelper').name('🔲 显示参考网格').onChange(val => toggleGridHelper(val));
+        
+        // 初始化默认加载图片 (优雅的默认人像，确保可跨域且美观)
+        function loadDefaultImage() {
+            const loadingDiv = document.getElementById('loading');
+            loadingDiv.style.display = 'block';
+            loadingDiv.innerText = '🌈 加载默认艺术图像...';
+            
+            // 使用高质量且支持CORS的图片 (源自unsplash的授权演示图，确保跨域可用)
+            // 该图片资源允许跨域且为知名图库测试图像
+            currentImage.crossOrigin = "Anonymous";
+            currentImage.onload = () => {
+                generateEffect();
+                loadingDiv.style.display = 'none';
+            };
+            currentImage.onerror = () => {
+                console.warn("默认图片加载失败，生成一个渐变测试图案");
+                // 生成内置渐变图案代替
+                generateFallbackImage();
+                loadingDiv.style.display = 'none';
+            };
+            // 一个风格强烈的彩色肖像，纹理丰富，便于展示轮廓效果 (允许跨域的资源)
+            currentImage.src = 'https://images.pexels.com/photos/697509/pexels-photo-697509.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop';
+            // 如果上面的链接因为网络问题失效，采用第二个备选
+            setTimeout(() => {
+                if (!currentImage.complete && currentImage.naturalWidth === 0) {
+                    currentImage.src = 'https://cdn.pixabay.com/photo/2022/03/17/12/12/portrait-7074659_640.jpg';
+                }
+            }, 800);
+        }
+        
+        function generateFallbackImage() {
+            // 创建一个Canvas渐变图像作为后备
+            const w = 600, h = 400;
+            imageCanvas.width = w;
+            imageCanvas.height = h;
+            const ctx = imageCtx;
+            const grd = ctx.createLinearGradient(0, 0, w, h);
+            grd.addColorStop(0, '#ff4e50');
+            grd.addColorStop(0.2, '#f9d423');
+            grd.addColorStop(0.5, '#00c6fb');
+            grd.addColorStop(0.8, '#1f4037');
+            grd.addColorStop(1, '#99f2c8');
+            ctx.fillStyle = grd;
+            ctx.fillRect(0, 0, w, h);
+            // 绘制一些圈圈增加纹理
+            ctx.beginPath();
+            ctx.arc(w*0.3, h*0.6, 70, 0, Math.PI*2);
+            ctx.fillStyle = 'rgba(255,180,100,0.7)';
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(w*0.7, h*0.4, 90, 0, Math.PI*2);
+            ctx.fillStyle = 'rgba(100,200,255,0.6)';
+            ctx.fill();
+            // 转换为图像
+            const imgData = imageCanvas.toDataURL();
+            const img = new Image();
+            img.onload = () => {
+                currentImage = img;
+                generateEffect();
+            };
+            img.src = imgData;
+        }
+        
+        // --- 文件上传 ---
+        document.getElementById('file-upload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const loadingDiv = document.getElementById('loading');
+            loadingDiv.style.display = 'block';
+            loadingDiv.innerText = '📸 解析图片中...';
+            
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const img = new Image();
+                img.onload = function() {
+                    currentImage = img;
+                    generateEffect();
+                    loadingDiv.style.display = 'none';
+                };
+                img.onerror = () => {
+                    loadingDiv.innerText = '图片加载失败，请重试';
+                    setTimeout(() => loadingDiv.style.display = 'none', 1500);
+                };
+                img.src = evt.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+        
+        // --- 核心算法：生成3D轮廓线条 (基于亮度映射与旋转网格)---
+        function generateEffect() {
+            // 清除旧线条
+            while(linesGroup.children.length > 0) {
+                const child = linesGroup.children[0];
+                if (child.geometry) child.geometry.dispose();
+                if (child.material) child.material.dispose();
+                linesGroup.remove(child);
+            }
+            
+            if (!currentImage || !currentImage.src) return;
+            
+            // 限制图像分辨率以保证性能
+            let width = currentImage.width;
+            let height = currentImage.height;
+            if (!width || !height) return;
+            
+            const maxRes = 720;
+            let targetWidth = width;
+            let targetHeight = height;
+            if (width > maxRes || height > maxRes) {
+                if (width > height) {
+                    targetWidth = maxRes;
+                    targetHeight = Math.floor(maxRes * (height / width));
+                } else {
+                    targetHeight = maxRes;
+                    targetWidth = Math.floor(maxRes * (width / height));
+                }
+            }
+            // 确保最小尺寸
+            targetWidth = Math.max(40, targetWidth);
+            targetHeight = Math.max(40, targetHeight);
+            
+            imageCanvas.width = targetWidth;
+            imageCanvas.height = targetHeight;
+            imageCtx.drawImage(currentImage, 0, 0, targetWidth, targetHeight);
+            
+            let imageData;
+            try {
+                imageData = imageCtx.getImageData(0, 0, targetWidth, targetHeight).data;
+            } catch(e) {
+                console.warn("无法读取图像像素数据，可能跨域问题");
+                return;
+            }
+            
+            // 平面尺寸 (宽高基于图片比例)
+            const planeWidth = 12.0;
+            const planeHeight = planeWidth * (targetHeight / targetWidth);
+            
+            // 对角线长度保证旋转后全覆盖
+            const diagonal = Math.sqrt(planeWidth * planeWidth + planeHeight * planeHeight);
+            const angleRad = THREE.MathUtils.degToRad(params.lineAngle);
+            const cosA = Math.cos(angleRad);
+            const sinA = Math.sin(angleRad);
+            
+            // 线条材质 (顶点颜色，动态)
+            const material = new THREE.LineBasicMaterial({ 
+                vertexColors: true,
+                transparent: true,
+                opacity: params.opacity,
+                blending: THREE.AdditiveBlending, // 增加光感
+                linewidth: 1,   // WebGL渲染器限制宽度，但视觉效果不影响
+                depthWrite: false
+            });
+            
+            // 预定义颜色辅助函数
+            const clamp = (val) => Math.max(0, Math.min(1, val));
+            
+            // 遍历每条线 (沿着旋转后的V方向)
+            for (let i = 0; i < params.linesCount; i++) {
+                const positions = [];
+                const colors = [];
+                
+                // 旋转坐标系下的 V (类似纵轴)
+                const vGrid = i / (params.linesCount - 1);
+                const yGrid = -(vGrid - 0.5) * diagonal;
+                
+                let lastValid = false;
+                let lastX = 0, lastY = 0, lastZ = 0;
+                let lastR = 0, lastG = 0, lastB = 0;
+                
+                for (let j = 0; j < params.resolution; j++) {
+                    const uGrid = j / (params.resolution - 1);
+                    const xGrid = (uGrid - 0.5) * diagonal;
+                    
+                    // 旋转得到世界坐标
+                    const xWorld = xGrid * cosA - yGrid * sinA;
+                    const yWorld = xGrid * sinA + yGrid * cosA;
+                    
+                    // 映射到图像的UV (归一化坐标)
+                    let u = (xWorld / planeWidth) + 0.5;
+                    let v = 0.5 - (yWorld / planeHeight);
+                    
+                    // 边界内才采样
+                    if (u >= 0.0 && u <= 1.0 && v >= 0.0 && v <= 1.0) {
+                        const px = Math.floor(u * (targetWidth - 1));
+                        const py = Math.floor(v * (targetHeight - 1));
+                        const idx = (py * targetWidth + px) * 4;
+                        
+                        let r = imageData[idx] / 255;
+                        let g = imageData[idx + 1] / 255;
+                        let b = imageData[idx + 2] / 255;
+                        
+                        // 反相
+                        if (params.inverseColors) {
+                            r = 1 - r;
+                            g = 1 - g;
+                            b = 1 - b;
+                        }
+                        
+                        // 对比度
+                        r = (r - 0.5) * params.contrast + 0.5;
+                        g = (g - 0.5) * params.contrast + 0.5;
+                        b = (b - 0.5) * params.contrast + 0.5;
+                        r = clamp(r); g = clamp(g); b = clamp(b);
+                        
+                        // 亮度计算
+                        let luma = 0.299 * r + 0.587 * g + 0.114 * b;
+                        
+                        // 饱和度调节
+                        r = luma + (r - luma) * params.saturation;
+                        g = luma + (g - luma) * params.saturation;
+                        b = luma + (b - luma) * params.saturation;
+                        r = clamp(r); g = clamp(g); b = clamp(b);
+                        
+                        // 黑白滤镜
+                        if (params.blackAndWhite) {
+                            r = luma;
+                            g = luma;
+                            b = luma;
+                        }
+                        
+                        // 重新计算最终亮度用于位移 (滤镜后)
+                        luma = 0.299 * r + 0.587 * g + 0.114 * b;
+                        
+                        // 位移效果
+                        const offsetY = luma * params.displacementY;
+                        const offsetZ = luma * params.displacementZ;
+                        const finalX = xWorld;
+                        const finalY = yWorld + offsetY;
+                        const finalZ = offsetZ;
+                        
+                        // 颜色增强
+                        const rBoost = Math.min(r * params.colorMultipler, 1.0);
+                        const gBoost = Math.min(g * params.colorMultipler, 1.0);
+                        const bBoost = Math.min(b * params.colorMultipler, 1.0);
+                        
+                        positions.push(finalX, finalY, finalZ);
+                        colors.push(rBoost, gBoost, bBoost);
+                        lastValid = true;
+                    } else {
+                        // 如果当前点无效，但之前有有效点，则断线 (自动分段)
+                        if (lastValid && positions.length > 0) {
+                            // 完成当前线段，生成line
+                            const geom = new THREE.BufferGeometry();
+                            geom.setAttribute('position', new THREE.BufferAttribute(new Float32Array(positions), 3));
+                            geom.setAttribute('color', new THREE.BufferAttribute(new Float32Array(colors), 3));
+                            const lineObj = new THREE.Line(geom, material);
+                            linesGroup.add(lineObj);
+                        }
+                        // 重置收集器，准备下一段
+                        positions.length = 0;
+                        colors.length = 0;
+                        lastValid = false;
+                    }
+                }
+                
+                // 处理最后一段有效线段
+                if (positions.length >= 2) {
+                    const geom = new THREE.BufferGeometry();
+                    geom.setAttribute('position', new THREE.BufferAttribute(new Float32Array(positions), 3));
+                    geom.setAttribute('color', new THREE.BufferAttribute(new Float32Array(colors), 3));
+                    const lineObj = new THREE.Line(geom, material);
+                    linesGroup.add(lineObj);
+                }
+            }
+            
+            // 细微调整线条组位置使视觉中心居中 (根据隆起偏移微调)
+            linesGroup.position.y = - (params.displacementY * 0.35);
+        }
+        
+        // 更新材质透明度
+        function updateMaterials() {
+            linesGroup.children.forEach(line => {
+                if (line.material) {
+                    line.material.opacity = params.opacity;
+                }
+            });
+        }
+        
+        // --- 自适应窗口 ---
+        window.addEventListener('resize', onWindowResize, false);
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+        
+        // --- 动态动画 (摇摆效果 + 星星粒子缓慢自转) ---
+        let clock = new THREE.Clock();
+        
+        function animate() {
+            requestAnimationFrame(animate);
+            const delta = clock.getDelta();
+            const elapsedTime = performance.now() / 1000;
+            
+            // 自动旋转逻辑 (摆动效果)
+            const speed = params.autoRotateSpeed;
+            const angleX = Math.sin(elapsedTime * speed) * THREE.MathUtils.degToRad(params.autoRotateX);
+            const angleY = Math.cos(elapsedTime * speed * 0.75) * THREE.MathUtils.degToRad(params.autoRotateY);
+            wobbleGroup.rotation.x = angleX;
+            wobbleGroup.rotation.y = angleY;
+            // 轻微Z轴摆动增加灵动感
+            wobbleGroup.rotation.z = Math.sin(elapsedTime * speed * 0.5) * 0.03;
+            
+            // 星星缓慢漂移
+            stars.rotation.y += 0.0005;
+            stars.rotation.x += 0.0003;
+            
+            controls.update(); // 更新轨道控制 (如果用户交互)
+            renderer.render(scene, camera);
+        }
+        
+        // 添加一个小光晕环境光提升色彩质感
+        const ambientLight = new THREE.AmbientLight(0x222222);
+        scene.add(ambientLight);
+        const backLight = new THREE.DirectionalLight(0xffffff, 0.5);
+        backLight.position.set(1, 2, 3);
+        scene.add(backLight);
+        const fillLight = new THREE.PointLight(0x4466cc, 0.3);
+        fillLight.position.set(-2, 1, 4);
+        scene.add(fillLight);
+        
+        // 开始
+        loadDefaultImage();
+        animate();
+        
+        // 初始显示一下网格参考可选默认关闭
+        toggleGridHelper(false);
+        
+        // 控制台友好提示
+        console.log('3D轮廓生成器已启动 | 上传图片获得惊艳线条艺术');
+    </script>
+</body>
+</html>
