@@ -58,17 +58,26 @@ canvas { position: fixed; inset: 0; width: 100%; height: 100dvh; z-index: -1; }
     box-sizing: border-box; border: 1px solid var(--glowing-card-border); backdrop-filter: var(--glowing-card-backdrop);
 }
 
-.toggle-btn { position: absolute; width: 24px; height: 24px; cursor: pointer; z-index: 10; opacity: 0.5; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s; -webkit-tap-highlight-color: transparent; }
-@media (hover: hover) {
-    .toggle-btn:hover { transform: scale(1.2); opacity: 0.8; }
+.theme-toggle, .day-toggle {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    z-index: 10;
+    opacity: 0.5;
+    transition: opacity 0.3s;
+    -webkit-tap-highlight-color: transparent;
 }
-.toggle-btn:active { 
-    transform: scale(1.2); 
-    opacity: 0.8; 
-    transition: transform 0.1s;
+.theme-toggle { top: 6px; }
+.day-toggle { bottom: 5px; }
+.theme-toggle:hover, .day-toggle:hover { opacity: 0.7; }
+
+.sun-toggle, .day-toggle-left {
+    left: 6px;
+    transition: transform 0.1s ease;
 }
-.btn-top-left { top: 6px; left: 6px; } .btn-top-right { top: 6px; right: 6px; }
-.btn-bottom-left { bottom: 5px; left: 6px; } .btn-bottom-right { bottom: 5px; right: 6px; }
+.sun-toggle:hover, .day-toggle-left:hover { transform: scale(1.2); }
+.moon-toggle, .day-toggle-right { right: 6px; }
 
 .alist-widget-wrapper { padding: 20px; z-index: 1; height: 100%; box-sizing: border-box; }
 .profile-header { padding: 15px 2px 12px; position: relative; }
@@ -206,17 +215,36 @@ body:not(.light) .crt::before { background: linear-gradient(rgba(18, 16, 16, 0) 
         <div class="alist-widget-wrapper">
             <div class="glowing-card">
                 <div class="inner">
-                    <svg class="toggle-btn btn-top-left" viewBox="0 0 24 24" onclick="toggleTheme('light')">
-                        <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></g>
+                    <svg class="theme-toggle sun-toggle" viewBox="0 0 24 24" onclick="toggleTheme('light')">
+                        <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                            <circle cx="12" cy="12" r="4"></circle>
+                            <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+                        </g>
                     </svg>
-                    <svg class="toggle-btn btn-top-right" viewBox="0 0 24 24" onclick="toggleTheme('dark')">
-                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"></path>
+
+                    <svg class="theme-toggle moon-toggle" viewBox="0 0 24 24" onclick="toggleTheme('dark')">
+                        <path
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"
+                        ></path>
                     </svg>
-                    <svg class="toggle-btn btn-bottom-left" viewBox="0 0 24 24" onclick="switchBackground('https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/000.jpg')">
-                        <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></g>
+
+                    <svg class="day-toggle day-toggle-left" viewBox="0 0 24 24" onclick="switchBackground('https://pub-2892a14f8bbf4cd488041657b793ac15.r2.dev/000.jpg')">
+                        <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                            <circle cx="12" cy="12" r="4"></circle>
+                            <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+                        </g>
                     </svg>
-                    <svg class="toggle-btn btn-bottom-right" viewBox="0 0 24 24" onclick="switchBackground('https://cdn.jsdelivr.net/gh/qxx2000/blog@main/img/DDD.webp')">
-                        <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></g>
+
+                    <svg class="day-toggle day-toggle-right" viewBox="0 0 24 24" onclick="switchBackground('https://cdn.jsdelivr.net/gh/qxx2000/blog@main/img/DDD.webp')">
+                        <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                            <circle cx="12" cy="12" r="4"></circle>
+                            <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+                        </g>
                     </svg>
 
                     <div class="link-section">
@@ -269,13 +297,13 @@ body:not(.light) .crt::before { background: linear-gradient(rgba(18, 16, 16, 0) 
                             <!-- 第二页 -->
                             <div id="page2" class="page">
                                 <div class="profile-header">
-                                    <img src="images/Neko.gif" alt="头像" class="profile-pic" onclick="triggerConfetti()">
+                                    <img src="https://cdn.jsdelivr.net/gh/qxx2000/blog@main/img/Cat.gif" alt="头像" class="profile-pic" onclick="triggerConfetti()">
                                 </div>
 
                                 <div class="spotify-card" onclick="window.open('https://open.spotify.com/track/3UkRfA9F62DYYDzqOskoov', '_blank')">
                                     <div class="spotify-left">
                                         <div class="spotify-meta">
-                                            <div class="spotify-icon"><img src="images/Spotify.svg" alt="Spotify"></div>
+                                            <div class="spotify-icon"><img src="https://cdn.jsdelivr.net/gh/qxx2000/blog@main/img/Spotify.svg" alt="Spotify"></div>
                                             <div class="track-text">
                                                 <div class="track-title">Signals</div>
                                                 <div class="track-artist">Lazer Boomerang</div>
@@ -287,16 +315,16 @@ body:not(.light) .crt::before { background: linear-gradient(rgba(18, 16, 16, 0) 
                                             <span class="btn-text">Play</span>
                                         </button>
                                     </div>
-                                    <div class="spotify-cover"><img src="images/Signals.jpg" alt="封面"></div>
+                                    <div class="spotify-cover"><img src="https://cdn.jsdelivr.net/gh/qxx2000/blog@main/music/Signals.webp" alt="封面"></div>
                                     <!-- [极致优化] 对不自动播放的音频开启 preload="none"，节约初始带宽 -->
                                     <audio id="audioPlayer" src="music/Signals.mp3" preload="none"></audio>
                                 </div>
 
                                 <div class="link-scroll-container">
-                                    <a href="javascript:void(0);" class="link-card" onclick="downloadVCard()"><img src="images/vCard.PNG" loading="lazy" class="link-icon"><span class="link-title">vCard</span></a>
-                                    <a href="https://🎞.nekoweb.org" class="link-card" target="_blank"><img src="images/Camera.png" loading="lazy" class="link-icon"><span class="link-title">Gallery 🎞</span></a>
-                                    <a href="https://🦋.blogspot.com" class="link-card" target="_blank"><img src="images/Blog.PNG" loading="lazy" class="link-icon"><span class="link-title">Blog博客</span></a>
-                                    <a href="javascript:void(0);" class="link-card" id="wechatBtn"><img src="images/WeChat-.png" loading="lazy" class="link-icon"><span class="link-title">WeChat</span></a>
+                                    <a href="javascript:void(0);" class="link-card" onclick="downloadVCard()"><img src="https://cdn.jsdelivr.net/gh/qxx2000/blog@main/img/vCard.webp" loading="lazy" class="link-icon"><span class="link-title">vCard</span></a>
+                                    <a href="https://🎞.nekoweb.org" class="link-card" target="_blank"><img src="https://cdn.jsdelivr.net/gh/qxx2000/blog@main/img/Camera.webp" loading="lazy" class="link-icon"><span class="link-title">Gallery 🎞</span></a>
+                                    <a href="https://🦋.blogspot.com" class="link-card" target="_blank"><img src="https://cdn.jsdelivr.net/gh/qxx2000/blog@main/img/Telegram.svg" loading="lazy" class="link-icon"><span class="link-title">Blog博客</span></a>
+                                    <a href="javascript:void(0);" class="link-card" id="wechatBtn"><img src="https://cdn.jsdelivr.net/gh/qxx2000/blog@main/img/WeChat.webp" loading="lazy" class="link-icon"><span class="link-title">WeChat</span></a>
                                     <a href="https://t.me/qxx_me" class="link-card" target="_blank"><img src="images/Telegram.svg" loading="lazy" class="link-icon"><span class="link-title">Telegram</span></a>
                                     <a href="https://x.com/vwwvvvvvvv" class="link-card" target="_blank"><img src="images/Instagram.svg" loading="lazy" class="link-icon"><span class="link-title">Instagram</span></a>
                                     <a href="mailto:vwwwww@yahoo.com" class="link-card"><img src="images/Mail.PNG" loading="lazy" class="link-icon"><span class="link-title">Mail</span></a>
@@ -661,16 +689,37 @@ function loadMusicPlayer() {
     }
     video.addEventListener('click', () => video.muted = false);
   
-    document.querySelectorAll('.toggle-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            this.style.transform = 'scale(1.2)';
-            this.style.opacity = '0.8';
-            setTimeout(() => {
-                this.style.transform = '';
-                this.style.opacity = '';
-            }, 450);
+
+  
+          document.querySelectorAll('.theme-toggle').forEach(button => {
+            button.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.2)';
+            });
+            button.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+            });
+            button.addEventListener('click', function() {
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 350);
+            });
         });
-    });
+      
+        document.querySelectorAll('.day-toggle').forEach(button => {
+            button.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.2)';
+            });
+            button.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+            });
+            button.addEventListener('click', function() {
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 350);
+            });
+        });
+      
+
 </script>
 </body>
 </html>
