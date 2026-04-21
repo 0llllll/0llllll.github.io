@@ -47,7 +47,6 @@
     --music-player-bg: rgb(255 255 255 / 10%); --music-player-shadow: 0 2px 6px 1px #0000001f;
 }
 
-/* 增加了 touch-action: manipulation 防止双击放大页面干扰手势检测 */
 body { background: url('https://me2077.github.io/images/AAA.png') center/cover; margin: 0; padding: 0; min-height: 100dvh; display: flex; justify-content: center; align-items: center; font-family: 'Inter', sans-serif; color: var(--fg); overflow: hidden; touch-action: manipulation; }
 body.light { background-attachment: fixed; }
 canvas { position: fixed; inset: 0; width: 100%; height: 100dvh; z-index: -1; }
@@ -364,11 +363,18 @@ body:not(.light) .crt::before { background: linear-gradient(rgba(18, 16, 16, 0) 
 <script src="js/vCard.js"></script>
 
 <script>
-    // --- [新增/更新] 修复移动端单指双击检测逻辑（防误触、防滑动） ---
+    // --- [新增/更新] 极致丝滑的全局双击开关（兼容 PC / 单指双击 / 双指同时点击） ---
     window.isParticlesEnabled = true;
 
     (function initDoubleClickToggle() {
+        let lastToggleTime = 0; // 防冲突锁
+
         function toggleParticles(e) {
+            let now = new Date().getTime();
+            // 防止 500ms 内重复触发（彻底避免底层原生事件冲突导致刚关上又打开的假象）
+            if (now - lastToggleTime < 500) return;
+            lastToggleTime = now;
+
             // 过滤交互元素，防止误触
             if (e.target && e.target.closest && e.target.closest('a, button, svg, img, video, .bullet, .link-card, .spotify-card, .play-btn, .theme-toggle, .day-toggle')) {
                 return;
@@ -389,31 +395,17 @@ body:not(.light) .crt::before { background: linear-gradient(rgba(18, 16, 16, 0) 
         // 电脑端：原生双击事件
         document.addEventListener('dblclick', toggleParticles);
 
-        // 手机端：优化后的单指双击检测
-        let lastTapTime = 0;
-        let lastTapX = 0;
-        let lastTapY = 0;
-
+        // 手机端：简化的连续点击检测，极致灵敏
+        let lastTouchEnd = 0;
         document.addEventListener('touchend', function (e) {
-            // 如果不是单指触摸（比如两根手指），则跳过，不计入单指双击逻辑
-            if (e.changedTouches && e.changedTouches.length !== 1) return;
+            let now = new Date().getTime();
             
-            let currentTime = new Date().getTime();
-            let tapLength = currentTime - lastTapTime;
-            let touch = e.changedTouches[0];
-
-            // 计算手指两次点击移动的距离，用来区分“滑动”和“双击”
-            let distanceX = Math.abs(touch.clientX - lastTapX);
-            let distanceY = Math.abs(touch.clientY - lastTapY);
-            
-            // 判定条件：两次点击时间小于 400 毫秒，且手指没有产生较大滑动偏移（< 30像素）
-            if (tapLength > 0 && tapLength < 400 && distanceX < 30 && distanceY < 30) {
+            // 判定时间放宽到 400 毫秒（400ms能轻松完成单指双击，双指同点时间差仅几毫秒，也会被完美包含在内）
+            if (now - lastTouchEnd <= 400) {
                 toggleParticles(e);
-                lastTapTime = 0; // 成功触发后清空时间，防止“连点三下”被错误计算成两次双击
+                lastTouchEnd = 0; // 成功触发后清空，防止“点第三下”又被误算为一次双击
             } else {
-                lastTapTime = currentTime;
-                lastTapX = touch.clientX;
-                lastTapY = touch.clientY;
+                lastTouchEnd = now;
             }
         });
     })();
