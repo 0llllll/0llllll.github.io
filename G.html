@@ -47,7 +47,7 @@
     --music-player-bg: rgb(255 255 255 / 10%); --music-player-shadow: 0 2px 6px 1px #0000001f;
 }
 
-body { background: url('https://me2077.github.io/images/AAA.png') center/cover; margin: 0; padding: 0; min-height: 100dvh; display: flex; justify-content: center; align-items: center; font-family: 'Inter', sans-serif; color: var(--fg); overflow: hidden; }
+body { background: url('https://me2077.github.io/images/AAA.png') center/cover; margin: 0; padding: 0; min-height: 100dvh; display: flex; justify-content: center; align-items: center; font-family: 'Inter', sans-serif; color: var(--fg); overflow: hidden; touch-action: manipulation; }
 body.light { background-attachment: fixed; }
 canvas { position: fixed; inset: 0; width: 100%; height: 100dvh; z-index: -1; }
 
@@ -362,7 +362,46 @@ body:not(.light) .crt::before { background: linear-gradient(rgba(18, 16, 16, 0) 
 <script src="https://cdn.jsdelivr.net/gh/qxx2000/blog@main/js/xx.js"></script>
 <script src="js/vCard.js"></script>
 
-<script>  
+<script>
+    // --- [新增] 定义粒子特效状态与全局双击切换逻辑（兼容 PC 端与手机端） ---
+    window.isParticlesEnabled = true;
+
+    (function initDoubleClickToggle() {
+        function toggleParticles(e) {
+            // 如果点击的是按钮、链接、媒体或轮播点，不响应特效开关，防止误触导致特效被关掉
+            if (e.target && e.target.closest && e.target.closest('a, button, svg, img, video, .bullet, .link-card, .spotify-card, .play-btn, .theme-toggle, .day-toggle')) {
+                return;
+            }
+            
+            window.isParticlesEnabled = !window.isParticlesEnabled;
+            const canvas = document.getElementById('shuicheCanvas');
+            
+            if (window.isParticlesEnabled) {
+                canvas.style.display = 'block';
+                if (window.bgEngine && window.bgEngine.start) window.bgEngine.start();
+            } else {
+                canvas.style.display = 'none';
+                // 关闭特效时暂停 Three.js 渲染以节省系统性能和电池
+                if (window.bgEngine && window.bgEngine.stop) window.bgEngine.stop();
+            }
+        }
+
+        // 电脑端：双击事件
+        document.addEventListener('dblclick', toggleParticles);
+
+        // 手机端：模拟双击事件（连续点击小于300毫秒）
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (e) {
+            let now = new Date().getTime();
+            if (now - lastTouchEnd <= 300) {
+                toggleParticles(e);
+            }
+            lastTouchEnd = now;
+        });
+    })();
+    // --- [新增结束] ---
+
+
     // 全局防音频冲突
     document.addEventListener('play', e => {
         document.querySelectorAll('audio').forEach(audio => {
@@ -443,8 +482,14 @@ body:not(.light) .crt::before { background: linear-gradient(rgba(18, 16, 16, 0) 
 
         document.addEventListener("visibilitychange", () => {
             if (document.hidden && animationId !== null) { cancelAnimationFrame(animationId); animationId = null; } 
-            else if (!document.hidden && animationId === null) { anime(); }
+            else if (!document.hidden && animationId === null && window.isParticlesEnabled) { anime(); }
         });
+
+        // 暴露方法给外部（以便双击开关能随时暂停和恢复性能占用）
+        window.bgEngine = {
+            start: () => { if (animationId === null) anime(); },
+            stop: () => { if (animationId !== null) { cancelAnimationFrame(animationId); animationId = null; } }
+        };
 
         window.bgRenderer = { setClearColor: (c, a) => renderer.setClearColor(c, a) };
         window.addEventListener('DOMContentLoaded', init);
@@ -485,16 +530,17 @@ body:not(.light) .crt::before { background: linear-gradient(rgba(18, 16, 16, 0) 
         document.body.style.background = theme === 'light' ? '' : 'black';
         document.documentElement.style.setProperty('--fg', theme === 'light' ? 'black' : '#f0f0f0');
         if(window.bgRenderer) window.bgRenderer.setClearColor(0x000000, 0);
-        canvas.style.display = 'block';
+        if(window.isParticlesEnabled) canvas.style.display = 'block'; // 保持双击状态关联
         if (currentPage === 3) updateGlowingShadow();
     }
 
     function switchBackground(url) {
+        const canvas = document.getElementById('shuicheCanvas');
         document.body.style.background = `url('${url}') center/cover fixed`;
         document.body.classList.add('light');
         document.documentElement.style.setProperty('--fg', 'black');
         if(window.bgRenderer) window.bgRenderer.setClearColor(0x000000, 0);
-        document.getElementById('shuicheCanvas').style.display = 'block';
+        if(window.isParticlesEnabled) canvas.style.display = 'block'; // 保持双击状态关联
         if (currentPage === 3) updateGlowingShadow();
     }
 
