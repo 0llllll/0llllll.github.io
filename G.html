@@ -33,7 +33,7 @@
     --blend: soft-light; --glow-blend: plus-lighter; --glow-color: 40deg 80% 80%;
     --duration: 1s; --ease-slider: cubic-bezier(0.4, 0, 0.2, 1); --ease-timeline: cubic-bezier(0.71, 0.21, 0.3, 0.95);
     --page-height: 498px; --accent: hsl(260, 100%, 80%);
-    --glowing-card-bg: rgb(255 255 255 / 15%); --glowing-card-border: rgb(255 255 255 / 70%); --glowing-card-backdrop: none;
+    --glowing-card-bg: rgb(255 255 255 / 15%); --glowing-card-border: rgb(255 255 255 / 70%); --glowing-card-backdrop: blur(6px);
     --link-card-bg: rgb(255 255 255 / 9%); --link-card-hover-bg: rgb(255 255 255 / 25%); --link-card-border: rgb(255 255 255 / 40%); --link-card-box-shadow: 0px 4px 3px #0001, 0 0 35px #fffa inset;
     --spotify-card-bg: rgb(255 255 255 / 15%); --spotify-card-border: rgb(255 255 255 / 45%); --spotify-card-box-shadow: 0px 4px 3px #0001, 0 0 38px #fffa inset;
     --music-player-bg: rgb(255 255 255 / 15%); --music-player-shadow: none;
@@ -47,8 +47,10 @@
     --music-player-bg: rgb(255 255 255 / 10%); --music-player-shadow: 0 2px 6px 1px #0000001f;
 }
 
-body { background: url('https://me2077.github.io/images/AAA.png') center/cover; margin: 0; padding: 0; min-height: 100dvh; display: flex; justify-content: center; align-items: center; font-family: 'Inter', sans-serif; color: var(--fg); overflow: hidden; touch-action: manipulation; }
-body.light { background-attachment: fixed; }
+body { background-color: #000; margin: 0; padding: 0; min-height: 100dvh; display: flex; justify-content: center; align-items: center; font-family: 'Inter', sans-serif; color: var(--fg); overflow: hidden; touch-action: manipulation; transition: color 0.8s ease; }
+.bg-layer { position: fixed; inset: 0; z-index: -2; background-position: center; background-size: cover; background-repeat: no-repeat; transition: opacity 0.8s ease-in-out; opacity: 0; pointer-events: none; will-change: opacity; }
+.bg-layer.active { opacity: 1; }
+
 canvas { position: fixed; inset: 0; width: 100%; height: 100dvh; z-index: -1; }
 
 .glowing-card {
@@ -58,24 +60,11 @@ canvas { position: fixed; inset: 0; width: 100%; height: 100dvh; z-index: -1; }
     box-sizing: border-box; border: 1px solid var(--glowing-card-border); backdrop-filter: var(--glowing-card-backdrop);
 }
 
-.theme-toggle, .day-toggle {
-    position: absolute;
-    width: 24px;
-    height: 24px;
-    cursor: pointer;
-    z-index: 10;
-    opacity: 0.5;
-    transition: opacity 0.3s;
-    -webkit-tap-highlight-color: transparent;
-}
+.theme-toggle, .day-toggle { position: absolute; width: 24px; height: 24px; cursor: pointer; z-index: 10; opacity: 0.5; transition: opacity 0.3s; -webkit-tap-highlight-color: transparent; }
 .theme-toggle { top: 6px; }
 .day-toggle { bottom: 5px; }
 .theme-toggle:hover, .day-toggle:hover { opacity: 0.7; }
-
-.sun-toggle, .day-toggle-left {
-    left: 6px;
-    transition: transform 0.1s ease;
-}
+.sun-toggle, .day-toggle-left { left: 6px; transition: transform 0.1s ease; }
 .sun-toggle:hover, .day-toggle-left:hover { transform: scale(1.2); }
 .moon-toggle, .day-toggle-right { right: 6px; }
 
@@ -88,11 +77,11 @@ canvas { position: fixed; inset: 0; width: 100%; height: 100dvh; z-index: -1; }
 #page3 { justify-content: center; align-items: center; padding: 0; }
 
 .link-card, .spotify-card { width: 100%; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; }
-.link-card { display: flex; align-items: center; max-width: 275px; height: 45px; background: var(--link-card-bg); padding: 8px; margin-bottom: 0px; border-radius: 20px; text-decoration: none; color: var(--fg); transition: background 0.3s; font-size: 16px; font-style: italic; border: 1px solid var(--link-card-border); box-shadow: var(--link-card-box-shadow); }
+.link-card { display: flex; align-items: center; max-width: 275px; height: 45px; background: var(--link-card-bg); padding: 8px; margin-bottom: 0px; border-radius: 20px; text-decoration: none; color: inherit; transition: background 0.3s; font-size: 16px; font-style: italic; border: 1px solid var(--link-card-border); box-shadow: var(--link-card-box-shadow); }
 .link-card:hover { background: var(--link-card-hover-bg); }
 .link-icon { width: 36px; height: 36px; margin-left: 16px; } .link-title { text-align: center; width: 100%; font-size: 18px; }
 
-.spotify-card { display: flex; justify-content: space-between; align-items: center; max-width: 251px; height: 160px; background: var(--spotify-card-bg); border-radius: 25px; padding: 10.8px 20px; position: relative; margin-bottom: 4px; flex-wrap: nowrap; gap: 16px; transition: all 0.2s ease; border: 1.5px solid var(--spotify-card-border); box-shadow: var(--spotify-card-box-shadow); }
+.spotify-card { display: flex; justify-content: space-between; align-items: center; max-width: 251px; height: 160px; background: var(--spotify-card-bg); border-radius: 25px; padding: 10.8px 20px; position: relative; margin-bottom: 4px; flex-wrap: nowrap; gap: 16px; transition: background 0.2s ease, border 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease; border: 1.5px solid var(--spotify-card-border); box-shadow: var(--spotify-card-box-shadow); }
 .spotify-left { display: flex; flex-direction: column; justify-content: flex-start; flex: 1; min-width: 0; padding-right: 8px; gap: 6px; }
 .spotify-meta { display: flex; align-items: center; gap: 6px; }
 .spotify-icon { width: 36px; height: 36px; border-radius: 12px; background-color: #1ed760; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
@@ -124,8 +113,6 @@ body:not(.light) .crt::before { background: linear-gradient(rgba(18, 16, 16, 0) 
 
 .media-wrapper { height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; }
 .glitch-img { max-width: 99.7%; max-height: 100%; border-radius: 15px; }
-
-/* [极致优化] 2. 性能隔离：将巨量绘制的像素图隔离开，避免重绘整个页面 */
 .pixel-scale-box { width: 200px; height: 180px; position: relative; transform: scale(0.5); margin-top: -10px; contain: paint; will-change: transform; }
 
 .reward-wrapper { height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; font-style: italic; cursor: pointer; position: relative; width: 100%; -webkit-tap-highlight-color: transparent; }
@@ -133,16 +120,13 @@ body:not(.light) .crt::before { background: linear-gradient(rgba(18, 16, 16, 0) 
 .reward-gif { max-width: 99.7%; max-height: 100%; border-radius: 18px; transition: opacity 0.5s ease; opacity: 1; }
 .reward-qr { position: absolute; width: 340px; height: 340px; border-radius: 18px; transition: opacity 0.5s ease; opacity: 0; pointer-events: none; top: 0px; }
 .reward-texts { position: relative; margin-top: 21px; display: flex; justify-content: center; align-items: center; width: 100%; height: 32px; }
-.reward-text-old { position: absolute; color: var(--fg); font-size: 24px; text-align: center; text-decoration: underline; margin: 0; transition: opacity 0.5s ease; opacity: 1; white-space: nowrap; }
+.reward-text-old { position: absolute; color: inherit; font-size: 24px; text-align: center; text-decoration: underline; margin: 0; transition: opacity 0.5s ease; opacity: 1; white-space: nowrap; }
 .reward-text-new { position: absolute; opacity: 0; transition: opacity 0.5s ease; pointer-events: none; text-align: center; margin-top: -40px; }
-.reward-text-new a { color: var(--fg); font-size: 24px; text-decoration: underline; display: block; line-height: 1.5; }
+.reward-text-new a { color: inherit; font-size: 24px; text-decoration: underline; display: block; line-height: 1.5; }
 .show-qr .reward-gif, .show-qr .reward-text-old { opacity: 0; pointer-events: none; }
 .show-qr .reward-qr, .show-qr .reward-text-new { opacity: 1; pointer-events: auto; }
 
-.pixel-art {
-    width: 10px; height: 10px; position: absolute; top: 0; left: 0;
-    box-shadow: 110px 10px #000, 120px 10px #000, 110px 20px #000, 110px 30px #000, 110px 40px #000, 120px 40px #000, 130px 40px #000, 140px 40px #000, 150px 40px #000, 160px 40px #000, 30px 50px #000, 70px 50px #000, 160px 50px #000, 30px 60px #000, 40px 60px #000, 60px 60px #000, 70px 60px #000, 100px 60px #000, 110px 60px #000, 120px 60px #000, 130px 60px #000, 160px 60px #000, 30px 70px #000, 40px 70px #000, 50px 70px #000, 60px 70px #000, 70px 70px #000, 90px 70px #000, 100px 70px #000, 110px 70px #000, 120px 70px #000, 130px 70px #000, 140px 70px #000, 150px 70px #000, 160px 70px #000, 30px 80px #000, 40px 80px #f00, 50px 80px #000, 60px 80px #f00, 70px 80px #000, 80px 80px #000, 90px 80px #000, 100px 80px #000, 110px 80px #000, 120px 80px #000, 130px 80px #000, 140px 80px #000, 150px 80px #000, 160px 80px #000, 30px 90px #000, 40px 90px #000, 50px 90px #000, 60px 90px #000, 70px 90px #000, 80px 90px #000, 90px 90px #000, 100px 90px #000, 110px 90px #000, 120px 90px #000, 130px 90px #000, 140px 90px #000, 150px 90px #000, 160px 90px #000, 40px 100px #000, 50px 100px #000, 60px 100px #000, 70px 100px #000, 80px 100px #000, 90px 100px #000, 100px 100px #000, 110px 100px #000, 120px 100px #000, 130px 100px #000, 140px 100px #000, 150px 100px #000, 160px 100px #000, 60px 110px #000, 70px 110px #000, 80px 110px #000, 90px 110px #000, 100px 110px #000, 110px 110px #000, 130px 110px #000, 140px 110px #000, 150px 110px #000, 60px 120px #000, 70px 120px #000, 80px 120px #000, 100px 120px #000, 110px 120px #000, 130px 120px #000, 140px 120px #000, 60px 130px #000, 80px 130px #000, 110px 130px #000, 140px 130px #000, 60px 140px #000, 80px 140px #000, 110px 140px #000, 140px 140px #000, 60px 150px #000, 80px 150px #000, 110px 150px #000, 140px 150px #000, 50px 160px #000, 60px 160px #000, 70px 160px #000, 80px 160px #000, 100px 160px #000, 110px 160px #000, 130px 160px #000, 140px 160px #000;
-}
+.pixel-art { width: 10px; height: 10px; position: absolute; top: 0; left: 0; box-shadow: 110px 10px #000, 120px 10px #000, 110px 20px #000, 110px 30px #000, 110px 40px #000, 120px 40px #000, 130px 40px #000, 140px 40px #000, 150px 40px #000, 160px 40px #000, 30px 50px #000, 70px 50px #000, 160px 50px #000, 30px 60px #000, 40px 60px #000, 60px 60px #000, 70px 60px #000, 100px 60px #000, 110px 60px #000, 120px 60px #000, 130px 60px #000, 160px 60px #000, 30px 70px #000, 40px 70px #000, 50px 70px #000, 60px 70px #000, 70px 70px #000, 90px 70px #000, 100px 70px #000, 110px 70px #000, 120px 70px #000, 130px 70px #000, 140px 70px #000, 150px 70px #000, 160px 70px #000, 30px 80px #000, 40px 80px #f00, 50px 80px #000, 60px 80px #f00, 70px 80px #000, 80px 80px #000, 90px 80px #000, 100px 80px #000, 110px 80px #000, 120px 80px #000, 130px 80px #000, 140px 80px #000, 150px 80px #000, 160px 80px #000, 30px 90px #000, 40px 90px #000, 50px 90px #000, 60px 90px #000, 70px 90px #000, 80px 90px #000, 90px 90px #000, 100px 90px #000, 110px 90px #000, 120px 90px #000, 130px 90px #000, 140px 90px #000, 150px 90px #000, 160px 90px #000, 40px 100px #000, 50px 100px #000, 60px 100px #000, 70px 100px #000, 80px 100px #000, 90px 100px #000, 100px 100px #000, 110px 100px #000, 120px 100px #000, 130px 100px #000, 140px 100px #000, 150px 100px #000, 160px 100px #000, 60px 110px #000, 70px 110px #000, 80px 110px #000, 90px 110px #000, 100px 110px #000, 110px 110px #000, 130px 110px #000, 140px 110px #000, 150px 110px #000, 60px 120px #000, 70px 120px #000, 80px 120px #000, 100px 120px #000, 110px 120px #000, 130px 120px #000, 140px 120px #000, 60px 130px #000, 80px 130px #000, 110px 130px #000, 140px 130px #000, 60px 140px #000, 80px 140px #000, 110px 140px #000, 140px 140px #000, 60px 150px #000, 80px 150px #000, 110px 150px #000, 140px 150px #000, 50px 160px #000, 60px 160px #000, 70px 160px #000, 80px 160px #000, 100px 160px #000, 110px 160px #000, 130px 160px #000, 140px 160px #000; }
 
 @font-face { font-family: "icomoon"; src: url("/fonts/icomoon.woff2") format("woff2"), url("/fonts/icomoon.woff") format("woff"); font-weight: normal; font-style: normal; font-display: swap; }
 [class^="icon-"],[class*=" icon-"] { font-family: "icomoon" !important; font-style: normal; font-weight: normal; font-variant: normal; text-transform: none; line-height: 1; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
@@ -150,7 +134,6 @@ body:not(.light) .crt::before { background: linear-gradient(rgba(18, 16, 16, 0) 
 .icon-pause:before, .icon-play:before, .icon-playlist:before { color: #fff; }
 .icon-pause:before { content: "\e902"; } .icon-play:before { content: "\e903"; } .icon-playlist:before { content: "\e904"; }
 
-/* [极致优化] 3. 添加火狐及现代浏览器的原生 Scrollbar 样式，废弃繁重的 ::-webkit-scrollbar (如果兼容性允许) */
 .link-scroll-container, .music-player__playlist { overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(200, 200, 200, 0.3) transparent; }
 .lazy-placeholder { background-color: rgba(255, 255, 255, 0.1); } .img { width: 100%; flex-shrink: 0; display: block; object-fit: cover; }
 .list { margin: 0; padding: 0; list-style-type: none; } .text_trsf-cap { text-transform: capitalize; }
@@ -159,9 +142,9 @@ body:not(.light) .crt::before { background: linear-gradient(rgba(18, 16, 16, 0) 
 ._align_center { align-items: center; } ._justify_space-btwn { justify-content: space-between; align-items: center; width: 100%;}
 .text_overflow { flex: 1; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; display: inline-block; }
 
-/* 音乐播放器CSS保留不变 */
-.music-player { --color-gray: #e5e7ea; --color-blue: #78adfe; --color-blue-dark: #5781bd; --box-shadow: 0 2px 6px 1px #0000001f; --color-text-1: var(--fg); --color-text-2: #ffffff6b; --cover-size: 4.2em; --border-radius: 1.2em; --music-player-height: calc(var(--page-height) - 0px); --offset-cover: 1em; width: 100%; max-width: 335px; height: 445px; user-select: none; color: var(--color-text-1); border-radius: var(--border-radius); background-color: var(--music-player-bg); margin: -15px auto 0; box-sizing: border-box; }
-.light .music-player { --color-text-2: rgba(0, 0, 0, 0.42); }
+/* 🌟 [核心修复]：彻底移除内部定死的颜色，让整个播放器无条件继承 body 的 color，从而获得完美的 0.8s 渐变 */
+.music-player { --color-gray: #e5e7ea; --color-blue: #78adfe; --color-blue-dark: #5781bd; --box-shadow: 0 2px 6px 1px #0000001f; --cover-size: 4.2em; --border-radius: 1.2em; --music-player-height: calc(var(--page-height) - 0px); --offset-cover: 1em; width: 100%; max-width: 335px; height: 445px; user-select: none; border-radius: var(--border-radius); background-color: var(--music-player-bg); margin: -15px auto 0; box-sizing: border-box; color: inherit; transition: background-color 0.8s ease; }
+
 .slider { --shadow-opacity: 1; z-index: 0; flex-shrink: 0; height: 6.8em; position: relative; border-radius: inherit; transition: var(--duration) height var(--ease-timeline); }
 .slider.resize { --shadow-opacity: 0; height: var(--music-player-height); }
 .slider::after { content: ""; position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; border-radius: inherit; box-shadow: var(--box-shadow); opacity: var(--shadow-opacity); transition: var(--duration) opacity; }
@@ -183,8 +166,11 @@ body:not(.light) .crt::before { background: linear-gradient(rgba(18, 16, 16, 0) 
 .music-player__info { width: 56.3%; cursor: pointer; line-height: 1.45; overflow: hidden; font-weight: bold; padding: 0 0.0625em; white-space: nowrap; }
 .music-player__info > * { margin: 0 auto; pointer-events: none; }
 .music-player__singer-name { font-size: 1.1em; width: max-content; }
-.music-player__subtitle { font-size: 0.8em; font-weight: bold; color: var(--color-text-2); }
+
+/* 🌟 [核心修复]：歌手名(副标题)不再使用具体的颜色值，而是直接使用 opacity 发灰，完全共享父级的平滑过渡！ */
+.music-player__subtitle { font-size: 0.8em; font-weight: bold; color: inherit; opacity: 0.55; }
 .slider__controls .music-player__subtitle { width: max-content; }
+
 .music-player__singer-name.animate, .music-player__subtitle.animate { --subtitle-gap: 1.2em; display: flex; gap: 0 var(--subtitle-gap); animation: subtitle 12s 1.2s linear infinite; }
 @keyframes subtitle { 80%, 100% { transform: translate3d(calc((100% + var(--subtitle-gap)) / -2), 0, 0); } }
 .progress { width: 90%; height: 0.6em; cursor: pointer; transition: var(--duration) width var(--ease-timeline); position: relative; top: 8px; }
@@ -204,13 +190,21 @@ body:not(.light) .crt::before { background: linear-gradient(rgba(18, 16, 16, 0) 
 .music-player__playlist-info { width: 100%; overflow: hidden; line-height: 1.2; font-size: 1em; margin-left: 1.2em; }
 .music-player__playlist-info b { display: block; margin-left: 0; padding-left: 0; text-align: left; width: calc(100% - 50px); }
 .music-player__playlist-info .music-player__subtitle { display: block; text-align: left; margin-left: 0; padding-left: 0; flex-grow: 1; }
-.music-player__song-duration { flex-shrink: 0; margin-left: 10px; font-weight: bold; font-size: 0.8em; color: var(--color-text-2); }
-.loading-spinner { display: inline-block; width: 40px; height: 40px; border: 4px solid rgba(255, 255, 255, 0.3); border-radius: 50%; border-top-color: var(--fg); animation: spin 1s ease-in-out infinite; }
+
+/* 🌟 [核心修复]：歌曲总时长也采用 opacity 方案，彻底杜绝切换速度不一致 */
+.music-player__song-duration { flex-shrink: 0; margin-left: 10px; font-weight: bold; font-size: 0.8em; color: inherit; opacity: 0.55; }
+
+.loading-spinner { display: inline-block; width: 40px; height: 40px; border: 4px solid rgba(255, 255, 255, 0.3); border-radius: 50%; border-top-color: var(--fg); animation: spin 1s ease-in-out infinite; transition: border-top-color 0.8s ease; }
 @keyframes spin { to { transform: rotate(360deg); } }
 .loading-text { margin-top: 10px; font-size: 16px; }
 </style>
 </head>
 <body class="light">
+
+    <!-- [新增机制] 双层交替使用的背景缓冲图层 -->
+    <div id="bg-layer-1" class="bg-layer active" style="background: url('https://me2077.github.io/images/AAA.png') center/cover;"></div>
+    <div id="bg-layer-2" class="bg-layer"></div>
+
     <div class="crt">
         <div class="alist-widget-wrapper">
             <div class="glowing-card">
@@ -316,7 +310,6 @@ body:not(.light) .crt::before { background: linear-gradient(rgba(18, 16, 16, 0) 
                                         </button>
                                     </div>
                                     <div class="spotify-cover"><img src="https://cdn.jsdelivr.net/gh/qxx2000/blog@main/music/Signals.webp" alt="封面"></div>
-                                    <!-- [极致优化] 对不自动播放的音频开启 preload="none"，节约初始带宽 -->
                                     <audio id="audioPlayer" src="music/Signals.mp3" preload="none"></audio>
                                 </div>
 
@@ -363,46 +356,99 @@ body:not(.light) .crt::before { background: linear-gradient(rgba(18, 16, 16, 0) 
 <script src="js/vCard.js"></script>
 
 <script>
-    // --- [新增] 定义粒子特效状态与全局双击切换逻辑（兼容 PC 端与手机端） ---
-    window.isParticlesEnabled = true;
+    // --- [新增机制] 双缓冲背景平滑过渡与图片预加载 ---
+    let currentBgLayer = 1;
+    let bgChangeSequence = 0;
 
+    function crossfadeBackground(backgroundValue, isLightTheme) {
+        const currentChangeId = ++bgChangeSequence;
+        const nextBgLayer = currentBgLayer === 1 ? 2 : 1;
+        const currentEl = document.getElementById(`bg-layer-${currentBgLayer}`);
+        const nextEl = document.getElementById(`bg-layer-${nextBgLayer}`);
+
+        const applyAndFade = () => {
+            if (currentChangeId !== bgChangeSequence) return; 
+
+            nextEl.style.background = backgroundValue.startsWith('url') ? `${backgroundValue} center/cover` : backgroundValue;
+            
+            document.body.classList.toggle('light', isLightTheme);
+            document.documentElement.style.setProperty('--fg', isLightTheme ? 'black' : '#f0f0f0');
+            
+            if(window.bgRenderer) window.bgRenderer.setClearColor(0x000000, 0);
+            const canvas = document.getElementById('shuicheCanvas');
+            if(window.isParticlesEnabled) canvas.style.display = 'block'; 
+            if (currentPage === 3) updateGlowingShadow();
+
+            void nextEl.offsetWidth;
+
+            nextEl.classList.add('active');
+            currentEl.classList.remove('active');
+            
+            currentBgLayer = nextBgLayer;
+        };
+
+        if (backgroundValue.startsWith('url')) {
+            const urlMatch = backgroundValue.match(/url\(['"]?(.*?)['"]?\)/);
+            if (urlMatch && urlMatch[1]) {
+                const img = new Image();
+                img.onload = applyAndFade;
+                img.onerror = applyAndFade; 
+                img.src = urlMatch[1];
+            } else {
+                applyAndFade();
+            }
+        } else {
+            applyAndFade();
+        }
+    }
+
+    function toggleTheme(theme) {
+        if (theme === 'light') {
+            crossfadeBackground("url('https://me2077.github.io/images/AAA.png')", true);
+        } else {
+            crossfadeBackground("#000", false);
+        }
+    }
+
+    function switchBackground(url) {
+        crossfadeBackground(`url('${url}')`, true);
+    }
+    // --- [新增机制结束] ---
+
+
+    window.isParticlesEnabled = true;
     (function initDoubleClickToggle() {
+        let lastToggleTime = 0;
         function toggleParticles(e) {
-            // 如果点击的是按钮、链接、媒体或轮播点，不响应特效开关，防止误触导致特效被关掉
+            let now = new Date().getTime();
+            if (now - lastToggleTime < 500) return;
+            lastToggleTime = now;
             if (e.target && e.target.closest && e.target.closest('a, button, svg, img, video, .bullet, .link-card, .spotify-card, .play-btn, .theme-toggle, .day-toggle')) {
                 return;
             }
-            
             window.isParticlesEnabled = !window.isParticlesEnabled;
             const canvas = document.getElementById('shuicheCanvas');
-            
             if (window.isParticlesEnabled) {
                 canvas.style.display = 'block';
                 if (window.bgEngine && window.bgEngine.start) window.bgEngine.start();
             } else {
                 canvas.style.display = 'none';
-                // 关闭特效时暂停 Three.js 渲染以节省系统性能和电池
                 if (window.bgEngine && window.bgEngine.stop) window.bgEngine.stop();
             }
         }
-
-        // 电脑端：双击事件
         document.addEventListener('dblclick', toggleParticles);
-
-        // 手机端：模拟双击事件（连续点击小于300毫秒）
         let lastTouchEnd = 0;
         document.addEventListener('touchend', function (e) {
             let now = new Date().getTime();
-            if (now - lastTouchEnd <= 300) {
+            if (now - lastTouchEnd <= 400) {
                 toggleParticles(e);
+                lastTouchEnd = 0;
+            } else {
+                lastTouchEnd = now;
             }
-            lastTouchEnd = now;
         });
     })();
-    // --- [新增结束] ---
 
-
-    // 全局防音频冲突
     document.addEventListener('play', e => {
         document.querySelectorAll('audio').forEach(audio => {
             if(audio !== e.target && !audio.paused) {
@@ -416,14 +462,12 @@ body:not(.light) .crt::before { background: linear-gradient(rgba(18, 16, 16, 0) 
         });
     }, true);
 
-    // [极致优化] 4. Three.js 动态绘制优化
     (function initBackgroundEngine() {
-        const count = 200;
+        const count = 1000;
         let scene, camera, renderer, animationId = null, mouseX = 0, mouseY = 0;
         let windowHalfX = window.innerWidth / 2, windowHalfY = window.innerHeight / 2;
         let geometry = new THREE.BufferGeometry();
         
-        // 【关键】告知GPU此Buffer会频繁更新，极大降低渲染负担
         let posAttribute = new THREE.BufferAttribute(new Float32Array(6 * count), 3);
         posAttribute.setUsage(THREE.DynamicDrawUsage); 
         geometry.setAttribute('position', posAttribute);
@@ -446,7 +490,6 @@ body:not(.light) .crt::before { background: linear-gradient(rgba(18, 16, 16, 0) 
             }
             scene.add(new THREE.LineSegments(geometry, new THREE.LineBasicMaterial({ color: 0xffffff })));
             window.addEventListener('resize', debounceResize, { passive: true });
-            // [极致优化] 加入 passive: true，避免移动端滚动粘滞
             document.body.addEventListener('pointermove', e => { mouseX = e.clientX - windowHalfX; mouseY = e.clientY - windowHalfY; }, { passive: true });
             anime();
         }
@@ -485,7 +528,6 @@ body:not(.light) .crt::before { background: linear-gradient(rgba(18, 16, 16, 0) 
             else if (!document.hidden && animationId === null && window.isParticlesEnabled) { anime(); }
         });
 
-        // 暴露方法给外部（以便双击开关能随时暂停和恢复性能占用）
         window.bgEngine = {
             start: () => { if (animationId === null) anime(); },
             stop: () => { if (animationId !== null) { cancelAnimationFrame(animationId); animationId = null; } }
@@ -523,26 +565,6 @@ body:not(.light) .crt::before { background: linear-gradient(rgba(18, 16, 16, 0) 
         else { audio.pause(); button.classList.remove('playing'); button.querySelector('.btn-text').innerText = 'Play'; isPlaying = false; }
     }
     audio.addEventListener('ended', () => { isPlaying = false; const btn = document.querySelector('.play-btn'); if (btn) { btn.classList.remove('playing'); btn.querySelector('.btn-text').innerText = 'Play'; } });
-
-    function toggleTheme(theme) {
-        const canvas = document.getElementById('shuicheCanvas');
-        document.body.classList.toggle('light', theme === 'light');
-        document.body.style.background = theme === 'light' ? '' : 'black';
-        document.documentElement.style.setProperty('--fg', theme === 'light' ? 'black' : '#f0f0f0');
-        if(window.bgRenderer) window.bgRenderer.setClearColor(0x000000, 0);
-        if(window.isParticlesEnabled) canvas.style.display = 'block'; // 保持双击状态关联
-        if (currentPage === 3) updateGlowingShadow();
-    }
-
-    function switchBackground(url) {
-        const canvas = document.getElementById('shuicheCanvas');
-        document.body.style.background = `url('${url}') center/cover fixed`;
-        document.body.classList.add('light');
-        document.documentElement.style.setProperty('--fg', 'black');
-        if(window.bgRenderer) window.bgRenderer.setClearColor(0x000000, 0);
-        if(window.isParticlesEnabled) canvas.style.display = 'block'; // 保持双击状态关联
-        if (currentPage === 3) updateGlowingShadow();
-    }
 
 function loadMusicPlayer() {
     let indexSong = 0, isLocked = false, songsLength = null, selectedSong = null, songIsPlayed = false, progressBarIsUpdating = false;
@@ -691,7 +713,6 @@ function loadMusicPlayer() {
     window.addEventListener("pointermove", doScrub, {passive: false}); window.addEventListener("touchmove", doScrub, {passive: false});
 }
       
-    // 滚动条样式控制
     const scrollContainer = document.querySelector('.link-scroll-container');
     let scrollTimeout;
     if (scrollContainer) {
@@ -716,7 +737,6 @@ function loadMusicPlayer() {
         clipboard.on('error', () => { alert('复制失败,请手动输入 ' + wechatID); window.location.href = 'wechat://dl/scan'; });
     }
 
-    // [极致优化] 5. 采用 IntersectionObserver 废弃低效的 scroll 监听！
     const video = document.getElementById('page1Video'); 
     let videoLoaded = false;
     
@@ -730,14 +750,12 @@ function loadMusicPlayer() {
                     video.pause();
                 }
             });
-        }, { threshold: 0.5 }); // 露出50%才播放
+        }, { threshold: 0.5 });
         videoObserver.observe(document.getElementById('page1-5'));
     }
     video.addEventListener('click', () => video.muted = false);
   
-
-  
-          document.querySelectorAll('.theme-toggle').forEach(button => {
+        document.querySelectorAll('.theme-toggle').forEach(button => {
             button.addEventListener('mouseenter', function() {
                 this.style.transform = 'scale(1.2)';
             });
@@ -764,7 +782,6 @@ function loadMusicPlayer() {
                 }, 350);
             });
         });
-      
 
 </script>
 </body>
