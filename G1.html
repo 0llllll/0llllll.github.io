@@ -33,8 +33,8 @@
     --blend: soft-light; --glow-blend: plus-lighter; --glow-color: 40deg 80% 80%;
     --duration: 1s; --ease-slider: cubic-bezier(0.4, 0, 0.2, 1); --ease-timeline: cubic-bezier(0.71, 0.21, 0.3, 0.95);
     --page-height: 498px; --accent: hsl(260, 100%, 80%);
-    /* 🌟保持 0px 防止毛玻璃切换动画失效 */
-    --glowing-card-bg: rgb(255 255 255 / 15%); --glowing-card-border: rgb(255 255 255 / 70%); --glowing-card-backdrop: blur(0px);
+    /* 🌟修复毛玻璃动画：将 none 改为 blur(0px)，否则 CSS 无法执行 0.8s 的平滑模糊过渡 */
+    --glowing-card-bg: rgb(255 255 255 / 15%); --glowing-card-border: rgb(255 255 255 / 70%); --glowing-card-backdrop: blur(7px);
     --link-card-bg: rgb(255 255 255 / 9%); --link-card-hover-bg: rgb(255 255 255 / 25%); --link-card-border: rgb(255 255 255 / 40%); --link-card-box-shadow: 0px 4px 3px #0001, 0 0 35px #fffa inset;
     --spotify-card-bg: rgb(255 255 255 / 15%); --spotify-card-border: rgb(255 255 255 / 45%); --spotify-card-box-shadow: 0px 4px 3px #0001, 0 0 38px #fffa inset;
     --music-player-bg: rgb(255 255 255 / 15%); --music-player-shadow: none;
@@ -42,20 +42,19 @@
 .light {
     --card-bg: linear-gradient(8deg, color-mix(in hsl, hsl(260, 25%, 95%), var(--dark) 2.5%) 75%, hsl(260, 25%, 95%) 75.5%);
     --blend: darken; --glow-blend: luminosity; --glow-color: 280deg 90% 95%;
-    --glowing-card-bg: rgb(255 255 255 / 13%); --glowing-card-border: rgb(255 255 255 / 80%); --glowing-card-backdrop: blur(6px);
+    --glowing-card-bg: rgb(255 255 255 / 13%); --glowing-card-border: rgb(255 255 255 / 80%); --glowing-card-backdrop: blur(7px);
     --link-card-bg: rgb(255 255 255 / 7%); --link-card-hover-bg: rgb(255 255 255 / 25%); --link-card-border: rgb(255 255 255 / 45%); --link-card-box-shadow: 0px 4px 3px #0001, 0 0 25px #fffa inset;
     --spotify-card-bg: rgb(255 255 255 / 7%); --spotify-card-border: rgb(255 255 255 / 60%); --spotify-card-box-shadow: 0px 4px 3px #0001, 0 0 38px #fffa inset;
     --music-player-bg: rgb(255 255 255 / 10%); --music-player-shadow: 0 2px 6px 1px #0000001f;
 }
 
-/* 🌟修复核心：给 body 设置默认背景图和浅紫保护底色，彻底杜绝加载黑屏闪烁 */
-body { background: #e1d8ea url('https://me2077.github.io/images/AAA.png') center/cover; margin: 0; padding: 0; min-height: 100dvh; display: flex; justify-content: center; align-items: center; font-family: 'Inter', sans-serif; color: var(--fg); overflow: hidden; touch-action: manipulation; transition: color 0.8s ease; }
+body { background-color: #000; margin: 0; padding: 0; min-height: 100dvh; display: flex; justify-content: center; align-items: center; font-family: 'Inter', sans-serif; color: var(--fg); overflow: hidden; touch-action: manipulation; transition: color 0.8s ease; }
 .bg-layer { position: fixed; inset: 0; z-index: -2; background-position: center; background-size: cover; background-repeat: no-repeat; transition: opacity 0.8s ease-in-out; opacity: 0; pointer-events: none; will-change: opacity; }
 .bg-layer.active { opacity: 1; }
 
 canvas { position: fixed; inset: 0; width: 100%; height: 100dvh; z-index: -1; }
 
-/* 🌟保留发光卡片的 0.8s 丝滑渐变 */
+/* 🌟给外部大卡片（发光玻璃卡片）添加背景、边框、发光和模糊的 0.8s 渐变 */
 .glowing-card {
     position: relative; width: 100%; max-width: 345px; height: 510px; flex-shrink: 0; border-radius: 20px;
     isolation: isolate; transform: translateZ(0); background: var(--glowing-card-bg);
@@ -82,12 +81,14 @@ canvas { position: fixed; inset: 0; width: 100%; height: 100dvh; z-index: -1; }
 
 .link-card, .spotify-card { width: 100%; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; }
 
-/* 🌟保留链接卡片的 0.8s 丝滑渐变，hover时使用 0.3s 保证交互灵敏 */
+/* 🌟链接卡片：默认状态应用 0.8s 渐变（完美衔接主题切换） */
 .link-card { display: flex; align-items: center; max-width: 275px; height: 45px; background: var(--link-card-bg); padding: 8px; margin-bottom: 0px; border-radius: 20px; text-decoration: none; color: inherit; font-size: 16px; font-style: italic; border: 1px solid var(--link-card-border); box-shadow: var(--link-card-box-shadow); transition: background 0.8s ease, border 0.8s ease, box-shadow 0.8s ease; }
+
+/* 🌟交互防粘滞：当手指点击或鼠标悬停时，临时把速度降为 0.3s，保证极速灵敏的点击反馈！ */
 .link-card:hover { background: var(--link-card-hover-bg); transition: background 0.3s ease, border 0.3s ease, box-shadow 0.3s ease; }
 .link-icon { width: 36px; height: 36px; margin-left: 16px; } .link-title { text-align: center; width: 100%; font-size: 18px; }
 
-/* 🌟保留Spotify卡片的 0.8s 丝滑渐变 */
+/* 🌟Spotify卡片：应用 0.8s 过渡（背景、边框、内部阴影全部 0.8s） */
 .spotify-card { display: flex; justify-content: space-between; align-items: center; max-width: 251px; height: 160px; background: var(--spotify-card-bg); border-radius: 25px; padding: 10.8px 20px; position: relative; margin-bottom: 4px; flex-wrap: nowrap; gap: 16px; border: 1.5px solid var(--spotify-card-border); box-shadow: var(--spotify-card-box-shadow); transition: background 0.8s ease, border 0.8s ease, box-shadow 0.8s ease, transform 0.2s ease; }
 
 .spotify-left { display: flex; flex-direction: column; justify-content: flex-start; flex: 1; min-width: 0; padding-right: 8px; gap: 6px; }
@@ -154,6 +155,7 @@ body:not(.light) .crt::before { background: linear-gradient(rgba(18, 16, 16, 0) 
 
 .slider { --shadow-opacity: 1; z-index: 0; flex-shrink: 0; height: 6.8em; position: relative; border-radius: inherit; transition: var(--duration) height var(--ease-timeline); }
 .slider.resize { --shadow-opacity: 0; height: var(--music-player-height); }
+/* 🌟给播放器底层阴影也加上 0.8s 的平滑变暗/变亮效果 */
 .slider::after { content: ""; position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; border-radius: inherit; box-shadow: var(--box-shadow); opacity: var(--shadow-opacity); transition: opacity var(--duration) ease, box-shadow 0.8s ease; }
 
 .slider__content { position: absolute; top: 0; left: 0; overflow: hidden; border-radius: inherit; width: var(--cover-size); height: var(--cover-size); transition: transform var(--duration) var(--ease-timeline), width var(--duration) var(--ease-timeline), height var(--duration) var(--ease-timeline); transform: translate3d(var(--offset-cover), var(--offset-cover), 0); }
@@ -203,6 +205,56 @@ body:not(.light) .crt::before { background: linear-gradient(rgba(18, 16, 16, 0) 
 .loading-spinner { display: inline-block; width: 40px; height: 40px; border: 4px solid rgba(255, 255, 255, 0.3); border-radius: 50%; border-top-color: var(--fg); animation: spin 1s ease-in-out infinite; transition: border-top-color 0.8s ease; }
 @keyframes spin { to { transform: rotate(360deg); } }
 .loading-text { margin-top: 10px; font-size: 16px; }
+  
+/* ==========================================
+   移动端防粘滞优化 (Hover Sticky Fix)
+   ========================================== */
+
+/* 1. 只在支持真正鼠标/触控板的设备上，才启用 hover 效果 */
+@media (hover: hover) and (pointer: fine) {
+    .theme-toggle:hover, 
+    .day-toggle:hover { 
+        opacity: 0.7; 
+    }
+    
+    .sun-toggle:hover, 
+    .day-toggle-left:hover { 
+        transform: scale(1.2); 
+    }
+    
+    .link-card:hover { 
+        background: var(--link-card-hover-bg); 
+        transition: background 0.3s ease, border 0.3s ease, box-shadow 0.3s ease; 
+    }
+    
+    .play-btn:hover { 
+        transform: scale(1.05); 
+    }
+
+    /* 滚动条在鼠标悬停时显示 */
+    .link-scroll-container:hover::-webkit-scrollbar-thumb, 
+    .music-player__playlist:hover::-webkit-scrollbar-thumb { 
+        opacity: 1; 
+    }
+}
+
+/* 2. 补充移动端的点击反馈 (Tap Feedback) 
+   使用 :active 伪类，这样手指按下去时有效果，松开立刻恢复，不会粘滞！ */
+.theme-toggle:active, 
+.day-toggle:active { 
+    opacity: 0.7; 
+}
+.sun-toggle:active, 
+.day-toggle-left:active,
+.play-btn:active { 
+    transform: scale(1.1); /* 点击时微微放大 */
+    transition: transform 0.1s ease;
+}
+.link-card:active {
+    /* 点击链接卡片时立刻给出反馈 */
+    background: var(--link-card-hover-bg); 
+    transition: background 0.1s ease; 
+}
 </style>
 </head>
 <body class="light">
@@ -761,35 +813,8 @@ function loadMusicPlayer() {
     }
     video.addEventListener('click', () => video.muted = false);
   
-        document.querySelectorAll('.theme-toggle').forEach(button => {
-            button.addEventListener('mouseenter', function() {
-                this.style.transform = 'scale(1.2)';
-            });
-            button.addEventListener('mouseleave', function() {
-                this.style.transform = 'scale(1)';
-            });
-            button.addEventListener('click', function() {
-                setTimeout(() => {
-                    this.style.transform = 'scale(1)';
-                }, 350);
-            });
-        });
-      
-        document.querySelectorAll('.day-toggle').forEach(button => {
-            button.addEventListener('mouseenter', function() {
-                this.style.transform = 'scale(1.2)';
-            });
-            button.addEventListener('mouseleave', function() {
-                this.style.transform = 'scale(1)';
-            });
-            button.addEventListener('click', function() {
-                setTimeout(() => {
-                    this.style.transform = 'scale(1)';
-                }, 350);
-            });
-        });
+
 
 </script>
 </body>
 </html>
-
