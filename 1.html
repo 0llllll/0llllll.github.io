@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="color-scheme" content="dark">
+<meta name="color-scheme" content="light dark">
     <meta name="theme-color" content="#000000">
     <title>✨🐈</title>
 
@@ -527,10 +527,14 @@
         .icon-play:before { content: "\e903"; }
         .icon-playlist:before { content: "\e904"; }
 
-.link-scroll-container, .music-player__playlist {
-    overflow-y: auto; 
-    scrollbar-width: thin; 
-    scrollbar-color: color-mix(in srgb, var(--fg) 40%, transparent) transparent; 
+.link-scroll-container,
+.music-player__playlist {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+
+    /* Firefox */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.45) transparent;
 }
 
         .lazy-placeholder { background-color: rgba(255, 255, 255, 0.1); }
@@ -611,16 +615,32 @@
 
         .link-scroll-container { position: relative; width: 320px; }
         .music-player__playlist { box-sizing: border-box; height: calc(100% - 6.8em); padding: 10px 0.9em 0 var(--offset-cover) !important; overflow-y: auto; }
-        .link-scroll-container::-webkit-scrollbar, .music-player__playlist::-webkit-scrollbar { width: 4px; background: transparent; }
-        .link-scroll-container::-webkit-scrollbar-track, .music-player__playlist::-webkit-scrollbar-track { background: transparent; border-right: 0 solid transparent; }
-.link-scroll-container::-webkit-scrollbar-thumb, .music-player__playlist::-webkit-scrollbar-thumb { 
-    background: color-mix(in srgb, var(--fg) 40%, transparent); 
-    border-radius: 10px; 
-    border: 1px solid transparent; 
-    opacity: 0; 
-    transition: opacity 0.3s ease; /* 👈 只保留显示/隐藏的透明度过渡，干净利落 */
+      
+      
+      
+/* Safari / Chrome / Edge */
+.link-scroll-container::-webkit-scrollbar,
+.music-player__playlist::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
 }
-        .link-scroll-container.scrolling::-webkit-scrollbar-thumb, .link-scroll-container:hover::-webkit-scrollbar-thumb, .music-player__playlist.scrolling::-webkit-scrollbar-thumb, .music-player__playlist:hover::-webkit-scrollbar-thumb { opacity: 1; }
+
+.link-scroll-container::-webkit-scrollbar-track,
+.music-player__playlist::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.link-scroll-container::-webkit-scrollbar-thumb,
+.music-player__playlist::-webkit-scrollbar-thumb {
+    background-color: rgba(255,255,255,0.45);
+    border-radius: 999px;
+}
+
+/* hover 时加深 */
+.link-scroll-container:hover::-webkit-scrollbar-thumb,
+.music-player__playlist:hover::-webkit-scrollbar-thumb {
+    background-color: rgba(255,255,255,0.75);
+}
 
         .music-player__song { --gap: 0.5em; cursor: pointer; margin-bottom: var(--gap); padding-bottom: var(--gap); border-bottom: 0.8px solid #d8d8d859; }
         .music-player__song audio { display: none; }
